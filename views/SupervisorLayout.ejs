@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/ProantoV2assets/images/logo2.png">
+    <title>Proanto</title>
+
+    <!-- Custom CSS -->
+    <link href="/ProantoV2assets/css/style.min.css" rel="stylesheet">
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+
+<body>
+
+
+    <div id="main-wrapper">
+        <div class="app-container"></div>
+
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header">
+                    <!-- This is for the sidebar toggle which is visible on mobile only -->
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                            class="ti-menu ti-close"></i></a>
+                    <!-- ============================================================== -->
+                    <!-- Logo -->
+                    <!-- ============================================================== -->
+                    <div class="navbar-brand" style="background: #2a69b2;">
+                        <!-- Logo icon -->
+                        <a href="index.html">
+                            <b class="logo-icon">
+                                <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+
+                                <!-- Light Logo icon -->
+                                <img src="/ProantoV2assets/images/logo.png" alt="homepage" class="light-logo" />
+                            </b>
+                            <!--End Logo icon -->
+                            <!-- Logo text -->
+
+                        </a>
+                        <a class="d-none d-md-block op-7 sidebartoggler" href="javascript:void(0)">
+                            <span class="line line-1"></span>
+                            <span class="line line-2"></span>
+                            <span class="line line-3"></span>
+                        </a>
+                    </div>
+                    <!-- ============================================================== -->
+                    <!-- End Logo -->
+                    <!-- ============================================================== -->
+                    <!-- ============================================================== -->
+                    <!-- Toggle which is visible on mobile only -->
+                    <!-- ============================================================== -->
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                        data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i
+                            class="ti-more"></i></a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse collapse" id="navbarSupportedContent"style="background: #2a69b2;">
+                    <ul class="navbar-nav float-left mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="app-calendar.html">
+                                <span class="d-block d-lg-none"><i data-feather="calendar"></i></span>
+                                <span class="d-none d-lg-block">Calendar</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- Right side toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav float-right align-items-center">
+                        <!-- ============================================================== -->
+                        <!-- create new -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="dd5" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="d-block d-lg-none"><i data-feather="git-pull-request"></i></span>
+                                <span class="d-none d-lg-block">English<i class="ml-2"
+                                        data-feather="chevron-down"></i></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd5">
+                                <a class="dropdown-item" href="#">French</a>
+                                <a class="dropdown-item" href="#">Spanish</a>
+                                <a class="dropdown-item" href="#">German</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+
+
+        <aside class="left-sidebar">
+            <div class="user-profile text-center pt-2" style="background: #2a69b2;">
+                <div class="d-flex align-items-center justify-content-center pb-3">
+                    <div class="dropdown sub-dropdown">
+                        <button class="btn profile-pic rounded-circle position-relative" type="button"
+                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="badge rounded-circle badge-success profile-dd text-center"><i
+                                    class="fas fa-angle-down"></i></span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="javascript:void(0)"><i
+                                    class="fas fa-circle text-success font-12 mr-2"></i>My Profile</a>
+                        </div>
+                    </div>
+                    <div class="profile-section ml-2">
+                        <p class="font-weight-light mb-0 font-18">Sumit Gusain</p>
+                        <span class="op-7 font-14">HEAD OF DOP</span>
+                    </div>
+                </div>
+                <div class="profile-section" style="margin-top: -18px;">
+                    <div class="row border-top border-bottom mt-3 no-gutters">
+                        <div class="col-3 border-right">
+                            <a class="p-3 d-block menubar-height dropdown-toggle" href="javascript:void(0)" id="bell"
+                                data-display="static" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-bell svg-icon op-7">
+                                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                    </svg></span>
+                                <span class="badge badge-danger badge-no rounded-circle">5</span>
+                            </a>
+                            <div class="dropdown-menu mailbox pt-0">
+                                <ul class="list-style-none mb-0">
+                                    <li>
+                                        <div
+                                            class="drop-title bg-info text-white position-relative rounded-top px-3 pt-2 pb-3">
+                                            <h5 class="mb-0 mt-1 text-white">4 New</h5>
+                                            <span class="font-weight-light">Notifications</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="message-center notifications position-relative ps-container ps-theme-default"
+                                            style="height:200px;" data-ps-id="622f2eef-36eb-5bd0-89c0-957247c4ee8b">
+
+                                            <a href="javascript:void(0)"
+                                                class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <div class="btn btn-danger rounded-circle btn-circle"><svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-airplay text-white">
+                                                        <path
+                                                            d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1">
+                                                        </path>
+                                                        <polygon points="12 15 17 21 7 21 12 15"></polygon>
+                                                    </svg></div>
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">Luanch Admin</h6>
+                                                    <span class="font-12 text-nowrap d-block text-muted">Just see
+                                                        the my new
+                                                        admin!</span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">9:30
+                                                        AM</span>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)"
+                                                class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <span class="btn btn-success rounded-circle btn-circle"><svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-calendar text-white">
+                                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                                    </svg></span>
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">Event today</h6>
+                                                    <span
+                                                        class="font-12 text-nowrap d-block text-muted text-truncate">Just
+                                                        a reminder that you have event</span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">9:10
+                                                        AM</span>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)"
+                                                class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <span class="btn btn-info rounded-circle btn-circle"><svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-settings text-white">
+                                                        <circle cx="12" cy="12" r="3"></circle>
+                                                        <path
+                                                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                                                        </path>
+                                                    </svg></span>
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">Settings</h6>
+                                                    <span
+                                                        class="font-12 text-nowrap d-block text-muted text-truncate">You
+                                                        can customize this template
+                                                        as you want</span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">9:08
+                                                        AM</span>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)"
+                                                class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <span class="btn btn-primary rounded-circle btn-circle"><svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-box text-white">
+                                                        <path
+                                                            d="M12.89 1.45l8 4A2 2 0 0 1 22 7.24v9.53a2 2 0 0 1-1.11 1.79l-8 4a2 2 0 0 1-1.79 0l-8-4a2 2 0 0 1-1.1-1.8V7.24a2 2 0 0 1 1.11-1.79l8-4a2 2 0 0 1 1.78 0z">
+                                                        </path>
+                                                        <polyline points="2.32 6.16 12 11 21.68 6.16"></polyline>
+                                                        <line x1="12" y1="22.76" x2="12" y2="11"></line>
+                                                    </svg></span>
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">Pavan kumar</h6> <span
+                                                        class="font-12 text-nowrap d-block text-muted">Just
+                                                        see the my admin!</span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">9:02
+                                                        AM</span>
+                                                </div>
+                                            </a>
+                                            <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                                                <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;">
+                                                </div>
+                                            </div>
+                                            <div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px;">
+                                                <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link pt-2 border-top text-center text-dark"
+                                            href="javascript:void(0);">
+                                            <strong>Check all notifications</strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-3 border-right">
+                            <a class="p-3 d-block menubar-height dropdown-toggle" id="bottom-sidebar"
+                                href="javascript:void(0)" data-display="static" role="button" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-settings svg-icon op-7">
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <path
+                                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                                        </path>
+                                    </svg></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dd5">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Action Here</a>
+                            </div>
+                        </div>
+                        <div class="col-3 border-right">
+                            <a class="p-3 d-block menubar-height dropdown-toggle" href="javascript:void(0)"
+                                role="button" data-display="static" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-message-square svg-icon op-7">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                    </svg></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right mailbox pt-0">
+                                <ul class="list-style-none mb-0">
+                                    <li>
+                                        <div
+                                            class="drop-title bg-info text-white position-relative rounded-top px-3 pt-2 pb-3">
+                                            <h5 class="mb-0 mt-1 text-white">4 New</h5>
+                                            <span class="font-weight-light">Chats</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="message-center notifications position-relative ps-container ps-theme-default"
+                                            style="height:200px;" data-ps-id="3c090ecd-c163-caa4-eee5-f4d3a6fc8866">
+
+                                            <a href="javascript:void(0)"
+                                                class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <img class="img-fluid rounded-circle" alt="img" width="40"
+                                                    style="height:40px" src="/ProantoV2assets/images/users/widget-table-pic1.jpg">
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">John Smith</h6>
+                                                    <span class="font-12 text-nowrap d-block text-muted">Just see
+                                                        the my new
+                                                        admin!</span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">9:30
+                                                        AM</span>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)"
+                                                class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <img class="img-fluid rounded-circle" alt="img" width="40"
+                                                    style="height:40px" src="/ProantoV2assets/images/users/widget-table-pic2.jpg">
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">Peter John</h6>
+                                                    <span
+                                                        class="font-12 text-nowrap d-block text-muted text-truncate">Just
+                                                        a reminder that you have event</span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">9:10
+                                                        AM</span>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)"
+                                                class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <img class="img-fluid rounded-circle" alt="img" width="40"
+                                                    style="height:40px" src="/ProantoV2assets/images/users/widget-table-pic3.jpg">
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">Steve Jobs</h6>
+                                                    <span
+                                                        class="font-12 text-nowrap d-block text-muted text-truncate">You
+                                                        can customize this template
+                                                        as you want</span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">9:08
+                                                        AM</span>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)"
+                                                class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <img class="img-fluid rounded-circle" alt="img" width="40"
+                                                    style="height:40px" src="/ProantoV2assets/images/users/widget-table-pic4.jpg">
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">John Deo</h6> <span
+                                                        class="font-12 text-nowrap d-block text-muted">Just
+                                                        see the my admin!</span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">9:02
+                                                        AM</span>
+                                                </div>
+                                            </a>
+                                            <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                                                <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;">
+                                                </div>
+                                            </div>
+                                            <div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px;">
+                                                <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link pt-2 border-top text-center text-dark"
+                                            href="javascript:void(0);">
+                                            <strong>Check all notifications</strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <a class="p-3 d-block menubar-height dropdown-toggle" href="index.html"
+                                data-display="static" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span>
+                                    <i data-feather="power" class="svg-icon op-7">
+                                    </i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="nav-small-cap"><span class="hide-menu"></span></li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link sidebar-link" href="dashboard.html" aria-expanded="false">
+                                <i data-feather="home" class="feather-icon"></i><span
+                                    class="hide-menu">Dashboard</span></a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="pages/profile/profile.html" aria-expanded="false"><i
+                                    data-feather="user" class="feather-icon"></i><span class="hide-menu">My Profile
+                                </span></a>
+                        </li>
+                        <li class="sidebar-item"> <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                                aria-expanded="false"><i data-feather="user" class="feather-icon"></i><span
+                                    class="hide-menu">Default</span></a>
+                            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                                <li class="sidebar-item"><a href="pages/profile/offer-relatedinfo.html"
+                                        class="sidebar-link"><i data-feather="file-text" class="feather-icon w-18"></i>
+                                        <span class="hide-menu">Offer Info
+                                        </span></a></li>
+                                <li class="sidebar-item"><a href="pages/profile/attendance.html" class="sidebar-link"><i
+                                            data-feather="users" class="feather-icon w-18"></i> <span class="hide-menu">
+                                            Attendance
+                                        </span></a></li>
+                                <li class="sidebar-item"><a href="pages/profile/leave.html" class="sidebar-link"><i
+                                            data-feather="calendar" class="feather-icon w-18"></i> <span
+                                            class="hide-menu"> Leave
+                                        </span></a></li>
+                                <li class="sidebar-item"><a href="pages/profile/investment_declaration.html"
+                                        class="sidebar-link"><i data-feather="file-text" class="feather-icon w-18"></i>
+                                        <span class="hide-menu"> Investment Declaration
+                                        </span></a></li>
+                                <li class="sidebar-item"><a href="pages/profile/salary_advance.html"
+                                        class="sidebar-link"><i data-feather="dollar-sign"
+                                            class="feather-icon w-18"></i> <span class="hide-menu"> Salary Advance
+                                        </span></a></li>
+                                <li class="sidebar-item"><a href="pages/profile/compliance.html" class="sidebar-link"><i
+                                            data-feather="git-pull-request" class="feather-icon w-18"></i> <span
+                                            class="hide-menu"> Compliance
+                                        </span></a></li>
+                            </ul>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="pages/open_position/open_position.html"
+                                aria-expanded="false"><i data-feather="box" class="feather-icon"></i><span
+                                    class="hide-menu">Current Openings
+                                </span></a>
+                        </li>
+
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="pages/support/support.html" aria-expanded="false"><i
+                                    data-feather="headphones" class="feather-icon"></i><span class="hide-menu">Support
+                                </span></a>
+                        </li>
+                        <li class="list-divider"></li>
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="pages/index.html"
+                                aria-expanded="false"><i data-feather="log-out" class="feather-icon"></i><span
+                                    class="hide-menu">Logout</span></a></li>
+                    </ul>
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+
+        <div class="page-wrapper">
+
+            <div class="page-breadcrumb">
+
+            </div>
+
+            <div class="container-fluid">
+                <%- include(pageContent) %>
+            </div>
+
+            <footer class="footer text-center text-muted">
+                Copyright 2019. All Rights Reserved by YOMA
+            </footer>
+
+        </div>
+
+    </div>
+
+    <script src="/ProantoV2assets/js/app.min.js"></script>
+    <script src="/ProantoV2assets/js/app.init-menusidebar.js"></script>
+    <script src="/ProantoV2assets/js/feather.min.js"></script>
+    <script src="/ProantoV2assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+    <script src="/ProantoV2assets/js/sidebarmenu.js"></script>
+    <script src="/ProantoV2assets/js/custom.min.js"></script>
+</body>
+
+
+</html>
