@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\YB_StaffingSupervisor.props" />
+</Project>
