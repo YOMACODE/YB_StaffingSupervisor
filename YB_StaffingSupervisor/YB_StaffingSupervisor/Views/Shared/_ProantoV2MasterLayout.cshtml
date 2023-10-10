@@ -1,0 +1,948 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title-Supervisor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <environment include="Development">
+        <link rel="icon" type="image/png" sizes="16x16" href="~/ProantoV2assets/images/logo2.png">
+        <link href="~/ProantoV2assets/libs/chartist/dist/chartist.min.css" rel="stylesheet" asp-append-version="true">
+        <link href="~/ProantoV2assets/extra-libs/c3/c3.min.css" rel="stylesheet" asp-append-version="true">
+        <link rel="stylesheet" href="~/ProantoV2assets/css/materialize.min.css" asp-append-version="true" />
+        <link href="~/ProantoV2assets/libs/select2/dist/css/select2.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/ProantoV2assets/css/bootstrap-material-datetimepicker.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/ProantoV2assets/css/style.min.css" rel="stylesheet" asp-append-version="true">
+        <link href="~/Proantov2assets/css/payroll.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Proantov2assets/css/googlefonts/googlefonts.css" rel="stylesheet" asp-append-version="true">
+        <link href="~/ProantoV2assets/css/ProantoV2Master.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Proantov2assets/css/toastr.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/ProantoV2assets/css/sweetalert.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/ProantoV2assets/css/float.css" rel="stylesheet" asp-append-version="true" />
+        @*<link href="~/ProantoV2assets/css/new.css" rel="stylesheet" asp-append-version="true" />*@
+    </environment>
+    <environment exclude="Development">
+        <link rel="icon" type="image/png" sizes="16x16" href="~/ProantoV2assets/images/logo2.png">
+        <link href="~/ProantoV2assets/libs/chartist/dist/chartist.min.css" rel="stylesheet" asp-append-version="true">
+        <link href="~/ProantoV2assets/extra-libs/c3/c3.min.css" rel="stylesheet" asp-append-version="true">
+        <link rel="stylesheet" href="~/ProantoV2assets/css/materialize.min.css" asp-append-version="true" />
+        <link href="~/ProantoV2assets/libs/select2/dist/css/select2.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/ProantoV2assets/css/bootstrap-material-datetimepicker.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/ProantoV2assets/css/style.min.css" rel="stylesheet" asp-append-version="true">
+        <link href="~/Proantov2assets/css/payroll.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Proantov2assets/css/googlefonts/googlefonts.css" rel="stylesheet" asp-append-version="true">
+        <link href="~/ProantoV2assets/css/ProantoV2Master.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Proantov2assets/css/toastr.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/ProantoV2assets/css/sweetalert.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/ProantoV2assets/css/float.css" rel="stylesheet" asp-append-version="true" />
+        @*<link href="~/ProantoV2assets/css/new.css" rel="stylesheet" asp-append-version="true" />*@
+
+    </environment>
+</head>
+<body>
+    @{
+        var userId = Context.Session.GetString("UserId");
+        if (userId == null && userId == "")
+        {
+            Context.Response.Redirect("/Home/Logout");
+        }
+    }
+    @{
+        YB_StaffingSupervisor.Models.BaseModel baseModel = new YB_StaffingSupervisor.Models.BaseModel();
+    }
+    @if (@ViewData["baseModel"] != null)
+    {
+        baseModel = (YB_StaffingSupervisor.Models.BaseModel)@ViewData["baseModel"];
+        <input type="hidden" value="@baseModel.UserId" id="hdn_UserId" />
+        <input type="hidden" value="@baseModel.ClientId" id="hdn_ClientId" />
+        <input type="hidden" value="@baseModel.TokenValue" id="hdn_TokenValue" />
+        <input type="hidden" value="@baseModel.WebThemeCode" id="hdn_skin" />
+        <input type="hidden" value="@baseModel.IsFixedSidebarEnabled" id="hdn_SidebarPosition" />
+        <input type="hidden" value="@baseModel.IsFixedHeaderEnabled" id="hdn_HeaderPosition" />
+        <input type="hidden" value="@baseModel.IsBoxedLayoutEnabled" id="hdn_BoxedLayout" />
+        <input type="hidden" value="@baseModel.IsCollapseSidebarEnabled" id="hdn_SidebarType" />
+    }
+    <!--mini-sidebar/full/-->
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="app-container"></div>
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                <div class="navbar-header">
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
+                        <i class="ti-menu ti-close"></i>
+                    </a>
+                    <div class="navbar-brand">
+                        <a href="/Dashboard/MyDashboard/Index">
+                            <b class="logo-icon">
+                                <img src="/ProantoV2assets/images/logo123.png" alt="homepage" class="light-logo" style="width:87%;"/>
+                            </b>
+                        </a>
+                        <a class="d-none d-md-block op-7 sidebartoggler" href="javascript:void(0)">
+                            <span class="line line-1"></span>
+                            <span class="line line-2"></span>
+                            <span class="line line-3"></span>
+                        </a>
+                    </div>
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent"
+                       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="ti-more"></i>
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav float-left mr-auto">
+                        <li class="nav-item">
+                            @*<a class="nav-link" href="app-calendar.html">
+                                    <span class="d-block d-lg-none"><i data-feather="calendar"></i></span>
+                                    <span class="d-none d-lg-block">Calendar</span>
+                                </a>*@
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav float-right align-items-center">
+                        @{
+                            string controllerName = ViewContext.RouteData.Values["controller"].ToString();
+                            string actionName = ViewContext.RouteData.Values["action"].ToString();
+                            string currentUrl = controllerName + "/" + actionName;
+                        }
+                        <li class="nav-item d-none d-lg-block" style="display: @(currentUrl=="Recruiter/DatabaseCreation"?"inline":"none")!important">
+                            <a href="javascript:void(0)" class="service-panel-toggle2"><i data-feather="filter" style="color: white;"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="left-sidebar">
+            <div class="user-profile text-center pt-2">
+                <div class="d-flex align-items-center justify-content-center pb-3">
+                    <div class="dropdown sub-dropdown">
+                        <button class="btn position-relative" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                            <img src="~/ProantoV2assets/images/profielimages.png" class="profilepic" />  <span class="badge rounded-circle badge-success profile-dd text-center"><i class="fas fa-angle-down"></i></span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="javascript:void(0)"><i class="fas fa-circle text-success font-12 mr-2"></i>Active</a>
+                            <a class="dropdown-item" href="javascript:void(0)"><i class="fas fa-circle text-warning font-12 mr-2"></i>Away</a>
+                            <a class="dropdown-item" href="javascript:void(0)"><i class="fas fa-circle text-danger font-12 mr-2"></i>Do not Disturb</a>
+                            <a class="dropdown-item" href="javascript:void(0)"><i class="fas fa-circle text-muted font-12 mr-2"></i>Invisible</a>
+                        </div>
+                    </div>
+                    <div class="profile-section ml-2">
+                        <p class="font-weight-light mb-0 font-12">@(baseModel.UserName)</p>
+                        <span class="op-7 font-10">@(baseModel.RoleName)</span>
+                    </div>
+                </div>
+                <div class="profile-section" style="margin-top: -18px;">
+                    <div class="row border-top border-bottom mt-3 no-gutters">
+                        <div class="col-3 border-right">
+                            <a class="p-3 d-block menubar-height dropdown-toggle" href="javascript:void(0)" id="bell" data-display="static" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell svg-icon op-7"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></span>
+                                <span class="badge badge-danger badge-no rounded-circle">5</span>
+                            </a>
+                            <div class="dropdown-menu mailbox pt-0">
+                                <ul class="list-style-none mb-0">
+                                    <li>
+                                        <div class="drop-title bg-info text-white position-relative rounded-top px-3 pt-2 pb-3">
+                                            <h5 class="mb-0 mt-1 text-white">4 New</h5>
+                                            <span class="font-weight-light">Notifications</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="message-center notifications position-relative ps-container ps-theme-default" style="height:200px;" data-ps-id="622f2eef-36eb-5bd0-89c0-957247c4ee8b">
+
+                                            <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <div class="btn btn-danger rounded-circle btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay text-white"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polygon points="12 15 17 21 7 21 12 15"></polygon></svg></div>
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">Luanch Admin</h6>
+                                                    <span class="font-12 text-nowrap d-block text-muted">
+                                                        Just see
+                                                        the my new
+                                                        admin!
+                                                    </span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">
+                                                        9:30
+                                                        AM
+                                                    </span>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <span class="btn btn-success rounded-circle btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar text-white"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></span>
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">Event today</h6>
+                                                    <span class="font-12 text-nowrap d-block text-muted text-truncate">
+                                                        Just
+                                                        a reminder that you have event
+                                                    </span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">
+                                                        9:10
+                                                        AM
+                                                    </span>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <span class="btn btn-info rounded-circle btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings text-white"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">Settings</h6>
+                                                    <span class="font-12 text-nowrap d-block text-muted text-truncate">
+                                                        You
+                                                        can customize this template
+                                                        as you want
+                                                    </span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">
+                                                        9:08
+                                                        AM
+                                                    </span>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <span class="btn btn-primary rounded-circle btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box text-white"><path d="M12.89 1.45l8 4A2 2 0 0 1 22 7.24v9.53a2 2 0 0 1-1.11 1.79l-8 4a2 2 0 0 1-1.79 0l-8-4a2 2 0 0 1-1.1-1.8V7.24a2 2 0 0 1 1.11-1.79l8-4a2 2 0 0 1 1.78 0z"></path><polyline points="2.32 6.16 12 11 21.68 6.16"></polyline><line x1="12" y1="22.76" x2="12" y2="11"></line></svg></span>
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">Pavan kumar</h6> <span class="font-12 text-nowrap d-block text-muted">
+                                                        Just
+                                                        see the my admin!
+                                                    </span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">
+                                                        9:02
+                                                        AM
+                                                    </span>
+                                                </div>
+                                            </a>
+                                            <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px;"><div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link pt-2 border-top text-center text-dark" href="javascript:void(0);">
+                                            <strong>Check all notifications</strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-3 border-right">
+                            <a class="p-3 d-block menubar-height dropdown-toggle" id="bottom-sidebar" href="javascript:void(0)" data-display="static" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings svg-icon op-7"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dd5">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Action Here</a>
+                            </div>
+                        </div>
+                        <div class="col-3 border-right">
+                            <a class="p-3 d-block menubar-height dropdown-toggle" href="javascript:void(0)" role="button" data-display="static" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square svg-icon op-7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right mailbox pt-0">
+                                <ul class="list-style-none mb-0">
+                                    <li>
+                                        <div class="drop-title bg-info text-white position-relative rounded-top px-3 pt-2 pb-3">
+                                            <h5 class="mb-0 mt-1 text-white">4 New</h5>
+                                            <span class="font-weight-light">Chats</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="message-center notifications position-relative ps-container ps-theme-default" style="height:200px;" data-ps-id="3c090ecd-c163-caa4-eee5-f4d3a6fc8866">
+
+                                            <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <img class="img-fluid rounded-circle" alt="img" width="40" style="height:40px" src="assets/images/users/widget-table-pic1.jpg">
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">John Smith</h6>
+                                                    <span class="font-12 text-nowrap d-block text-muted">
+                                                        Just see
+                                                        the my new
+                                                        admin!
+                                                    </span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">
+                                                        9:30
+                                                        AM
+                                                    </span>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <img class="img-fluid rounded-circle" alt="img" width="40" style="height:40px" src="assets/images/users/widget-table-pic2.jpg">
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">Peter John</h6>
+                                                    <span class="font-12 text-nowrap d-block text-muted text-truncate">
+                                                        Just
+                                                        a reminder that you have event
+                                                    </span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">
+                                                        9:10
+                                                        AM
+                                                    </span>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <img class="img-fluid rounded-circle" alt="img" width="40" style="height:40px" src="assets/images/users/widget-table-pic3.jpg">
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">Steve Jobs</h6>
+                                                    <span class="font-12 text-nowrap d-block text-muted text-truncate">
+                                                        You
+                                                        can customize this template
+                                                        as you want
+                                                    </span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">
+                                                        9:08
+                                                        AM
+                                                    </span>
+                                                </div>
+                                            </a>
+
+                                            <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                <img class="img-fluid rounded-circle" alt="img" width="40" style="height:40px" src="assets/images/users/widget-table-pic4.jpg">
+                                                <div class="w-75 d-inline-block v-middle pl-2">
+                                                    <h6 class="message-title mb-0 mt-1">John Deo</h6> <span class="font-12 text-nowrap d-block text-muted">
+                                                        Just
+                                                        see the my admin!
+                                                    </span>
+                                                    <span class="font-12 text-nowrap d-block text-muted">
+                                                        9:02
+                                                        AM
+                                                    </span>
+                                                </div>
+                                            </a>
+                                            <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px;"><div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link pt-2 border-top text-center text-dark" href="javascript:void(0);">
+                                            <strong>Check all notifications</strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <a class="p-3 d-block menubar-height dropdown-toggle" href="~/Home/Logout" data-display="static" role="button" aria-haspopup="true"
+                               aria-expanded="false">
+                                <span>
+                                    <i data-feather="power" class="svg-icon op-7">
+                                    </i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    @*<div class="row border-top border-bottom mt-3 no-gutters">
+                            <div class="col-4 border-right">
+                                <a class="p-3 d-block menubar-height dropdown-toggle" href="javascript:void(0)" id="bell" data-display="static" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell svg-icon op-7"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></span>
+                                    <span class="badge badge-danger badge-no rounded-circle">5</span>
+                                </a>
+                                <div class="dropdown-menu mailbox pt-0">
+                                    <ul class="list-style-none mb-0">
+                                        <li>
+                                            <div class="drop-title bg-info text-white position-relative rounded-top px-3 pt-2 pb-3">
+                                                <h5 class="mb-0 mt-1 text-white">4 New</h5>
+                                                <span class="font-weight-light">Notifications</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="message-center notifications position-relative ps-container ps-theme-default"
+                                                 style="height:200px;" data-ps-id="622f2eef-36eb-5bd0-89c0-957247c4ee8b">
+                                                <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                    <div class="btn btn-danger rounded-circle btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay text-white"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polygon points="12 15 17 21 7 21 12 15"></polygon></svg></div>
+                                                    <div class="w-75 d-inline-block v-middle pl-2">
+                                                        <h6 class="message-title mb-0 mt-1">Luanch Admin</h6>
+                                                        <span class="font-12 text-nowrap d-block text-muted">
+                                                            Just see
+                                                            the my new
+                                                            admin!
+                                                        </span>
+                                                        <span class="font-12 text-nowrap d-block text-muted">
+                                                            9:30
+                                                            AM
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                                <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                    <span class="btn btn-success rounded-circle btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar text-white"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></span>
+                                                    <div class="w-75 d-inline-block v-middle pl-2">
+                                                        <h6 class="message-title mb-0 mt-1">Event today</h6>
+                                                        <span class="font-12 text-nowrap d-block text-muted text-truncate">
+                                                            Just
+                                                            a reminder that you have event
+                                                        </span>
+                                                        <span class="font-12 text-nowrap d-block text-muted">
+                                                            9:10
+                                                            AM
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                                <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                    <span class="btn btn-info rounded-circle btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings text-white"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
+                                                    <div class="w-75 d-inline-block v-middle pl-2">
+                                                        <h6 class="message-title mb-0 mt-1">Settings</h6>
+                                                        <span class="font-12 text-nowrap d-block text-muted text-truncate">
+                                                            You
+                                                            can customize this template
+                                                            as you want
+                                                        </span>
+                                                        <span class="font-12 text-nowrap d-block text-muted">
+                                                            9:08
+                                                            AM
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                                <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                    <span class="btn btn-primary rounded-circle btn-circle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box text-white"><path d="M12.89 1.45l8 4A2 2 0 0 1 22 7.24v9.53a2 2 0 0 1-1.11 1.79l-8 4a2 2 0 0 1-1.79 0l-8-4a2 2 0 0 1-1.1-1.8V7.24a2 2 0 0 1 1.11-1.79l8-4a2 2 0 0 1 1.78 0z"></path><polyline points="2.32 6.16 12 11 21.68 6.16"></polyline><line x1="12" y1="22.76" x2="12" y2="11"></line></svg></span>
+                                                    <div class="w-75 d-inline-block v-middle pl-2">
+                                                        <h6 class="message-title mb-0 mt-1">Pavan kumar</h6> <span class="font-12 text-nowrap d-block text-muted">
+                                                            Just
+                                                            see the my admin!
+                                                        </span>
+                                                        <span class="font-12 text-nowrap d-block text-muted">
+                                                            9:02
+                                                            AM
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px;"><div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a class="nav-link pt-2 border-top text-center text-dark" href="javascript:void(0);">
+                                                <strong>Check all notifications</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-4 border-right">
+                                <a class="p-3 d-block menubar-height dropdown-toggle" id="bottom-sidebar" href="javascript:void(0)" data-display="static" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings svg-icon op-7"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dd5">
+                                    <a class="dropdown-item" href="~/Home/Logout"><i data-feather="log-out" class="feather-icon"></i>Logout</a>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <a class="p-3 d-block menubar-height dropdown-toggle" href="javascript:void(0)" role="button" data-display="static" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square svg-icon op-7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right mailbox pt-0">
+                                    <ul class="list-style-none mb-0">
+                                        <li>
+                                            <div class="drop-title bg-info text-white position-relative rounded-top px-3 pt-2 pb-3">
+                                                <h5 class="mb-0 mt-1 text-white">4 New</h5>
+                                                <span class="font-weight-light">Chats</span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="message-center notifications position-relative ps-container ps-theme-default" style="height:200px;" data-ps-id="3c090ecd-c163-caa4-eee5-f4d3a6fc8866">
+
+                                                <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                    <img class="img-fluid rounded-circle" alt="img" width="40" style="height:40px" src="~/ProantoV2assets/widgets/widget-table-pic1.jpg">
+                                                    <div class="w-75 d-inline-block v-middle pl-2">
+                                                        <h6 class="message-title mb-0 mt-1">John Smith</h6>
+                                                        <span class="font-12 text-nowrap d-block text-muted">
+                                                            Just see
+                                                            the my new
+                                                            admin!
+                                                        </span>
+                                                        <span class="font-12 text-nowrap d-block text-muted">
+                                                            9:30
+                                                            AM
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                                <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                    <img class="img-fluid rounded-circle" alt="img" width="40" style="height:40px" src="~/ProantoV2assets/widgets/widget-table-pic2.jpg">
+                                                    <div class="w-75 d-inline-block v-middle pl-2">
+                                                        <h6 class="message-title mb-0 mt-1">Peter John</h6>
+                                                        <span class="font-12 text-nowrap d-block text-muted text-truncate">
+                                                            Just
+                                                            a reminder that you have event
+                                                        </span>
+                                                        <span class="font-12 text-nowrap d-block text-muted">
+                                                            9:10
+                                                            AM
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                                <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                    <img class="img-fluid rounded-circle" alt="img" width="40" style="height:40px" src="~/ProantoV2assets/widgets/widget-table-pic3.jpg">
+                                                    <div class="w-75 d-inline-block v-middle pl-2">
+                                                        <h6 class="message-title mb-0 mt-1">Steve Jobs</h6>
+                                                        <span class="font-12 text-nowrap d-block text-muted text-truncate">
+                                                            You
+                                                            can customize this template
+                                                            as you want
+                                                        </span>
+                                                        <span class="font-12 text-nowrap d-block text-muted">
+                                                            9:08
+                                                            AM
+                                                        </span>
+                                                    </div>
+                                                </a>
+
+                                                <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom px-3 py-2">
+                                                    <img class="img-fluid rounded-circle" alt="img" width="40" style="height:40px" src="~/ProantoV2assets/widgets/widget-table-pic4.jpg">
+                                                    <div class="w-75 d-inline-block v-middle pl-2">
+                                                        <h6 class="message-title mb-0 mt-1">John Deo</h6> <span class="font-12 text-nowrap d-block text-muted">
+                                                            Just
+                                                            see the my admin!
+                                                        </span>
+                                                        <span class="font-12 text-nowrap d-block text-muted">
+                                                            9:02
+                                                            AM
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                                <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 0px; right: 3px;"><div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 0px;"></div></div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a class="nav-link pt-2 border-top text-center text-dark" href="javascript:void(0);">
+                                                <strong>Check all notifications</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+            @(await Component.InvokeAsync("LeftMenu", baseModel.UserId))
+        </aside>
+        <div class="page-wrapper">
+            @RenderBody()
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <footer class="footer text-center text-muted">
+                Copyright 2019. All Rights Reserved by YOMA
+            </footer>
+        </div>
+    </div>
+    <div class="modal fade bd-example90-modal-lgnew" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="table-responsive mt-4">
+                            <table class="tablesaw table-sm table-bordered table-hover table no-wrap m-0" data-tablesaw-mode="swipe" id="weeklytargettable">
+                                <thead>
+                                    <tr id="sumit" class="text-center">
+                                        <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="persist" class="border">Week</th>
+                                        <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="2" class="border">Start Date</th>
+                                        <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="1" class="border">End Date</th>
+                                        <th scope="col" data-tablesaw-sortable-col data-tablesaw-priority="1" class="border">Target</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="WeeklyTargetBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary" id="SaveWeeklyTarget" onclick="SaveWeeklyTargetData()">Submit</button>
+                    <button class="btn btn-sm btn-secondary" id="CloseWeeklyTarget" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Document Popup Model*@
+    <div class="modal fade imagemodal" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="width:600px;">
+                <div class="modal-body" style="max-height: 565px; ">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <object id="pdfObject" name="pdfObject" width="500" height="500"></object>
+                    <img src="" class="forimagepreview" style="width:100%; height:500px; display:none;" />
+                    <iframe src="" class="imagepreview" style="width:100%; height:500px;display:none;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<aside class="customizer">
+            <a href="javascript:void(0)" class="service-panel-toggle"><i class="fa fa-spin fa-cog"></i></a>
+            <div class="customizer-body">
+                <div class="p-3 border-bottom">
+                    <h5 class="font-weight-medium mb-2 mt-2">Layout Settings</h5>
+                    <div class="custom-control custom-checkbox mt-2">
+                        <input type="checkbox" class="custom-control-input sidebartoggler" name="collapssidebar"
+                               id="collapssidebar">
+                        <label class="custom-control-label" for="collapssidebar">Collapse Sidebar</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mt-2">
+                        <input type="checkbox" class="custom-control-input" name="sidebar-position" id="sidebar-position">
+                        <label class="custom-control-label" for="sidebar-position">Fixed Sidebar</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mt-2">
+                        <input type="checkbox" class="custom-control-input" name="header-position" id="header-position">
+                        <label class="custom-control-label" for="header-position">Fixed Header</label>
+                    </div>
+                    <div class="custom-control custom-checkbox mt-2">
+                        <input type="checkbox" class="custom-control-input" name="boxed-layout" id="boxed-layout">
+                        <label class="custom-control-label" for="boxed-layout">Boxed Layout</label>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    function test() {
+                        document.querySelector(".sidebar-nav ul .sidebar-item.selected > .sidebar-link").style.background = "#fe5419";
+                        document.querySelector(".next").style.background = "#fe5419";
+                        document.querySelector(".customizer .service-panel-toggle").style.background = "red";
+                        changetheme('skin1');
+                        $('#hdn_skin').val('skin1');
+                    }
+                    function test1() {
+                        document.querySelector(".sidebar-nav ul .sidebar-item.selected > .sidebar-link").style.background = "rgb(245, 151, 81)";
+                        document.querySelector(".next").style.background = "rgb(245, 151, 81)";
+                        document.querySelector(".customizer .service-panel-toggle").style.background = "#e84c1d";
+                        changetheme('skin2');
+                        $('#hdn_skin').val('skin2');
+                    }
+                    function test2() {
+                        document.querySelector(".sidebar-nav ul .sidebar-item.selected > .sidebar-link").style.background = "#00b0ff";
+                        document.querySelector(".next").style.background = "#00b0ff";
+                        document.querySelector(".customizer .service-panel-toggle").style.background = "rgb(15, 140, 196) none repeat scroll 0% 0%";
+                        changetheme('skin2');
+                        $('#hdn_skin').val('skin2');
+                    }
+                    function test3() {
+                        document.querySelector(".sidebar-nav ul .sidebar-item.selected > .sidebar-link").style.background = "#6659f7";
+                        document.querySelector(".next").style.background = "#6659f7";
+                        document.querySelector(".customizer .service-panel-toggle").style.background = "rgb(50, 33, 236) none repeat scroll 0% 0%";
+                        changetheme('skin3');
+                        $('#hdn_skin').val('skin3');
+                    }
+                    function test4() {
+                        document.querySelector(".sidebar-nav ul .sidebar-item.selected > .sidebar-link").style.background = "#1d2e42";
+                        document.querySelector(".next").style.background = "#1d2e42";
+                        document.querySelector(".customizer .service-panel-toggle").style.background = "rgb(0, 0, 0) none repeat scroll 0% 0%";
+                        changetheme('skin4');
+                        $('#hdn_skin').val('skin4');
+                    }
+                    function test5() {
+                        document.querySelector(".sidebar-nav ul .sidebar-item.selected > .sidebar-link").style.background = "#a1aab2";
+                        document.querySelector(".next").style.background = "#a1aab2";
+                        changetheme('skin5');
+                        $('#hdn_skin').val('skin5');
+                    }
+                </script>
+                <div class="p-3 border-bottom">
+                    <h5 class="font-weight-medium mb-2 mt-2">Header Backgrounds</h5>
+                    <ul class="theme-color">
+                        <li class="theme-item" onclick="test()">
+                            <a href="javascript:void(0)" class="theme-link" data-navbarbg="skin1"></a>
+                        </li>
+                        <li class="theme-item" onclick="test1()">
+                            <a href="javascript:void(0)" class="theme-link" data-navbarbg="skin2"></a>
+                        </li>
+                        <li class="theme-item" onclick="test2()">
+                            <a href="javascript:void(0)" class="theme-link" data-navbarbg="skin3"></a>
+                        </li>
+                        <li class="theme-item" onclick="test3()">
+                            <a href="javascript:void(0)" class="theme-link" data-navbarbg="skin4"></a>
+                        </li>
+                        <li class="theme-item" onclick="test4()">
+                            <a href="javascript:void(0)" class="theme-link" data-navbarbg="skin5"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </aside>*@
+<environment include="Development">
+    <script src="~/Proantov2assets/js/jquery-3.4.1.js" asp-append-version="true"></script>
+    @*<script src="~/ProantoV2assets/js/ProantoV2Custom.js" asp-append-version="true"></script>*@
+    <script src="~/ProantoV2assets/libs/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="~/ProantoV2assets/libs/popper.js/dist/umd/popper.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/libs/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+    <!-- apps -->
+    <script src="~/ProantoV2assets/js/app.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/app.init-menusidebar.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/app-style-switcher.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/feather.min.js" asp-append-version="true"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="~/ProantoV2assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/extra-libs/sparkline/sparkline.js" asp-append-version="true"></script>
+    <!--Wave Effects -->
+    <!-- themejs -->
+    <!--Menu sidebar -->
+    <script src="~/ProantoV2assets/js/sidebarmenu.js" asp-append-version="true"></script>
+    <!--Custom JavaScript -->
+    <script src="~/ProantoV2assets/js/custom.min.js" asp-append-version="true"></script>
+    <!--This page JavaScript -->
+    <!--chartis chart-->
+    <script src="~/ProantoV2assets/libs/chartist/dist/chartist.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js" asp-append-version="true"></script>
+    <!--c3 charts -->
+    <script src="~/ProantoV2assets/extra-libs/c3/d3.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/extra-libs/c3/c3.min.js" asp-append-version="true"></script>
+    <!--chartjs -->
+    <script src="~/ProantoV2assets/libs/chart.js/dist/Chart.min.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/ProantoV2assets/js/style.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/libs/gaugeJS/dist/gauge.min.js" asp-append-version="true"></script>
+
+    <script src="~/ProantoV2assets/js/materialize.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/libs/select2/dist/js/select2.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/moment.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/bootstrap-material-datetimepicker-custom.js" asp-append-version="true"></script>
+    <script src="~/Proantov2assets/js/toastr.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/sweetalert.min.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#collapssidebar").change(function () {
+                changelayout('COLLAPSESIDEBAR');
+
+            });
+            $("#sidebar-position").change(function () {
+                changelayout('FIXEDSIDEBAR');
+            });
+            $("#header-position").change(function () {
+                changelayout('FIXEDHEADER');
+            });
+            $("#boxed-layout").change(function () {
+                changelayout('BOXEDLAYOUT');
+            });
+        })
+        function changetheme(themename) {
+            var UserId = $('#hdn_UserId').val();
+            $.ajax({
+                type: "POST",
+                url: "/UserSetting/ChangeTheme",
+                data: {
+                    "UserId": UserId, "ThemeName": themename
+                },
+                dataType: "json",
+                ontentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    //alert(data.msg);
+                },
+                error: function () {
+                    // alert("Error occured!!")
+                }
+            });
+        }
+        function changelayout(LayoutType) {
+            var UserId = $('#hdn_UserId').val();
+            $.ajax({
+                type: "POST",
+                url: "/UserSetting/ChangeLayout",
+                data: { "UserId": UserId, "LayoutType": LayoutType },
+                dataType: "json",
+                ontentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    //  alert(data.msg);
+                },
+                error: function () {
+                    // alert("Error occured!!")
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+            $(document).ready(function () {
+                var checkValue = '@HttpContextAccessor.HttpContext.Session.GetString("UserId")';
+                if (checkValue != null || checkValue!= '') {
+                    var Tokenid = localStorage.getItem('accessToken');
+                    if (Tokenid == null || Tokenid == '') {
+                        localStorage.setItem('accessToken', '@baseModel.TokenValue');
+                    }
+                } else {
+                    var Tokenid = localStorage.getItem('accessToken');
+                    if (Tokenid == null || Tokenid == '') {
+                        window.localStorage.removeItem('accessToken');
+                        window.localStorage.clear();
+                        window.location.href = "/Home/Index";
+                    }
+                }
+            });
+    </script>
+</environment>
+
+<environment exclude="Development">
+    <script src="~/Proantov2assets/js/jquery-3.4.1.js" asp-append-version="true"></script>
+    @*<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous" asp-append-version="true"></script>*@
+
+    @*<script src="~/ProantoV2assets/js/ProantoV2Custom.js" asp-append-version="true"></script>*@
+
+    <script src="~/ProantoV2assets/libs/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="~/ProantoV2assets/libs/popper.js/dist/umd/popper.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/libs/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+    <!-- apps -->
+    <script src="~/ProantoV2assets/js/app.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/app.init-menusidebar.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/app-style-switcher.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/feather.min.js" asp-append-version="true"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="~/ProantoV2assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/extra-libs/sparkline/sparkline.js" asp-append-version="true"></script>
+    <!--Wave Effects -->
+    <!-- themejs -->
+    <!--Menu sidebar -->
+    <script src="~/ProantoV2assets/js/sidebarmenu.js" asp-append-version="true"></script>
+    <!--Custom JavaScript -->
+    <script src="~/ProantoV2assets/js/custom.min.js" asp-append-version="true"></script>
+    <!--This page JavaScript -->
+    <!--chartis chart-->
+    <script src="~/ProantoV2assets/libs/chartist/dist/chartist.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js" asp-append-version="true"></script>
+    <!--c3 charts -->
+    <script src="~/ProantoV2assets/extra-libs/c3/d3.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/extra-libs/c3/c3.min.js" asp-append-version="true"></script>
+    <!--chartjs -->
+    <script src="~/ProantoV2assets/libs/chart.js/dist/Chart.min.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="~/ProantoV2assets/js/style.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/libs/gaugeJS/dist/gauge.min.js" asp-append-version="true"></script>
+
+    <script src="~/ProantoV2assets/js/materialize.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/select2.min.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/moment.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/bootstrap-material-datetimepicker-custom.js" asp-append-version="true"></script>
+    <script src="~/Proantov2assets/js/toastr.js" asp-append-version="true"></script>
+    <script src="~/ProantoV2assets/js/sweetalert.min.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#collapssidebar").change(function () {
+                changelayout('COLLAPSESIDEBAR');
+
+            });
+            $("#sidebar-position").change(function () {
+                changelayout('FIXEDSIDEBAR');
+            });
+            $("#header-position").change(function () {
+                changelayout('FIXEDHEADER');
+            });
+            $("#boxed-layout").change(function () {
+                changelayout('BOXEDLAYOUT');
+            });
+        })
+        function changetheme(themename) {
+            var UserId = $('#hdn_UserId').val();
+            $.ajax({
+                type: "POST",
+                url: "/UserSetting/ChangeTheme",
+                data: {
+                    "UserId": UserId, "ThemeName": themename
+                },
+                dataType: "json",
+                ontentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    //alert(data.msg);
+                },
+                error: function () {
+                    // alert("Error occured!!")
+                }
+            });
+        }
+        function changelayout(LayoutType) {
+            var UserId = $('#hdn_UserId').val();
+            $.ajax({
+                type: "POST",
+                url: "/UserSetting/ChangeLayout",
+                data: { "UserId": UserId, "LayoutType": LayoutType },
+                dataType: "json",
+                ontentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    //  alert(data.msg);
+                },
+                error: function () {
+                    // alert("Error occured!!")
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+            $(document).ready(function () {
+                var checkValue = '@HttpContextAccessor.HttpContext.Session.GetString("UserId")';
+                if (checkValue != null || checkValue!= '') {
+                    var Tokenid = localStorage.getItem('accessToken');
+                    if (Tokenid == null || Tokenid == '') {
+                        localStorage.setItem('accessToken', '@baseModel.TokenValue');
+                    }
+                } else {
+                    var Tokenid = localStorage.getItem('accessToken');
+                    if (Tokenid == null || Tokenid == '') {
+                        window.localStorage.removeItem('accessToken');
+                        window.localStorage.clear();
+                        window.location.href = "/Home/Index";
+                    }
+                }
+            });
+    </script>
+</environment>
+    <environment exclude="Development">
+        <script type="text/javascript">
+            $(function () {
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-bottom-right",
+                    "onclick": null,
+                    "showDuration": "1000",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            });
+        </script>
+    </environment>
+    <environment include="Development">
+        <script type="text/javascript">
+            $(function () {
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-bottom-right",
+                    "onclick": null,
+                    "showDuration": "1000",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $("input:text,form").attr("autocomplete", "off");
+            })
+        </script>
+    </environment>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_StatusMessages"); }
+    @RenderSection("Scripts", required: false)
+    <script>$(".preloader ").delay(1000).fadeOut();</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("select").select2();
+        });
+    </script>
+</body>
+</html>

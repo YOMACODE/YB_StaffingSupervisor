@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Logout";
+}
+@section Scripts{
+    @*<script src="~/js/jquery.js" asp-append-version="true"></script>*@
+    <script type="text/javascript">
+        function preventBack() {
+            window.history.forward();
+            window.localStorage.removeItem('accessToken');
+            window.localStorage.clear();                    
+        }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+        window.location.href = "/Home/Index";   
+    </script>
+}

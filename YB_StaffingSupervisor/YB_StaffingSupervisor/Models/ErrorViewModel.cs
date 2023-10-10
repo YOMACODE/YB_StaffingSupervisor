@@ -1,6 +1,6 @@
 using System;
 
-namespace YOMA.ProantoRecruitementV2.Models
+namespace YB_StaffingSupervisor.Models
 {
     public class ErrorViewModel
     {

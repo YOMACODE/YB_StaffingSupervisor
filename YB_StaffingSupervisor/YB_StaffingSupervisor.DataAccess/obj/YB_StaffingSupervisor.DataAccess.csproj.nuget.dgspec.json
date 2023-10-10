@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Ashish\\WorkProject\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj": {}
+    "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj": {}
   },
   "projects": {
-    "E:\\Ashish\\WorkProject\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj": {
+    "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Ashish\\WorkProject\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj",
         "projectName": "YB_StaffingSupervisor.DataAccess",
-        "projectPath": "E:\\Ashish\\WorkProject\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj",
+        "projectPath": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj",
         "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "E:\\Ashish\\WorkProject\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\obj\\",
+        "outputPath": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -73,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }

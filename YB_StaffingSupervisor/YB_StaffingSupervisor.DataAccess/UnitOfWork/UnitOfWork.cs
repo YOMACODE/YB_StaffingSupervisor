@@ -73,11 +73,37 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
             }
         }
         #endregion
+        #region IUserTokensRepository
+        IUserTokensRepository _userTokensRepository;
+        public IUserTokensRepository UserTokensRepository
+        {
+            get
+            {
+                if (_userTokensRepository == null)
+                {
+                    _userTokensRepository = new UserTokensRepository(_connectionFactory);
+                }
+                return _userTokensRepository;
+            }
+        }
+		#endregion
+		#region IMyTeamRepository
+		IMyTeamRepository _myTeamRepository;
+		public IMyTeamRepository MyTeamRepository
+		{
+			get
+			{
+				if (_myTeamRepository == null)
+				{
+					_myTeamRepository = new MyTeamRepository(_connectionFactory);
+				}
+				return _myTeamRepository;
+			}
+		}
+		#endregion
 
-        
-
-        #region IDisposable Support
-        void IUnitOfWork.Complete()
+		#region IDisposable Support
+		void IUnitOfWork.Complete()
         {
             throw new NotImplementedException();
         }

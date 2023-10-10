@@ -9,7 +9,8 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
         IErrorLogRepository ErrorLogRepository { get; }
         IUserRepository UserRepository { get; }
         ILeftMenuRepository LeftMenuRepository { get; }
-       
+        IUserTokensRepository UserTokensRepository { get; }
+		IMyTeamRepository MyTeamRepository { get; }
         void Complete();
     }
 }

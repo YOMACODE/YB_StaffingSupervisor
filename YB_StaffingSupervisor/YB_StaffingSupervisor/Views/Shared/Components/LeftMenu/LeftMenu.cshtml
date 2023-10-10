@@ -1,0 +1,79 @@
+﻿@model YB_StaffingSupervisor.DataAccess.Entities.LeftMenuModel
+<div class="scroll-sidebar">
+    <nav class="sidebar-nav">
+        <ul id="sidebarnav">
+            <li class="nav-small-cap"><span class="hide-menu"></span></li>
+            @* @Html.Raw(Model.MenuList) *@
+            <li class="sidebar-item">
+            <a class="sidebar-link sidebar-link" href="/Dashboard/MyDashboard" aria-expanded="false">
+                <i data-feather="home" class="feather-icon"></i><span class="hide-menu">Dashboard</span>
+            </a>
+        </li>
+            <li class="sidebar-item">
+                <a href="/ManageRecruiter/Associate/AssociatesComolete58YearsDetails" class="sidebar-link">
+                    <i data-feather="book-open" class="feather-icon w-18"></i> <span class="hide-menu">
+                        My Profile
+                    </span>
+                </a>
+            </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link has-arrow" href="javascript:void(0)"
+               aria-expanded="false">
+                <i data-feather="user" class="feather-icon"></i><span class="hide-menu">My Team</span>
+            </a>
+            
+            <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                <li class="sidebar-item">
+                        <a href="/MyTeam/MyTeam/TeamMembers" class="sidebar-link">
+                        <i data-feather="book-open" class="feather-icon w-18"></i> <span class="hide-menu">
+                            Team Members
+                        </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/ManageRecruiter/Recruiter/DatabaseCreation" class="sidebar-link">
+                        <i data-feather="database" class="feather-icon w-18"></i> <span class="hide-menu">
+                            Attendance
+                        </span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a href="/ManageRecruiter/ScheduleInterview/ScheduleInterview" class="sidebar-link">
+                        <i data-feather="users" class="feather-icon w-18"></i> <span class="hide-menu">
+                            Leave
+                        </span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/ManageRecruiter/ScheduleInterview/ScheduleInterviewDirect" class="sidebar-link">
+                        <i data-feather="users" class="feather-icon w-18"></i> <span class="hide-menu">
+                            Claim Requests
+                        </span>
+                    </a>
+                </li>
+                
+               
+               
+
+
+            </ul>
+        </li>
+       
+        <li class="sidebar-item">
+            <a class="sidebar-link" href="/ManageRecruiter/SupportTicket/SupportTicketList" aria-expanded="false">
+                <i data-feather="user" class="feather-icon"></i><span class="hide-menu">
+                    Support
+                </span>
+            </a>
+        </li>
+
+
+
+            <li class="list-divider"></li>
+            <span style="margin-left:15px; " class="font-12">
+                Current Version 2.0
+            </span>
+        </ul>
+    </nav>
+</div>
