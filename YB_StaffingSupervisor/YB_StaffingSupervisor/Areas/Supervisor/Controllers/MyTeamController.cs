@@ -11,7 +11,7 @@ using YB_StaffingSupervisor.LoginRepository.ILoginRepository;
 
 namespace YB_StaffingSupervisor.Areas.MyTeam.Controllers
 {
-    [Area("MyTeam")]
+    [Area("Supervisor")]
     public class MyTeamController : BaseController
     {
         private readonly IDataProtector _dataProtector;
