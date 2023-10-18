@@ -6957,11 +6957,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj",
+      "projectUniqueName": "E:\\GitHub\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj",
       "projectName": "YB_StaffingSupervisor.DataAccess",
-      "projectPath": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj",
+      "projectPath": "E:\\GitHub\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj",
       "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\obj\\",
+      "outputPath": "E:\\GitHub\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",

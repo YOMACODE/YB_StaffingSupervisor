@@ -8036,11 +8036,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.csproj",
+      "projectUniqueName": "E:\\GitHub\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.csproj",
       "projectName": "YB_StaffingSupervisor",
-      "projectPath": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.csproj",
+      "projectPath": "E:\\GitHub\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.csproj",
       "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\obj\\",
+      "outputPath": "E:\\GitHub\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -8057,8 +8057,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj": {
-              "projectPath": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj"
+            "E:\\GitHub\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj": {
+              "projectPath": "E:\\GitHub\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj"
             }
           }
         }
