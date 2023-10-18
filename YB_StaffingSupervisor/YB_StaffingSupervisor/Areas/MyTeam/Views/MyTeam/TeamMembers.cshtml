@@ -19,73 +19,73 @@
 							<button class="btn btn-sm" title="Filter" data-toggle="collapse" data-target="#filter"><i class="fa fa-filter" aria-hidden="true"></i></button>
 						</div>
 					</div>
-					<form asp-controller="MyTeam" asp-action="TeamMembers" method="get">
-						<div class="card mb-3">
-
-							<div class="card-header d-flex justify-content-between align-items-center">
-								<div class="font-weight-medium">Filters</div>
-								<div><i class="fa fa-filter"></i></div>
-							</div>
-							<div class="card-body">
-								<div class="row">
-
-									<div class="col-md-3 col-lg-3 mt-2">
-										<div class="form-group">
-											<label for="exampleFormControlInput1" class="active"><b>Yoma ID</b></label>
-											<input type="text" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
-										</div>
-									</div>
-
-									<div class="col-md-3 col-lg-3 mt-2">
-										<div class="form-group">
-											<label for="exampleFormControlInput1" class="active"><b>Associate Name</b></label>
-											<input type="text" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
-										</div>
-									</div>
-
-									<div class="col-md-3 col-lg-3 mt-2">
-										<div class="form-group">
-											<label for="exampleFormControlInput1" class="active"><b>Mobile No.</b></label>
-											<input type="text" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
-										</div>
-									</div>
-
-									<div class="col-md-3 col-lg-3 mt-2">
-										<div class="form-group">
-											<label for="exampleFormControlInput1" class="active"><b>Email id</b></label>
-											<input type="text" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter email id">
-										</div>
-									</div>
-
-									<div class="col-md-3 col-lg-3 mt-2">
-										<div class="form-group">
-											<label for="exampleFormControlSelect1"><b>Designation</b> </label>
-											<select class="form-control form-control-sm border-bottom">
-												<option>--Select--</option>
-											</select>
-										</div>
-									</div>
-
-									<div class="col-md-3 col-lg-3 mt-2">
-										<div class="form-group">
-											<label for="exampleFormControlInput1" class="active"><b>Joining Date</b></label>
-											<input type="text" class="form-control form-control-sm border-bottom" id="mdate" placeholder="dd-mm-yyyy">
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="card-footer">
-								<div class="d-flex justify-content-end">
-									<button class="btn btn-sm mr-1">Close</button>
-									<button class="btn btn-sm mr-1">Clear</button>
-									<button class="btn btn-sm">Search</button>
-								</div>
-							</div>
-						</div>
-					</form>
+					
 					<div class="collapse mt-3" id="filter">
 						<div class="card mb-3">
-							
+							<form asp-controller="MyTeam" asp-action="TeamMembers" method="get">
+								<div class="card mb-3">
+
+									<div class="card-header d-flex justify-content-between align-items-center">
+										<div class="font-weight-medium">Filters</div>
+										<div><i class="fa fa-filter"></i></div>
+									</div>
+									<div class="card-body">
+										<div class="row">
+
+											<div class="col-md-3 col-lg-3 mt-2">
+												<div class="form-group">
+													<label for="exampleFormControlInput1" class="active"><b>Yoma Code</b></label>
+													<input type="text" asp-for="SearchUserCode" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
+												</div>
+											</div>
+
+											<div class="col-md-3 col-lg-3 mt-2">
+												<div class="form-group">
+													<label for="exampleFormControlInput1" class="active"><b>Associate Name</b></label>
+													<input type="text" asp-for="SearchFullName" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
+												</div>
+											</div>
+
+											<div class="col-md-3 col-lg-3 mt-2">
+												<div class="form-group">
+													<label for="exampleFormControlInput1" class="active"><b>Mobile No.</b></label>
+													<input type="text" asp-for="SearchMobileNumber" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
+												</div>
+											</div>
+
+											<div class="col-md-3 col-lg-3 mt-2">
+												<div class="form-group">
+													<label for="exampleFormControlInput1" class="active"><b>Email id</b></label>
+													<input type="text" asp-for="SearchEmailId" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter email id">
+												</div>
+											</div>
+
+											<div class="col-md-3 col-lg-3 mt-2">
+												<div class="form-group">
+													<label for="exampleFormControlSelect1"><b>Designation</b> </label>
+													<select asp-for="SearchDesignation" asp-items="@(new SelectList(Model.DesignationModels, "DesignationId", "DesignationName", null))" class="form-control form-control-sm border-bottom">
+														<option value="">--Select--</option>
+													</select>
+												</div>
+											</div>
+
+											<div class="col-md-3 col-lg-3 mt-2">
+												<div class="form-group">
+													<label for="exampleFormControlInput1" class="active"><b>Joining Date</b></label>
+													<input type="text" asp-for="SearchJoiningDate" class="form-control form-control-sm border-bottom" id="mdate" placeholder="dd-mm-yyyy">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="card-footer">
+										<div class="d-flex justify-content-end">
+											<button type="button" class="btn btn-sm mr-1">Close</button>
+											<button type="button" class="btn btn-sm mr-1">Clear</button>
+											<button type="submit" class="btn btn-sm">Search</button>
+										</div>
+									</div>
+								</div>
+							</form>
 						</div>
 					</div>
 
@@ -191,3 +191,21 @@
 		</div>
 	</div>
 </div>
+<script>
+	$(document).ready(function () {
+		var selectedText = @ViewBag.PageSize;
+		if (selectedText == '100000') {
+			selectedText = "All";
+		}
+		$('#PageSize option').map(function () {
+			if ($(this).text() == selectedText) return this;
+		}).attr('selected', 'selected');
+	});
+
+	function showListForPageSize() {
+		window.location.href = $("#PageSize").val();
+	};
+
+	
+
+</script>

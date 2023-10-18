@@ -35,10 +35,10 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
 					new SqlParameter("@dtmSearchJoiningDate", SqlDbType.DateTime) { Value = SearchRequest.SearchJoiningDate },
 					new SqlParameter("@chvnSearchEmailId", SqlDbType.NVarChar) { Value = SearchRequest.SearchEmailId },
 					new SqlParameter("@chvnSearchDesignation", SqlDbType.BigInt) { Value = SearchRequest.SearchDesignation },
-					new SqlParameter("@chvnOperationType", SqlDbType.NVarChar) { Value = "SELECTAll" },
+					new SqlParameter("@chvnOperationType", SqlDbType.NVarChar) { Value = "SELECTALL" },
 				};
 				List<TeamMemberModel> teamMemberModels = new List<TeamMemberModel>();
-				DataSet dataSet = await Task.Run(() => dbconnect.SPExecuteDataset("", sqlparameters, "dataSet"));
+				DataSet dataSet = await Task.Run(() => dbconnect.SPExecuteDataset("[WebApplication_SP].[usp_SupervisorTeam_GetList]", sqlparameters, "dataSet"));
 				if (dataSet != null && dataSet.Tables.Count > 0)
 				{
 					if (dataSet.Tables[0] != null && dataSet.Tables[0].Rows.Count > 0)
@@ -46,12 +46,12 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
 						for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
 						{
 							TeamMemberModel teamMemberModel = new TeamMemberModel();
-							teamMemberModel.UserCode = dataSet.Tables[0].Rows[i]["UserCode"] == DBNull.Value ? Convert.ToString(0) : Convert.ToString(dataSet.Tables[0].Rows[i]["UserCode"]);
-							teamMemberModel.FullName = dataSet.Tables[0].Rows[i]["FullName"] == DBNull.Value ? Convert.ToString(0) : Convert.ToString(dataSet.Tables[0].Rows[i]["FullName"]);
-							teamMemberModel.EmailId = dataSet.Tables[0].Rows[i]["EmailId"] == DBNull.Value ? Convert.ToString(0) : Convert.ToString(dataSet.Tables[0].Rows[i]["EmailId"]);
-							teamMemberModel.MobileNumber = dataSet.Tables[0].Rows[i]["MobileNumber"] == DBNull.Value ? Convert.ToString(0) : Convert.ToString(dataSet.Tables[0].Rows[i]["MobileNumber"]);
-							teamMemberModel.Designation = dataSet.Tables[0].Rows[i]["Designation"] == DBNull.Value ? Convert.ToString(0) : Convert.ToString(dataSet.Tables[0].Rows[i]["Designation"]);
-							teamMemberModel.JoiningDate = dataSet.Tables[0].Rows[i]["JoiningDate"] == DBNull.Value ? Convert.ToString(0) : Convert.ToString(dataSet.Tables[0].Rows[i]["JoiningDate"]);
+							teamMemberModel.UserCode = dataSet.Tables[0].Rows[i]["UserCode"] == DBNull.Value ? Convert.ToString("") : Convert.ToString(dataSet.Tables[0].Rows[i]["UserCode"]);
+							teamMemberModel.FullName = dataSet.Tables[0].Rows[i]["FullName"] == DBNull.Value ? Convert.ToString("") : Convert.ToString(dataSet.Tables[0].Rows[i]["FullName"]);
+							teamMemberModel.EmailId = dataSet.Tables[0].Rows[i]["EmailId"] == DBNull.Value ? Convert.ToString("") : Convert.ToString(dataSet.Tables[0].Rows[i]["EmailId"]);
+							teamMemberModel.MobileNumber = dataSet.Tables[0].Rows[i]["MobileNumber"] == DBNull.Value ? Convert.ToString("") : Convert.ToString(dataSet.Tables[0].Rows[i]["MobileNumber"]);
+							teamMemberModel.Designation = dataSet.Tables[0].Rows[i]["DesignationName"] == DBNull.Value ? Convert.ToString("") : Convert.ToString(dataSet.Tables[0].Rows[i]["DesignationName"]);
+							teamMemberModel.JoiningDate = dataSet.Tables[0].Rows[i]["JoiningDate"] == DBNull.Value ? Convert.ToString("") : Convert.ToString(dataSet.Tables[0].Rows[i]["JoiningDate"]);
 							teamMemberModels.Add(teamMemberModel);
 						}
 					}

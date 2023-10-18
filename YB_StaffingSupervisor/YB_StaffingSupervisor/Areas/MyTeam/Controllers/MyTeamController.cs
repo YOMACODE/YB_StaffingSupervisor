@@ -68,6 +68,7 @@ namespace YB_StaffingSupervisor.Areas.MyTeam.Controllers
 
 			TeamMemberCustom teamMemberCustom = new TeamMemberCustom();
 			teamMemberCustom = await _service.MyTeamRepository.GetTeamMembersListing(page, PageSize, SearchRequest);
+			teamMemberCustom.DesignationModels = await _service.DesignationRepository.DropdownDesignationList();
 			return View(teamMemberCustom);
 		}
     }
