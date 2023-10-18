@@ -9,7 +9,7 @@ using YB_StaffingSupervisor.DataAccess.Entities.Custom;
 using YB_StaffingSupervisor.DataAccess.UnitOfWork;
 using YB_StaffingSupervisor.LoginRepository.ILoginRepository;
 
-namespace YB_StaffingSupervisor.Areas.Profile.Controllers
+namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
 {
     [Area("Supervisor")]
     public class ProfileController : BaseController
