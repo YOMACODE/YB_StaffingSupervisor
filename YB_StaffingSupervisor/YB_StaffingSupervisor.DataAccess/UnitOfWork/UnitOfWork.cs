@@ -100,10 +100,24 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
 				return _myTeamRepository;
 			}
 		}
-		#endregion
+        #endregion
+        #region IDesignationRepository
+        IDesignationRepository _designationRepository;
+        public IDesignationRepository DesignationRepository
+        {
+            get
+            {
+                if (_designationRepository == null)
+                {
+                    _designationRepository = new DesignationRepository(_connectionFactory);
+                }
+                return _designationRepository;
+            }
+        }
+        #endregion
 
-		#region IDisposable Support
-		void IUnitOfWork.Complete()
+        #region IDisposable Support
+        void IUnitOfWork.Complete()
         {
             throw new NotImplementedException();
         }
