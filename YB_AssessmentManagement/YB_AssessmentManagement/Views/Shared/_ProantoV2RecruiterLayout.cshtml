@@ -1,0 +1,755 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Proantov2assets/images/logo2.png">
+    <title>@ViewBag.Title-Supervisor</title>
+    <!-- Custom CSS -->
+    <environment include="Development">
+        <link href="~/Proantov2assets/css/googlefonts/googlefonts.css" rel="stylesheet" asp-append-version="true">
+        <link href="~/Proantov2assets/extra-libs/c3/c3.min.css" rel="stylesheet" />
+        <link href="~/Proantov2assets/libs/chartist/dist/chartist.min.css" rel="stylesheet" />
+        <!-- Custom CSS -->
+        <link href="~/Proantov2assets/css/style.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Proantov2assets/css/payroll.css" rel="stylesheet" asp-append-version="true" />
+
+        <link href="~/Proantov2assets/css/materialize.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Proantov2assets/css/bootstrap-material-datetimepicker.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Proantov2assets/css/select2.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Proantov2assets/libs/tablesaw/dist/tablesaw.css" rel="stylesheet" />
+        <link href="~/Proantov2assets/css/customtooltip.css" rel="stylesheet" />
+        @*<script src="https://code.jquery.com/jquery-3.4.1.js" asp-append-version="true"></script>*@
+        <script src="~/Proantov2assets/js/jquery-3.4.1.js" asp-append-version="true"></script>
+        <link href="~/Proantov2assets/css/toastr.css" rel="stylesheet" asp-append-version="true" />
+        <script src="~/Proantov2assets/js/toastr.js" asp-append-version="true"></script>
+
+        <style type="text/css">
+            @@media (min-width: 992px) {
+                .container {
+                    max-width: 1007px !important;
+                }
+            }
+        </style>
+
+    </environment>
+    <environment exclude="Development">
+        <link href="~/Proantov2assets/css/googlefonts/googlefonts.css" rel="stylesheet" asp-append-version="true">
+        <!-- Custom CSS -->
+        <link href="~/Proantov2assets/css/style.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Proantov2assets/css/payroll.css" rel="stylesheet" asp-append-version="true" />
+
+        <link href="~/Proantov2assets/css/materialize.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Proantov2assets/css/bootstrap-material-datetimepicker.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Proantov2assets/css/select2.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/Proantov2assets/css/customtooltip.css" rel="stylesheet" />
+        @*<script src="https://code.jquery.com/jquery-3.4.1.js" asp-append-version="true"></script>*@
+        <script src="~/Proantov2assets/js/jquery-3.4.1.js" asp-append-version="true"></script>
+        <link href="~/Proantov2assets/css/toastr.css" rel="stylesheet" asp-append-version="true" />
+        <script src="~/Proantov2assets/js/toastr.js" asp-append-version="true"></script>
+
+        <style type="text/css">
+            @@media (min-width: 992px) {
+                .container {
+                    max-width: 1007px !important;
+                }
+            }
+        </style>
+        <style type="text/css">
+            .form-check-label {
+                width: 100% !important;
+            }
+        </style>
+
+    </environment>
+</head>
+<body>
+    @{
+        var userId = Context.Session.GetString("UserId");
+        var Token = Context.Session.GetString("JWToken");
+        var EmailId = Context.Session.GetString("EmailId");
+        var MobileNumber = Context.Session.GetString("MobileNumber");
+        var LoginId = Context.Session.GetString("LoginId");
+        if (userId == null && userId == "" || Token == null)
+        {
+            Context.Response.Redirect(Url.Content("/SessionTimeOut/Index"));
+        }
+        var KycAction = TempData["ActionType"];
+    }
+    <input type="hidden" value="@userId" id="hdn_UserId" />
+    <input type="hidden" value="@Token" id="hdn_TokenValue" />
+
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div style="padding-bottom: 60px;">
+            <header class="mycustomheader">
+                <div class="container mysection" style="width: 100% !important;">
+                    <div class="row" style="height: 585px;">
+                        <div class="col-md-2">
+                            <div class="left-profile">
+                                <div class="container">
+                                    <div class="picture-container">
+                                        <div class="picture">
+                                            <img src="~/Proantov2assets/images/profile_noimage.png" class="picture-src" style="width: 150px; border-radius: 50%;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-8 ubonj">
+                            @*<nav class="navbar navbar-expand-lg navbar-light">
+                                <div class="collapse navbar-collapse" id="navbarTogglerDemo03">*@
+                            <ul class="">
+                                @{
+                                    var ActionName = Convert.ToString(Html.ViewContext.RouteData.Values["action"]);
+                                }
+                                @if (TempData["PreInterViewUserId"] == null)
+                                {
+                                    <li class="text-white">
+                                        <a href="/ManageRecruiter/Recruiter/AddEditDatabase">Add Database</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="@(ActionName=="AddEditPersonal"? "text-white":string.Empty)">
+                                        <a href="/ManageRecruiter/Recruiter/AddEditPersonal/?PreInterViewUserId=@(TempData["PreInterViewUserId"])&ActionType=@(TempData["ActionType"])">Personal</a>
+                                    </li>
+                                    <li class="@(ActionName=="AddEditWork"?"text-white":string.Empty)">
+                                        <a href="/ManageRecruiter/Recruiter/AddEditWork/?PreInterViewUserId=@(TempData["PreInterViewUserId"])&ActionType=@(TempData["ActionType"])">Work</a>
+                                    </li>
+                                    <li class="@(ActionName=="AddEditWorkExperience"?"text-white":string.Empty)">
+                                        <a href="/ManageRecruiter/Recruiter/AddEditWorkExperience/?PreInterViewUserId=@(TempData["PreInterViewUserId"])&ActionType=@(TempData["ActionType"])">Work Experience</a>
+                                    </li>
+                                    <li class="@(ActionName=="AddEditEducation"?"text-white":string.Empty)">
+                                        <a href="/ManageRecruiter/Recruiter/AddEditEducation/?PreInterViewUserId=@(TempData["PreInterViewUserId"])&ActionType=@(TempData["ActionType"])">Education</a>
+                                    </li>
+                                    <li class="@(ActionName=="AddEditFamily"?"text-white":string.Empty)">
+                                        <a href="/ManageRecruiter/Recruiter/AddEditFamily/?PreInterViewUserId=@(TempData["PreInterViewUserId"])&ActionType=@(TempData["ActionType"])">Family</a>
+                                    </li>
+                                    <li class="@(ActionName=="AddEditCompliance"?"text-white":string.Empty)">
+                                        <a href="/ManageRecruiter/Recruiter/AddEditCompliance/?PreInterViewUserId=@(TempData["PreInterViewUserId"])&ActionType=@(TempData["ActionType"])">Compliance</a>
+                                    </li>
+                                    <li class="@(ActionName=="AddEditOfferInfo"?"text-white":string.Empty)">
+                                        <a href="/ManageRecruiter/Recruiter/AddEditOfferInfo/?PreInterViewUserId=@(TempData["PreInterViewUserId"])&ActionType=@(TempData["ActionType"])">Offer Info</a>
+                                    </li>
+                                    <li class="@(ActionName=="AddEditDocuments"?"text-white":string.Empty)">
+                                        <a href="/ManageRecruiter/Recruiter/AddEditDocuments/?PreInterViewUserId=@(TempData["PreInterViewUserId"])&ActionType=@(TempData["ActionType"])">Documents</a>
+                                    </li>
+                                }
+
+                                @*       <li class="nav-item">
+                                        <a class="nav-link text-white" href="../profile/file.html">File Manager</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="../profile/other.html">Other</a>
+                                    </li>*@
+                            </ul>
+                            @*</div>
+                                </nav>*@
+                        </div>
+
+                        @if (KycAction != null)
+                        {
+                            @if (KycAction.ToString() == "Edit")
+                            {
+                                <div class="col-md-2 ubonjbck">
+                                    <ul>
+                                        <li>
+                                            <a class="btn1 btn-md bk-btn" href="/ManageRecruiter/Recruiter/DatabaseCreation" title="Back To List"><i class="fa fa-reply"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </header>
+            <div class="container">
+                <div class="row mt-4">
+                    <div class="col-md-3 ubonh">
+                        <div class="profile-detail" style="margin-top: 30%;">
+                            <p class="m-1 p-0" style="font-size: 13px;"><span class="pr-2"><img src="https://i.imgur.com/hg275c7.png" style="width: 17px;"></span> <span class="mt-1">@(LoginId== null ?"N/A":LoginId)</span></p>
+                            <p class="m-1 p-0" style="font-size: 13px;"><span class="pr-2"><img src="https://i.imgur.com/Hnfhwjx.png" style="width: 17px;"></span> <span class="mt-1" id="spnMobileNumber">@(MobileNumber==null ?"N/A":MobileNumber)</span></p>
+                            <p class="m-1 p-0 mydiv" title="@(EmailId == null ?"N/A": EmailId)" style="font-size: 13px;"><span class="pr-2"><img src="https://i.imgur.com/Mi5UR1h.png" style="width: 17px;"></span> <span class="mt-1">@(EmailId == null ?"N/A": EmailId)</span></p>
+                        </div>
+                        <!--upload your digilocker files--->
+                        <div class="digilocker-files">
+                            <p class="title-widget"><span class="color-blue"><i class="fa fa-lock" aria-hidden="true"></i></span> Upload From <span class="color-blue"><b>DigiLocker</b></span></p>
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <p><img src="https://i.imgur.com/3na0v9p.png" style="width: 70%;"></p>
+                                    @*<a class="btn btn-md bk-btn" href="/ManageRecruiter/Recruiter/DigiLockerFetchIssuedDocs" title="Fetch Docs">Fetch Docs</a>
+                                        <a class="btn btn-md bk-btn" href="/ManageRecruiter/Recruiter/DigiLockerLogin?returnUrl=@domainUrl@CurrentUrl" title="DigiLocker Login">Digi Login</a>*@
+                                    @*<button class="btn btn-sm btn-block" onclick="BindDigiLockerAuthLogin();" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-key" aria-hidden="true"></i> Authenticate Now</button>*@
+                                    @if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("DLockerAccessToken")))
+                                    {
+                                        <button class="btn btn-sm btn-block btnDigiLockerAuthenticate" onclick="BindDigiLockerSendOTP();" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-key" aria-hidden="true"></i> Authenticate Now</button>
+                                    }
+                                    <button class="btn btn1 btn-sm btn-block" onclick="BindDigiLockerIssuedDocuments();" data-toggle="modal" data-target="#exampleModalCenter"><i class="fa fa-eye"></i> View History</button>
+                                    @*<button class="btn btn1 btn-sm btn-block" data-toggle="modal" data-target=".bd-example-modal-lg1"><i class="fa fa-eye"></i> View History</button>*@
+                                </div>
+                            </div>
+                            <small><em><b>Note** This feature enables you to upload your all required documents stored at DigiLocker at once.</b></em></small>
+                        </div>
+
+                        <p class="title-widget mt-4">
+                            <span class="color-blue">
+                                <i class="fa fa-upload" aria-hidden="true"></i>
+                            </span> Upload Offline
+                            <span class="color-blue"><b>Aadhar</b></span>
+                        </p>
+                        <button class="btn btn-sm btn-block" data-toggle="modal" data-target="#OfflineAadhar" id="btnUploadAadhaarXMLFileDialog" onclick="BindUploadAadhaarXML();">
+                            <i class="fa fa-upload" aria-hidden="true"></i> Upload Offline Aadhar
+                        </button>
+                        <button class="btn1 btn-sm btn-block" data-toggle="modal" data-target=".bd-example-modal-lg4">
+                            <i class="fa fa-file"></i> View Guide
+                        </button>
+                        <small><em>The choosen file should be in .xml format</em></small>
+                        <input type="file" id="fileLoader" name="files" title="Load File" style="display: none;">
+                        <span id="filenameshow" style="display: none; color: #6659F7;"></span>
+                    </div>
+
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+
+
+
+        <footer class="footer text-center text-muted helly">
+            Copyright 2019. All Rights Reserved by YOMA
+        </footer>
+    </div>
+
+
+    <!-- Modal 1 -->
+    <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"><span class="mr-2"><i id="ModalFaIcon" class="fa fa-lock" aria-hidden="true"></i></span> <span id="ModalTitle">Authenticate with DigiLocker</span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="DivDigiLocker"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--modal 2-->
+    <div class="modal fade bd-example-modal-lg1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"><span class="mr-2"><i class="fa fa-history" aria-hidden="true"></i></span> History</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><small><em><b>NOTE: The list of documents you previously uploaded yet</b></em></small></p>
+                    <div class="tabe-resposnive">
+                        <table class="table table-sm no-wrap">
+                            <thead id="sumit">
+                                <tr class="text-center">
+                                    <th>S.No.</th>
+                                    <th></th>
+                                    <th>Document Name</th>
+                                    <th>Document No</th>
+                                    <th>Uploaded On</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center">
+                                    <td>1.</td>
+                                    <td><img src="https://i.imgur.com/fVhkfGT.jpg" class="img-icon"></td>
+                                    <td>Aadhar Card</td>
+                                    <td>XXXX-XXXX-XXXX</td>
+                                    <td>01/09/2019</td>
+                                    <td><button class="btn btn-sm"><i class="fa fa-trash"></i></button></td>
+                                </tr>
+
+                                <tr class="text-center">
+                                    <td>2.</td>
+                                    <td><img src="https://i.imgur.com/bTpEd8M.png" class="img-icon"></td>
+                                    <td>PAN Card</td>
+                                    <td>XXXXNM</td>
+                                    <td>01/09/2019</td>
+                                    <td><button class="btn btn-sm"><i class="fa fa-trash"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal 3-->
+    <div class="modal fade bd-example-modal-lg4" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"><span class="mr-2"><i class="fa fa-history" aria-hidden="true"></i></span> How To Download Offline Aadhar Guide.</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><b>Please follow the steps to download your Offline Aadhar (in .XML format)</b></p>
+                    <p><b>Step 1</b> - Click the given link - <i><b><a href="https://resident.uidai.gov.in/offline-kyc">https://resident.uidai.gov.in/offline-kyc</a></b></i></p>
+                    <p><b>Step 2</b> - Enter your Aadhar no & Security Code.</p>
+                    <p><b>Step 3</b> - Click on send OTP Button.</p>
+                    <p><b>Step 4</b> - Enter OTP no. sent over your mobile no. linked to Aadhar.</p>
+                    <p><b>Step 5</b> - And Click Download button.</p>
+                    <p><b>Step 6</b> - After following the steps mentioned above you will be able to dowload offlined aadhar in .xml format.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal 4-->
+    <div class="modal fade" id="OfflineAadhar" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"><span class="mr-2"><i class="fa fa-history" aria-hidden="true"></i></span> Upload Offline Aadhar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="DivUploadAadhaarXML"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Document Popup Model*@
+    <div class="modal fade imagemodal" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="width:600px;">
+                <div class="modal-body" style="max-height: 565px; ">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <object id="pdfObject" name="pdfObject" width="500" height="500"></object>
+                    <img src="" class="forimagepreview" style="width:100%; height:500px; display:none;" />
+                    <iframe src="" class="imagepreview" style="width:100%; height:500px;display:none;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <environment exclude="Development">
+       
+        <script src="~/Proantov2assets/libs/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <!-- Bootstrap tether Core JavaScript -->
+        <script src="~/Proantov2assets/libs/popper.js/dist/umd/popper.min.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/libs/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+        <!-- apps -->
+        <script src="~/Proantov2assets/js/app.min.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/js/payroll.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/js/app.init-menusidebar.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/js/app-style-switcher.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/js/feather.min.js" asp-append-version="true"></script>
+        <!-- slimscrollbar scrollbar JavaScript -->
+        <script src="~/Proantov2assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/extra-libs/sparkline/sparkline.js" asp-append-version="true"></script>
+        <!--Wave Effects -->
+        <!-- themejs -->
+        <!--Menu sidebar -->
+        <script src="~/Proantov2assets/js/sidebarmenu.js" asp-append-version="true"></script>
+        <!--Custom JavaScript -->
+        <script src="~/Proantov2assets/js/custom.min.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/js/materialize.min.js" asp-append-version="true"></script>
+        <script src="~/ProantoV2assets/libs/select2/dist/js/select2.min.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/js/moment.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/js/bootstrap-material-datetimepicker-custom.js" asp-append-version="true"></script>
+        
+    </environment>
+    <environment include="Development">
+
+        <script src="~/Proantov2assets/libs/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <!-- Bootstrap tether Core JavaScript -->
+        <script src="~/Proantov2assets/libs/popper.js/dist/umd/popper.min.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/libs/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+        <!-- apps -->
+        <script src="~/Proantov2assets/js/app.min.js" asp-append-version="true"></script>
+        @*<script src="~/Proantov2assets/js/payroll.js"></script>*@
+        <script src="~/Proantov2assets/js/app.init-menusidebar.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/js/app-style-switcher.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/js/feather.min.js" asp-append-version="true"></script>
+        <!-- slimscrollbar scrollbar JavaScript -->
+        <script src="~/Proantov2assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/extra-libs/sparkline/sparkline.js" asp-append-version="true"></script>
+        <!--Wave Effects -->
+        <!-- themejs -->
+        <!--Menu sidebar -->
+        <script src="~/Proantov2assets/js/sidebarmenu.js" asp-append-version="true"></script>
+        <!--Custom JavaScript -->
+        <script src="~/Proantov2assets/js/custom.min.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/js/materialize.min.js" asp-append-version="true"></script>
+        <script src="~/ProantoV2assets/libs/select2/dist/js/select2.min.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/js/moment.js" asp-append-version="true"></script>
+        <script src="~/Proantov2assets/js/bootstrap-material-datetimepicker-custom.js" asp-append-version="true"></script>
+        
+    </environment>
+    <environment exclude="Development">
+        <script type="text/javascript" asp-append-version="true">
+            $(function () {
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "onclick": null,
+                    "showDuration": "1000",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            });
+        </script>
+    </environment>
+    <environment include="Development">
+        <script type="text/javascript" asp-append-version="true">
+            $(function () {
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": false,
+                    "positionClass": "toast-top-right",
+                    "onclick": null,
+                    "showDuration": "1000",
+                    "hideDuration": "1000",
+                    "timeOut": "2000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            });
+        </script>
+        <script asp-append-version="true">
+            $(document).ready(function () {
+                $("input:text,form").attr("autocomplete", "off");
+            })
+        </script>
+        @*<script>
+                $(function () {
+                    $("body").on('click keypress', function () {
+                        ResetThisSession();
+                    });
+                });
+
+                var timeInSecondsAfterSessionOut = 5000; // change this value to change session time out time (in seconds).
+                var secondTick = 0;
+                var time;
+
+                function ResetThisSession() {
+                    secondTick = 0;
+                }
+                function StartThisSessionTimer() {
+                    secondTick++;
+                    var timeLeft = ((timeInSecondsAfterSessionOut - secondTick) / 60).toFixed(0); // in minutes
+                    timeLeft = timeInSecondsAfterSessionOut - secondTick; // override, we have 30 secs only
+                    time = timeLeft;
+                    //if (time == 10) {
+                    //    $(document).ready(function () {
+                    //        $("#myModal1").modal();
+                    //    });
+                    //}
+                    $("#spanTimeLeft").html(timeLeft);
+                    if (secondTick > timeInSecondsAfterSessionOut) {
+                        clearTimeout(tick);
+                        window.location = "/Home/Logout";
+                        return;
+                    }
+                    tick = setTimeout("StartThisSessionTimer()", 1000);
+                }
+                StartThisSessionTimer();
+            </script>*@
+    </environment>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_StatusMessages"); }
+    @RenderSection("Scripts", required: false)
+    <script asp-append-version="true">
+        //$(function () {
+        //    $("body").on('click keypress', function () {
+        //        ResetThisSession();
+        //    });
+        //});
+
+        //var timeInSecondsAfterSessionOut = 360000; // change this value to change session time out time (in seconds).
+        //var secondTick = 0;
+        //var time;
+
+        //function ResetThisSession() {
+        //    secondTick = 0;
+        //}
+        //function StartThisSessionTimer() {
+        //    secondTick++;
+        //    var timeLeft = ((timeInSecondsAfterSessionOut - secondTick) / 60).toFixed(0); // in minutes
+        //    timeLeft = timeInSecondsAfterSessionOut - secondTick; // override, we have 30 secs only
+        //    time = timeLeft;
+        //    //if (time == 10) {
+        //    //    $(document).ready(function () {
+        //    //        $("#myModal1").modal();
+        //    //    });
+        //    //}
+        //    $("#spanTimeLeft").html(timeLeft);
+        //    if (secondTick > timeInSecondsAfterSessionOut) {
+        //        clearTimeout(tick);
+        //        window.location = "/SessionTimeOut/Index";
+        //        return;
+        //    }
+        //    tick = setTimeout("StartThisSessionTimer()", 1000);
+        //}
+        //StartThisSessionTimer();
+    </script>
+    @*<script type="text/javascript">
+        if ('@HttpContextAccessor.HttpContext.Session.GetString("UserId")'=='') {
+            if (confirm("Your session was expired !")) {
+                window.location.href = "/SessionTimeOut/Index";
+            }
+        }
+    </script>*@
+    <script type="text/javascript">
+        function BindDigiLockerAuthLogin() {
+            var DTO = {
+                Token: $('#hdn_TokenValue').val(),
+            };
+            $.ajax({
+                type: "GET",
+                url: '/ManageRecruiter/Recruiter/DigiLockerAuthLogin',
+                dataType: "json",
+                headers:
+                {
+                    "JWToken": $('#hdn_TokenValue').val()
+                },
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/json;charset=UTF-8");
+                    };
+                },
+                cache: false,
+                data: DTO,
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 403) {
+                        var url = $.parseJSON(xhr.responseText);
+                        window.location.href = url;
+                    }
+                },
+                complete: function (response) {
+                    $('#DivDigiLocker').html('');
+                    $('#DivDigiLocker').html(response.responseText);
+                }
+            });
+        };
+        function BindUploadAadhaarXML() {
+            var DTO = {
+                Token: $('#hdn_TokenValue').val(),
+            };
+            $.ajax({
+                type: "GET",
+                url: '/ManageRecruiter/Recruiter/UploadAadhaarXML',
+                dataType: "json",
+                headers:
+                {
+                    "JWToken": $('#hdn_TokenValue').val()
+                },
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/json;charset=UTF-8");
+                    };
+                },
+                cache: false,
+                data: DTO,
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 403) {
+                        var url = $.parseJSON(xhr.responseText);
+                        window.location.href = url;
+                    }
+                },
+                complete: function (response) {
+                    $('#DivUploadAadhaarXML').html('');
+                    $('#DivUploadAadhaarXML').html(response.responseText);
+                }
+            });
+        };
+        function BindDigiLockerSendOTP() {
+            var DTO = {
+                Token: $('#hdn_TokenValue').val(),
+            };
+            $.ajax({
+                type: "GET",
+                url: '/ManageRecruiter/Recruiter/DigiLockerSendOTP',
+                dataType: "json",
+                headers:
+                {
+                    "JWToken": $('#hdn_TokenValue').val()
+                },
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/json;charset=UTF-8");
+                    };
+                },
+                cache: false,
+                data: DTO,
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 403) {
+                        var url = $.parseJSON(xhr.responseText);
+                        window.location.href = url;
+                    }
+                },
+                complete: function (response) {
+                    $('#DivDigiLocker').html('');
+                    $('#DivDigiLocker').html(response.responseText);
+                }
+            });
+        };
+        function BindDigiLockerVerifyOTP(AuthWith, MobileUsername, DeviceCode, MaskedMobile, MaskedUsername) {
+            var DTO = {
+                Token: $('#hdn_TokenValue').val(),
+                AuthWith: AuthWith,
+                MobileUsername: MobileUsername,
+                DeviceCode: DeviceCode,
+                MaskedUsername: MaskedUsername,
+                MaskedMobile: MaskedMobile
+            };
+            $.ajax({
+                type: "GET",
+                url: '/ManageRecruiter/Recruiter/DigiLockerVerifyOTP',
+                dataType: "json",
+                headers:
+                {
+                    "JWToken": $('#hdn_TokenValue').val()
+                },
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/json;charset=UTF-8");
+                    };
+                },
+                cache: false,
+                data: DTO,
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 403) {
+                        var url = $.parseJSON(xhr.responseText);
+                        window.location.href = url;
+                    }
+                },
+                complete: function (response) {
+                    $('#DivDigiLocker').html('');
+                    $('#DivDigiLocker').html(response.responseText);
+                }
+            });
+        };
+        function BindDigiLockerFetchIssuedDocuments() {
+            var DTO = {
+                Token: $('#hdn_TokenValue').val(),
+            };
+            $.ajax({
+                type: "GET",
+                url: '/ManageRecruiter/Recruiter/DigiLockerFetchIssuedDocuments',
+                dataType: "json",
+                headers:
+                {
+                    "JWToken": $('#hdn_TokenValue').val()
+                },
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/json;charset=UTF-8");
+                    };
+                },
+                cache: false,
+                data: DTO,
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 403) {
+                        var url = $.parseJSON(xhr.responseText);
+                        window.location.href = url;
+                    }
+                },
+                complete: function (response) {
+                    $('#DivDigiLocker').html('');
+                    $('#DivDigiLocker').html(response.responseText);
+                    $('#ModalTitle').html('');
+                    $('#ModalTitle').html('Issued Documents');
+                    $('#ModalFaIcon').removeClass('fa-lock').addClass('fa-history');
+                    $(".btnDigiLockerAuthenticate").remove();
+
+                    toastr.success("Documents fetched Successfully.", "Success !");
+                }
+            });
+        };
+        function BindDigiLockerIssuedDocuments() {
+            var DTO = {
+                Token: $('#hdn_TokenValue').val(),
+            };
+            $.ajax({
+                type: "GET",
+                url: '/ManageRecruiter/Recruiter/DigiLockerIssuedDocuments',
+                dataType: "json",
+                headers:
+                {
+                    "JWToken": $('#hdn_TokenValue').val()
+                },
+                beforeSend: function (x) {
+                    if (x && x.overrideMimeType) {
+                        x.overrideMimeType("application/json;charset=UTF-8");
+                    };
+                },
+                cache: false,
+                data: DTO,
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status == 403) {
+                        var url = $.parseJSON(xhr.responseText);
+                        window.location.href = url;
+                    }
+                },
+                complete: function (response) {
+                    $('#DivDigiLocker').html('');
+                    $('#DivDigiLocker').html(response.responseText);
+                    $('#ModalTitle').html('');
+                    $('#ModalTitle').html('Issued Documents');
+                    $('#ModalFaIcon').removeClass('fa-lock').addClass('fa-history');
+                }
+            });
+        };
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("select").select2();
+        });
+    </script>
+</body>
+</html>

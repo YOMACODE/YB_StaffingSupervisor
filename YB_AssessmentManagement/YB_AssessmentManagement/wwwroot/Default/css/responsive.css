@@ -1,0 +1,64 @@
+@media only screen and (max-width: 767px) {
+    body {
+        overflow: hidden;
+        background-size: cover !important;
+        background-position: bottom;
+        /* background-image: radial-gradient(circle at 85% 1%, hsla(190, 0%, 93%, 0.05) 0%, hsla(190, 0%, 93%, 0.05) 96%, transparent 96%, transparent 100%), radial-gradient(circle at 14% 15%, hsla(190, 0%, 93%, 0.05) 0%, hsla(190, 0%, 93%, 0.05) 1%, transparent 1%, transparent 100%), radial-gradient(circle at 60% 90%, hsla(190, 0%, 93%, 0.05) 0%, hsla(190, 0%, 93%, 0.05) 20%, transparent 20%, transparent 100%), radial-gradient(circle at 79% 7%, hsla(190, 0%, 93%, 0.05) 0%, hsla(190, 0%, 93%, 0.05) 78%, transparent 78%, transparent 100%), radial-gradient(circle at 55% 65%, hsla(190, 0%, 93%, 0.05) 0%, hsla(190, 0%, 93%, 0.05) 52%, transparent 52%, transparent 100%), linear-gradient(135deg, rgb(37, 56, 222), rgb(96, 189, 244)) !important; */
+    }
+    section {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+    }
+    .mobile-display-none {
+        display: none;
+    }
+    .navbar {
+        display: block !important;
+    }
+    .row {
+        height: fit-content !important;
+    }
+    .shape {
+        padding: unset !important;
+        background-color: transparent;
+        box-shadow: unset !important;
+        border-end-start-radius: unset !important;
+        border-start-end-radius: unset !important;
+    }
+    .row>* {
+        padding-right: unset !important;
+        padding-left: unset !important;
+    }
+    .row .col-md-5 {
+        opacity: 0 !important;
+        height: 0 !important;
+    }
+    .row .col-md-7 .card {
+        margin: 0px 15px !important;
+        background: unset !important;
+        background-image: linear-gradient(rgba(256, 256, 256, 0.8), rgba(256, 256, 256, 0.8)) !important;
+        padding: 25px 10px !important;
+    }
+    .your-class {
+        height: 0 !important;
+        opacity: 0 !important;
+    }
+    .slider {
+        opacity: 0 !important;
+        height: 0 !important;
+    }
+    small {
+        font-size: .65em!important;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .col-md-5 img {
+        width: 250px !important;
+    }
+}

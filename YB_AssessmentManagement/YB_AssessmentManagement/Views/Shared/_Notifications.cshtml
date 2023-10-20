@@ -1,0 +1,59 @@
+﻿@using YB_AssessmentManagement.Common
+@{
+    var errorList = Html.GetNotifications(NotificationType.ERROR);
+    var warningList = Html.GetNotifications(NotificationType.WARNING);
+    var successList = Html.GetNotifications(NotificationType.SUCCESS);
+    var infoList = Html.GetNotifications(NotificationType.INFO);
+}
+
+@if (errorList != null)
+{
+    @if (errorList.Count() > 1)
+    {
+        @foreach (String message in errorList)
+        {
+            <div class="alert alert-danger">
+                <strong>Error!</strong>@Html.Raw(message)
+            </div>
+        }
+    }
+}
+
+@if (warningList != null)
+{
+    @if (warningList.Count() > 1)
+    {
+        @foreach (String message in warningList)
+        {
+            <div class="alert alert-warning">
+                <strong>Warning!</strong> @Html.Raw(message)
+            </div>
+        }
+    }
+}
+
+@if (successList != null)
+{
+    @if (successList.Count() > 1)
+    {
+        @foreach (String message in successList)
+        {
+            <div class="alert alert-success">
+                <strong>Success!</strong> @Html.Raw(message)
+            </div>
+        }
+    }
+}
+
+@if (infoList != null)
+{
+    @if (infoList.Count() > 1)
+    {
+        @foreach (String message in infoList)
+        {
+            <div class="alert alert-info">
+                <strong>Info!</strong> @Html.Raw(message)
+            </div>
+        }
+    }
+}
