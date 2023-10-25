@@ -11,6 +11,10 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
         ILeftMenuRepository LeftMenuRepository { get; }
         IUserTokensRepository UserTokensRepository { get; }
 		IMyTeamRepository MyTeamRepository { get; }
+		ILeaveApprovalsRepository LeaveApprovalsRepository { get; }
+		IClaimRequestsRepository ClaimRequestsRepository { get; }
+        IOnDutyRequesteRepository OnDutyRequesteRepository { get; }
+        IUserClaimRequestsRepository UserClaimRequestsRepository { get; }
         void Complete();
     }
 }
