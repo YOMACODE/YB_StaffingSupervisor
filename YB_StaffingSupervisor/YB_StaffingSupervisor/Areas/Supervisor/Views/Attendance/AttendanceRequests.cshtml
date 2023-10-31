@@ -1,0 +1,17 @@
+﻿@model YB_StaffingSupervisor.DataAccess.Entities.Custom.AttendanceRequestCustom
+@{
+    ViewData["Title"] = "Attendance Requests";
+    Layout = "~/Views/Shared/_ProantoV2MasterLayout.cshtml";
+}
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            toastr.success('Attendance Requests');
+
+        });
+
+    </script>
+    <script src="~/js/Areas/Attendance/AttendanceRequests.js" asp-append-version="true"></script>
+}

@@ -24,7 +24,7 @@ namespace YB_StaffingSupervisor.PartialComponents
         {
             //var model = _service.LeftMenuRepository.GetLeftMenuList(Convert.ToInt64(_protector.Unprotect(userId)));
             LeftMenuModel model = new LeftMenuModel();
-            model.MenuList = HttpContext.Session.GetString("MenuList").ToString();
+            //model.MenuList = HttpContext.Session.GetString("MenuList").ToString();
             return await Task.FromResult((IViewComponentResult)View("LeftMenu", model));
         }
     }

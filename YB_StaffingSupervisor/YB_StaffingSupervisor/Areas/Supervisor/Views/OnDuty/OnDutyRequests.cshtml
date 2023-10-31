@@ -1,0 +1,17 @@
+﻿@* @model YB_StaffingSupervisor.DataAccess.Entities *@
+@{
+    ViewData["Title"] = "On Duty Requests";
+    Layout = "~/Views/Shared/_ProantoV2MasterLayout.cshtml";
+}
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            toastr.success('On Duty Requests');
+
+        });
+
+    </script>
+    <script src="~/js/Areas/OnDuty/OnDutyRequests.js" asp-append-version="true"></script>
+}

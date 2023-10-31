@@ -12,6 +12,12 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
         IUserTokensRepository UserTokensRepository { get; }
         IDesignationRepository DesignationRepository { get; }
         IMyTeamRepository MyTeamRepository { get; }
+        IUserProfileRepository UserProfileRepository { get; }
+        IAttendanceRepository AttendanceRepository { get; }
+        IAttendanceCorrectionRepository AttendanceCorrectionRepository { get; }
+
+
+
         void Complete();
     }
 }

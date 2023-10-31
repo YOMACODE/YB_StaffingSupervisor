@@ -1,0 +1,18 @@
+﻿@model YB_StaffingSupervisor.DataAccess.Entities.Custom.AttendanceCorrectionRequestCustom
+@{
+    ViewData["Title"] = "Attendance Correction Requests";
+    Layout = "~/Views/Shared/_ProantoV2MasterLayout.cshtml";
+}
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            toastr.success('Attendance Correction Requests');
+
+            
+        });
+
+    </script>
+    <script src="~/js/Areas/AttendanceCorrection/AttendanceCorrectionRequests.js" asp-append-version="true"></script>
+}

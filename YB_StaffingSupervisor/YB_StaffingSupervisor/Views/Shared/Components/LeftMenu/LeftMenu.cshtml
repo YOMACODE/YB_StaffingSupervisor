@@ -5,10 +5,10 @@
             <li class="nav-small-cap"><span class="hide-menu"></span></li>
             @* @Html.Raw(Model.MenuList) *@
             <li class="sidebar-item">
-            <a class="sidebar-link sidebar-link" href="/Dashboard/MyDashboard" aria-expanded="false">
-                <i data-feather="home" class="feather-icon"></i><span class="hide-menu">Dashboard</span>
-            </a>
-        </li>
+                <a class="sidebar-link sidebar-link" href="/Dashboard/MyDashboard" aria-expanded="false">
+                    <i data-feather="home" class="feather-icon"></i><span class="hide-menu">Dashboard</span>
+                </a>
+            </li>
             <li class="sidebar-item">
                 <a href="/Supervisor/Profile/MyProfile" class="sidebar-link">
                     <i data-feather="book-open" class="feather-icon w-18"></i> <span class="hide-menu">
@@ -16,57 +16,73 @@
                     </span>
                 </a>
             </li>
-        <li class="sidebar-item">
-            <a class="sidebar-link has-arrow" href="javascript:void(0)"
-               aria-expanded="false">
-                <i data-feather="user" class="feather-icon"></i><span class="hide-menu">My Team</span>
-            </a>
-            
-            <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                <li class="sidebar-item">
-                        <a href="/Supervisor/MyTeam/TeamMembers" class="sidebar-link">
-                        <i data-feather="book-open" class="feather-icon w-18"></i> <span class="hide-menu">
-                            Team Members
-                        </span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="/Supervisor/Attendance/TeamAttendance" class="sidebar-link">
-                        <i data-feather="database" class="feather-icon w-18"></i> <span class="hide-menu">
-                            Attendance
-                        </span>
-                    </a>
-                </li>
+            <li class="sidebar-item">
+                <a href="/Supervisor/MyTeam/TeamMembers" class="sidebar-link">
+                    <i data-feather="user" class="feather-icon w-18"></i> <span class="hide-menu">
+                        Team Members
+                    </span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="/Supervisor/Attendance/TeamAttendance" class="sidebar-link">
+                    <i data-feather="user" class="feather-icon w-18"></i> <span class="hide-menu">
+                        Team Attendance
+                    </span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link has-arrow" href="javascript:void(0)"
+                   aria-expanded="false">
+                    <i data-feather="user" class="feather-icon"></i><span class="hide-menu">Requests</span>
+                </a>
 
-                <li class="sidebar-item">
-                    <a href="/Supervisor/Leave/LeaveApprovals" class="sidebar-link">
-                        <i data-feather="users" class="feather-icon w-18"></i> <span class="hide-menu">
-                            Leave
-                        </span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="/Supervisor/Claim/ClaimRequests" class="sidebar-link">
-                        <i data-feather="users" class="feather-icon w-18"></i> <span class="hide-menu">
-                            Claim Requests
-                        </span>
-                    </a>
-                </li>
-                
-               
-               
+                <ul aria-expanded="false" class="collapse  first-level base-level-line">
+                    <li class="sidebar-item">
+                        <a href="/Supervisor/Attendance/AttendanceRequests" class="sidebar-link">
+                            <i data-feather="database" class="feather-icon w-18"></i> <span class="hide-menu">
+                                Attendance Requests
+                            </span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/Supervisor/AttendanceCorrection/AttendanceCorrectionRequests" class="sidebar-link">
+                            <i data-feather="database" class="feather-icon w-18"></i> <span class="hide-menu">
+                                Attendance Correction Requests
+                            </span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/Supervisor/OnDuty/OnDutyRequests" class="sidebar-link">
+                            <i data-feather="database" class="feather-icon w-18"></i> <span class="hide-menu">
+                                OnDuty Requests
+                            </span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/Supervisor/Leave/LeaveRequests" class="sidebar-link">
+                            <i data-feather="users" class="feather-icon w-18"></i> <span class="hide-menu">
+                                Leave Requests
+                            </span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="/Supervisor/Claim/ClaimRequests" class="sidebar-link">
+                            <i data-feather="users" class="feather-icon w-18"></i> <span class="hide-menu">
+                                Claim Requests
+                            </span>
+                        </a>
+                    </li>
 
+                </ul>
+            </li>
 
-            </ul>
-        </li>
-       
-        <li class="sidebar-item">
-            <a class="sidebar-link" href="/ManageRecruiter/SupportTicket/SupportTicketList" aria-expanded="false">
-                <i data-feather="user" class="feather-icon"></i><span class="hide-menu">
-                    Support
-                </span>
-            </a>
-        </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="/ManageRecruiter/SupportTicket/SupportTicketList" aria-expanded="false">
+                    <i data-feather="user" class="feather-icon"></i><span class="hide-menu">
+                        Support
+                    </span>
+                </a>
+            </li>
 
 
 
