@@ -1,0 +1,18 @@
+﻿@* @model YB_StaffingSupervisor.DataAccess.Entities *@
+@{
+    ViewData["Title"] = "Claim Requests";
+    Layout = "~/Views/Shared/_ProantoV2MasterLayout.cshtml";
+}
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            toastr.success('Claim Requests');
+
+        });
+        
+    </script>
+    <script src="~/js/Areas/Claim/ClaimRequests.js" asp-append-version="true"></script>
+}

@@ -5,8 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\Areas\OnDuty\OnDutyRequests.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="wwwroot\js\Areas\OnDuty\OnDutyRequests.js" />
+    <None Include="wwwroot\js\Areas\AttendanceCorrection\AttendanceCorrectionRequests.js" />
+    <None Include="wwwroot\js\Areas\Attendance\TeamAttendance.js" />
+    <None Include="wwwroot\js\Areas\Attendance\AttendanceRequests.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
@@ -47,10 +55,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\YB_StaffingSupervisor.DataAccess\YB_StaffingSupervisor.DataAccess.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\js\NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>

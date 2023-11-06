@@ -73,6 +73,7 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
             }
         }
         #endregion
+
         #region IUserTokensRepository
         IUserTokensRepository _userTokensRepository;
         public IUserTokensRepository UserTokensRepository
@@ -87,6 +88,7 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
             }
         }
 		#endregion
+
 		#region IMyTeamRepository
 		IMyTeamRepository _myTeamRepository;
 		public IMyTeamRepository MyTeamRepository
@@ -101,6 +103,7 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
 			}
 		}
         #endregion
+
         #region IDesignationRepository
         IDesignationRepository _designationRepository;
         public IDesignationRepository DesignationRepository
@@ -115,6 +118,67 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
             }
         }
         #endregion
+
+        #region  IUserProfileRepository 
+        public IUserProfileRepository _userProfileRepository;
+        public IUserProfileRepository UserProfileRepository
+        {
+            get
+            {
+                if (_userProfileRepository == null)
+                {
+                    _userProfileRepository = new UserProfileRepository(_connectionFactory);
+                }
+                return _userProfileRepository;
+            }
+        }
+        #endregion
+
+        #region  IAttendanceRepository 
+        public IAttendanceRepository _attendanceRepository;
+        public IAttendanceRepository AttendanceRepository
+        {
+            get
+            {
+                if (_attendanceRepository == null)
+                {
+                    _attendanceRepository = new AttendanceRepository(_connectionFactory);
+                }
+                return _attendanceRepository;
+            }
+        }
+        #endregion
+
+        #region  IAttendanceCorrectionRepository 
+        public IAttendanceCorrectionRepository _attendanceCorrectionRepository;
+        public IAttendanceCorrectionRepository AttendanceCorrectionRepository
+        {
+            get
+            {
+                if (_attendanceCorrectionRepository == null)
+                {
+                    _attendanceCorrectionRepository = new AttendanceCorrectionRepository(_connectionFactory);
+                }
+                return _attendanceCorrectionRepository;
+            }
+        }
+        #endregion
+
+        #region  IOnDutyRepository 
+        public IOnDutyRepository _onDutyRepository;
+        public IOnDutyRepository OnDutyRepository
+        {
+            get
+            {
+                if (_onDutyRepository == null)
+                {
+                    _onDutyRepository = new OnDutyRepository(_connectionFactory);
+                }
+                return _onDutyRepository;
+            }
+        }
+        #endregion
+
 
         #region IDisposable Support
         void IUnitOfWork.Complete()
