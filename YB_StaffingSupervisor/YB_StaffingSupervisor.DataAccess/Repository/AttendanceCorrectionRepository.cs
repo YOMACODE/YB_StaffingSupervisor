@@ -29,12 +29,15 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                     SqlParameter[] sqlparameters =
                     {
                     new SqlParameter("@intbSupervisorId",SqlDbType.BigInt){Value = SearchRequest.SupervisorId},
-                    new SqlParameter("@chvnSearchAttendanceDate", SqlDbType.NVarChar,512) { Value = SearchRequest.SearchAttendanceDate},
+                    new SqlParameter("@chvnSearchUserCode",SqlDbType.VarChar){Value = SearchRequest.SearchUserCode},
+                    new SqlParameter("@chvnSearchFromDate",SqlDbType.VarChar){Value = SearchRequest.SearchAttendanceFrom},
+                    new SqlParameter("@chvnSearchToDate",SqlDbType.VarChar){Value = SearchRequest.SearchAttendanceTo},
+                    new SqlParameter("@chvnSearchStatusType",SqlDbType.VarChar){Value = SearchRequest.SearchStatusType},
                     new SqlParameter("@intOffsetValue",SqlDbType.Int){ Value=(Page-1) * PageSize },
                     new SqlParameter("@intPagingSize",SqlDbType.Int){ Value=PageSize },
-                    new SqlParameter("@chvnSortOrderBy", SqlDbType.NVarChar,512) { Value = SearchRequest.SortOrderBy},
+                    new SqlParameter("@chvnSortOrderBy", SqlDbType.NVarChar,10) { Value = SearchRequest.SortOrderBy},
                     new SqlParameter("@chvnSortColumnName", SqlDbType.NVarChar,512) { Value = SearchRequest.SortColumnName},
-                    new SqlParameter("@chvnOperationType", SqlDbType.NVarChar,512) { Value = "SelectAll" },
+                    new SqlParameter("@chvnOperationType", SqlDbType.VarChar) { Value = "SelectAll" },
                 };
                     List<AttendanceCorrectionRequestModel> attendanceCorrectionRequestModels = new List<AttendanceCorrectionRequestModel>();
                     DataSet dataSet = await Task.Run(() => dbconnect.SPExecuteDataset("[WebApplication_SP].[usp_Supervisor_AttendanceCorrectionRequest_ApproveReject_SelectAll_SelectById]", sqlparameters, "dataSet"));
@@ -45,9 +48,27 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                             for (int i = 0; i < dataSet.Tables[0].Rows.Count; i++)
                             {
                                 AttendanceCorrectionRequestModel attendanceCorrectionRequestModel = new AttendanceCorrectionRequestModel();
-                                attendanceCorrectionRequestModel.AttendanceCorrectionRequestId = dataSet.Tables[0].Rows[i]["DailyAttendanceId"] == DBNull.Value ? Convert.ToString(0) : Convert.ToString(dataSet.Tables[0].Rows[i]["DailyAttendanceId"]);
-                                attendanceCorrectionRequestModel.RequestType = dataSet.Tables[0].Rows[i]["AttendanceType"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["AttendanceType"]);
-                                //attendanceModel.SNo = dataSet.Tables[0].Rows[i]["SNo"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["SNo"]);
+                                attendanceCorrectionRequestModel.AttendanceCorrectionRequestId = dataSet.Tables[0].Rows[i]["DailyAttendanceCorrectionRequestId"] == DBNull.Value ? Convert.ToString(0) : Convert.ToString(dataSet.Tables[0].Rows[i]["DailyAttendanceCorrectionRequestId"]);
+                                attendanceCorrectionRequestModel.UserCode = dataSet.Tables[0].Rows[i]["UserCode"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["UserCode"]);
+                                attendanceCorrectionRequestModel.FullName = dataSet.Tables[0].Rows[i]["FullName"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["FullName"]);
+                                attendanceCorrectionRequestModel.AttendanceDate = dataSet.Tables[0].Rows[i]["AttendanceCorrectionDate"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["AttendanceCorrectionDate"]);
+                                attendanceCorrectionRequestModel.RequestType = dataSet.Tables[0].Rows[i]["AttendanceCorrectionType"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["AttendanceCorrectionType"]);
+                                attendanceCorrectionRequestModel.CheckInTime = dataSet.Tables[0].Rows[i]["CheckInTime"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CheckInTime"]);
+                                attendanceCorrectionRequestModel.CheckOutTime = dataSet.Tables[0].Rows[i]["CheckOutTime"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CheckOutTime"]);
+                                attendanceCorrectionRequestModel.WorkingHours = dataSet.Tables[0].Rows[i]["CompleteHours"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CompleteHours"]);
+                                attendanceCorrectionRequestModel.ApproveRejectStatus = dataSet.Tables[0].Rows[i]["ApproveRejectStatus"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["ApproveRejectStatus"]);
+                                attendanceCorrectionRequestModel.ApproveRejectComment = dataSet.Tables[0].Rows[i]["ApproveRejectComment"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["ApproveRejectComment"]);
+                                attendanceCorrectionRequestModel.CheckInStatus = dataSet.Tables[0].Rows[i]["CheckInStatus"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CheckInStatus"]);
+                                attendanceCorrectionRequestModel.CheckOutStatus = dataSet.Tables[0].Rows[i]["CheckOutStatus"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CheckOutStatus"]);
+                                attendanceCorrectionRequestModel.ShiftHours = dataSet.Tables[0].Rows[i]["ShiftHours"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["ShiftHours"]);
+                                attendanceCorrectionRequestModel.CheckInTimeFrom = dataSet.Tables[0].Rows[i]["CheckInTimeFrom"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CheckInTimeFrom"]);
+                                attendanceCorrectionRequestModel.CheckInTimeTo = dataSet.Tables[0].Rows[i]["CheckInTimeTo"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CheckInTimeTo"]);
+                                attendanceCorrectionRequestModel.CheckOutTimeFrom = dataSet.Tables[0].Rows[i]["CheckOutTimeFrom"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CheckOutTimeFrom"]);
+                                attendanceCorrectionRequestModel.CheckOutTimeTo = dataSet.Tables[0].Rows[i]["CheckOutTimeTo"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CheckOutTimeTo"]);
+                                attendanceCorrectionRequestModel.UserId = dataSet.Tables[0].Rows[i]["UserId"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["UserId"]);
+                                attendanceCorrectionRequestModel.EmailId = dataSet.Tables[0].Rows[i]["EmailId"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["EmailId"]);
+                                attendanceCorrectionRequestModel.MobileNumber = dataSet.Tables[0].Rows[i]["MobileNumber"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["MobileNumber"]);
+                                attendanceCorrectionRequestModel.RequestedOnDate = dataSet.Tables[0].Rows[i]["CreateDate"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CreateDate"]);
                                 attendanceCorrectionRequestModels.Add(attendanceCorrectionRequestModel);
                             }
                         }
@@ -64,7 +85,7 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
             return attendanceCorrectionRequestCustom;
         }
 
-        public async Task<long> AttendanceCorrectionVerification(string attendanceCorrectionRequestId, int approveRejectstatus, string approveRejectComment, string approveRejectBy)
+        public async Task<long> AttendanceCorrectionVerification(string attendanceCorrectionRequestId, string approveRejectstatus, string approveRejectComment, string approveRejectBy)
         {
             try
             {
@@ -73,11 +94,11 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                 {
                     SqlParameter[] sqlparameters =
                     {
-                    new SqlParameter("@intbDailyAttendanceCorrectionRequestId",SqlDbType.BigInt){ Value = Convert.ToInt32(attendanceCorrectionRequestId)},
+                    new SqlParameter("@intbAttendanceCorrectionRequestId",SqlDbType.BigInt){ Value = attendanceCorrectionRequestId},
                     new SqlParameter("@chvnApproveRejectStatus", SqlDbType.NVarChar) { Value = approveRejectstatus },
                     new SqlParameter("@chvnApproveRejectComment", SqlDbType.NVarChar) { Value = approveRejectComment },
-                    new SqlParameter("@intbApproveRejectBy",SqlDbType.BigInt){ Value = Convert.ToInt64(approveRejectBy)},
-                    new SqlParameter("@chvnOperationType",SqlDbType.NVarChar){ Value = "ApproveRejectAttendanceCorrection"}
+                    new SqlParameter("@intbApproveRejectBy",SqlDbType.BigInt){ Value = approveRejectBy},
+                    new SqlParameter("@chvnOperationType",SqlDbType.VarChar){ Value = "ApproveRejectAttendanceCorrection"}
                     };
                     result = await Task.Run(() => dbConnect.SPExecuteScalarReturnValue("[WebApplication_SP].[usp_Supervisor_AttendanceCorrectionRequest_ApproveReject_SelectAll_SelectById]", sqlparameters));
                 }

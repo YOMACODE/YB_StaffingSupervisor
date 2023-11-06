@@ -7,6 +7,6 @@ namespace YB_StaffingSupervisor.DataAccess.Contract
 {
     public interface IUserProfileRepository
     {
-        UserProfileModel UserProfile(string userId);
+        Task<UserProfileModel> UserProfile(string userId);
     }
 }

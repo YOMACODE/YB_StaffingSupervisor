@@ -1,17 +1,377 @@
-﻿@* @model YB_StaffingSupervisor.DataAccess.Entities *@
+﻿@model YB_StaffingSupervisor.DataAccess.Entities.Custom.OnDutyRequestCustom
 @{
     ViewData["Title"] = "On Duty Requests";
     Layout = "~/Views/Shared/_ProantoV2MasterLayout.cshtml";
 }
+<style type="text/css">
+    .green-status {
+        color: green;
+        display: inline-block;
+        width: 100px;
+        height: 26px;
+        text-align: center;
+        line-height: 2.3;
+    }
+
+    .pending-status {
+        color: orange;
+        display: inline-block;
+        width: 100px;
+        height: 26px;
+        text-align: center;
+        line-height: 2.3;
+        color: #e8aa00;
+    }
+
+    .error-status {
+        color: red;
+        display: inline-block;
+        width: 100px;
+        height: 26px;
+        text-align: center;
+        line-height: 2.3;
+    }
+</style>
+
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-7 align-self-center">
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">On Duty Requests</h3>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item">
+                            <a href="#" class="text-muted">
+                                My Team
+                            </a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="font-weight-medium mb-0">On Duty Requests</h4>
+                        <button class="btn btn-sm" title="Filter" data-toggle="collapse" data-target="#filter">
+                            <i class="fa fa-filter" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                    <div class="collapse" id="filter">
+                        <div class="card card-body mb-3">
+                            <form asp-controller="OnDuty" asp-action="OnDutyRequests" method="get">
+                                <div class="row mt-3">
+
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
+                                        <label for="exampleFormControlSelect1"><b>Yoma ID</b></label>
+                                        <div class="form-group">
+                                            <input asp-for="SearchUserCode" placeholder="Search Yoma ID" class="form-control form-control-sm" autocomplete="off" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
+                                        <label for="exampleFormControlSelect1"><b>Attendance From</b></label>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-sm border-bottom startdate" value="@ViewBag.SearchAttendanceFrom" asp-for="SearchAttendanceFrom" asp-format="{0:dd/MM/yyyy}" placeholder="DD/MM/YYYY" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
+                                        <label for="exampleFormControlSelect1"><b>Attendance To</b></label>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-sm border-bottom todate" value="@ViewBag.SearchAttendanceTo" asp-for="SearchAttendanceTo" asp-format="{0:dd/MM/yyyy}" placeholder="DD/MM/YYYY" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
+                                        <label for="exampleFormControlSelect1"><b>Approval Status</b></label>
+                                        <div class="form-group">
+                                            <select asp-for="SearchStatusType" class="form-control form-control-sm border-bottom remove-select2">
+                                                <option value="">Select Status</option>
+                                                <option value="P">Pending</option>
+                                                <option value="R">Rejected</option>
+                                                <option value="A">Approved</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-sm mr-1">Search</button>
+                                    <a asp-controller="OnDuty" asp-action="OnDutyRequests" class="btn btn-sm mr-1" title="Reset" tabindex="5">
+                                        <i class="fas fa-sync-alt">
+                                        </i>
+                                    </a>
+                                    @* <a asp-controller="OnDuty" asp-action="ExportOnDutyRequests" asp-route-page="@ViewBag.page" asp-route-sortOrder="@ViewData["sortOrder"]" asp-route-sortColumn="@ViewData["sortColumnName"]" asp-route-pagesize="@ViewBag.PageSize" asp-route-SearchUserCode="@ViewBag.SearchUserCode" asp-route-SearchAttendanceFrom="@ViewBag.SearchAttendanceFrom" asp-route-SearchAttendanceTo="@ViewBag.SearchAttendanceTo" asp-route-SearchStatusType="@ViewBag.SearchStatusType" class="btn btn-sm mr-1" title="Export">
+                                    Export
+                                    </a> *@
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive mt-3">
+                        <table class="table table-sm no-wrap table-bordered">
+                            <thead id="sumit" class="text-center">
+                                <tr>
+                                    <th>Requested On</th>
+                                    <th>Yoma ID</th>
+                                    <th>Associate Name</th>
+                                    <th>Attendance Date</th>
+                                    <th>Request Type</th>
+                                    <th>CheckIn</th>
+                                    <th>CheckOut</th>
+                                    <th>Status</th>
+                                    <th>Comment</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @{
+                                    var countSuggestion = 0;
+                                }
+                                @if (Model != null)
+                                {
+                                    if (Model.onDutyListing != null && Model.onDutyListing.Count() > 0)
+                                    {
+                                        foreach (var item in Model.onDutyListing)
+                                        {
+                                            <tr>
+                                                <td style="text-align:center">@item.RequestedOnDate</td>
+                                                <td>@item.UserCode</td>
+                                                <th>@item.FullName</th>
+                                                <td style="text-align:center">@item.AttendanceDate</td>
+                                                <td>@item.RequestType</td>
+                                                <td>@item.CheckInTime</td>
+                                                <td>@item.CheckOutTime</td>
+                                                <td>
+                                                    @if (item.ApproveRejectStatus == "Rejected")
+                                                    {
+                                                        <span class="error-status">Rejected !</span>
+                                                    }
+                                                    else if (item.ApproveRejectStatus == "Approved")
+                                                    {
+                                                        <span class="green-status">Approved !</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="pending-status">Pending !</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(item.ApproveRejectComment))
+                                                    {
+                                                        <i class="fa fa-comment" data-toggle="modal" data-target="#viewComment" onclick="viewComment(@countSuggestion)" id="btn_ViewComment_@countSuggestion"></i>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex justify-content-center">
+                                                        <input type="hidden" value="@item.OnDutyRequestId" name="onDutyListing[@countSuggestion].OnDutyRequestId" />
+                                                        <input type="hidden" value="@item.ApproveRejectStatus" name="onDutyListing[@countSuggestion].ApproveRejectStatus" />
+                                                        <input type="hidden" value="@item.ApproveRejectComment" name="onDutyListing[@countSuggestion].ApproveRejectComment" />
+                                                        @if (item.ApproveRejectStatus == "Rejected" || item.ApproveRejectStatus == "Approved")
+                                                        {
+                                                            <button class="btn btn-sm mr-1" title="Verify" disabled>Verify</button>
+                                                        }
+                                                        else
+                                                        {
+                                                            if (!string.IsNullOrEmpty(item.CheckInTime) || !string.IsNullOrEmpty(item.CheckOutTime))
+                                                            {
+                                                                <button class="btn btn-sm mr-1" title="Verify" data-toggle="modal" data-target="#viewVerifyOnDuty" id="btn_Verify_@countSuggestion" onclick="viewVerifyOnDuty(@countSuggestion)">Verify</button>
+                                                            }
+                                                            else
+                                                            {
+                                                                <button class="btn btn-sm mr-1" title="Verify" disabled>Verify</button>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            countSuggestion++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <div class="bottom_str">
+                        @if (Model != null && Model.CustomPagination != null)
+                        {
+                            @if (Model.CustomPagination.TotalItems > 10)
+                            {
+                                <div class="one_str">
+                                    <select class="form-control form-control-sm remove-select2" style="width:auto" asp-for="PageSize" onchange="showListForPageSize()">
+                                        <option value="/Supervisor/OnDuty/OnDutyRequests/?pagesize=100000&SearchUserCode=@ViewBag.SearchUserCode&SearchAttendanceFrom=@ViewBag.SearchAttendanceFrom&SearchAttendanceTo=@ViewBag.SearchAttendanceTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">ALL</option>
+                                        <option value="/Supervisor/OnDuty/OnDutyRequests/?pagesize=10&SearchUserCode=@ViewBag.SearchUserCode&SearchAttendanceFrom=@ViewBag.SearchAttendanceFrom&SearchAttendanceTo=@ViewBag.SearchAttendanceTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">10</option>
+                                        <option value="/Supervisor/OnDuty/OnDutyRequests/?pagesize=25&SearchUserCode=@ViewBag.SearchUserCode&SearchAttendanceFrom=@ViewBag.SearchAttendanceFrom&SearchAttendanceTo=@ViewBag.SearchAttendanceTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">25</option>
+                                        <option value="/Supervisor/OnDuty/OnDutyRequests/?pagesize=50&SearchUserCode=@ViewBag.SearchUserCode&SearchAttendanceFrom=@ViewBag.SearchAttendanceFrom&SearchAttendanceTo=@ViewBag.SearchAttendanceTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">50</option>
+                                        <option value="/Supervisor/OnDuty/OnDutyRequests/?pagesize=100&SearchUserCode=@ViewBag.SearchUserCode&SearchAttendanceFrom=@ViewBag.SearchAttendanceFrom&SearchAttendanceTo=@ViewBag.SearchAttendanceTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">100</option>
+                                    </select>
+                                </div>
+                            }
+                            if (Model.CustomPagination.EndPage > 1 && Model.CustomPagination.TotalItems > 1)
+                            {
+                                <div class="two_str">
+                                    <div class="pagination">
+                                        <ul class="bottom-Ui">
+                                            @if (Model.CustomPagination.CurrentPage > 1)
+                                            {
+                                                <li>
+                                                    <a href="~/Supervisor/OnDuty/OnDutyRequests/?SearchUserCode=@ViewBag.SearchUserCode&SearchAttendanceFrom=@ViewBag.SearchAttendanceFrom&SearchAttendanceTo=@ViewBag.SearchAttendanceTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&pagesize=@ViewBag.PageSize">First</a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Supervisor/OnDuty/OnDutyRequests/?SearchUserCode=@ViewBag.SearchUserCode&SearchAttendanceFrom=@ViewBag.SearchAttendanceFrom&SearchAttendanceTo=@ViewBag.SearchAttendanceTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.CurrentPage - 1)&pagesize=@ViewBag.PageSize">Previous</a>
+                                                </li>
+                                            }
+                                            @for (var Page = Model.CustomPagination.StartPage; Page <= Model.CustomPagination.EndPage; Page++)
+                                            {
+                                                <li>
+                                                    <a class="@(Page == Model.CustomPagination.CurrentPage ? "active" : "")" href="~/Supervisor/OnDuty/OnDutyRequests/?SearchUserCode=@ViewBag.SearchUserCode&SearchAttendanceFrom=@ViewBag.SearchAttendanceFrom&SearchAttendanceTo=@ViewBag.SearchAttendanceTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@Page&pagesize=@ViewBag.PageSize">@Page</a>
+                                                </li>
+                                            }
+                                            @if (Model.CustomPagination.CurrentPage < Model.CustomPagination.TotalPages)
+                                            {
+                                                <li>
+                                                    <a href="~/Supervisor/OnDuty/OnDutyRequests/?SearchUserCode=@ViewBag.SearchUserCode&SearchAttendanceFrom=@ViewBag.SearchAttendanceFrom&SearchAttendanceTo=@ViewBag.SearchAttendanceTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.CurrentPage + 1)&pagesize=@ViewBag.PageSize">Next</a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Supervisor/OnDuty/OnDutyRequests/?SearchUserCode=@ViewBag.SearchUserCode&SearchAttendanceFrom=@ViewBag.SearchAttendanceFrom&SearchAttendanceTo=@ViewBag.SearchAttendanceTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.TotalPages)&pagesize=@ViewBag.PageSize">Last</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewComment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">View Comment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="approve-reject">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea id="hdnModelApproveRejectComment" class="form-control" cols="4" rows="5" placeholder="" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewVerifyOnDuty" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">On Duty Approval</h5>
+                <h5 class="modal-cut" data-dismiss="modal" aria-label="Close" aria-hidden="true">✖</h5>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="hdnModelOnDutyId" />
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                        <label class="active"><b>Status</b><sup class="red">*</sup></label>
+                        <div class="form-group">
+                            <select class="form-control form-control-sm remove-select2" id="ApproveRejectStatus" onchange="ValidateApproveRejectStatus()">
+                                <option value="">Select</option>
+                                <option value="Approve">Approve</option>
+                                <option value="Reject">Reject</option>
+                            </select>
+                            <span id="ApproveRejectStatus-Error" class="text-danger ApproveRejectStatus-Error"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                        <label class="active"><b>Write Comment</b><sup class="red">*</sup></label>
+                        <div class="form-group">
+                            <textarea class="form-control" id="ApproveRejectComment" rows="3" onkeyup="ValidateApproveRejectComment()"></textarea>
+                            <span id="ApproveRejectComment-Error" class="text-danger ApproveRejectComment-Error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer py-2">
+                <button class="btn1 btn-sm reject-btn" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-sm btn-primary approval-btn" id="btnApproveRejectOnDuty" onclick="ApproveRejectOnDuty()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts{
     <script>
         $(document).ready(function () {
-
             toastr.success('On Duty Requests');
+            //$('.remove-select2').select2('destroy');
 
+            var selectedText = @ViewBag.PageSize;
+            if (selectedText == '100000') {
+                selectedText = "All";
+            }
+            $('#PageSize option').map(function () {
+                if ($(this).text() == selectedText) return this;
+            }).attr('selected', 'selected');
+
+            $('.startdate').bootstrapMaterialDatePicker({
+                weekStart: 0,
+                time: false,
+                format: 'DD/MM/YYYY',
+                clearButton: true
+            }).on('change', function (e, date) {
+                $('.todate').bootstrapMaterialDatePicker('setMinDate', date);
+            });
+
+            $('.todate').bootstrapMaterialDatePicker({
+                weekStart: 0,
+                time: false,
+                format: 'DD/MM/YYYY',
+                clearButton: true
+            });
         });
-
+        function showListForPageSize() {
+            window.location.href = $("#PageSize").val();
+        }
     </script>
     <script src="~/js/Areas/OnDuty/OnDutyRequests.js" asp-append-version="true"></script>
 }

@@ -164,6 +164,20 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
         }
         #endregion
 
+        #region  IOnDutyRepository 
+        public IOnDutyRepository _onDutyRepository;
+        public IOnDutyRepository OnDutyRepository
+        {
+            get
+            {
+                if (_onDutyRepository == null)
+                {
+                    _onDutyRepository = new OnDutyRepository(_connectionFactory);
+                }
+                return _onDutyRepository;
+            }
+        }
+        #endregion
 
 
         #region IDisposable Support

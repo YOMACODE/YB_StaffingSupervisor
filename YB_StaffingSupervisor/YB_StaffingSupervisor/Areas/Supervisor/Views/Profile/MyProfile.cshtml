@@ -1,4 +1,4 @@
-﻿@* @model YB_StaffingSupervisor.DataAccess.Entities.UserProfileModel *@
+﻿@model YB_StaffingSupervisor.DataAccess.Entities.UserProfileModel
 @{
     ViewData["Title"] = "My Profile";
     Layout = "~/Views/Shared/_ProantoV2MasterLayout.cshtml";
@@ -177,7 +177,7 @@
 <div class="page-breadcrumb">
     <div class="row my-2">
         <div class="col-5 col-md-5 align-self-center">
-            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Ashutosh Kumar</h3>
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">@Model.FullName</h3>
             <div class="d-flex align-items-center">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb m-0 p-0">
@@ -209,12 +209,10 @@
                         <div class="card-body p-0 d-flex flex-column justify-content-center align-items-center">
                             <div class="small-12 medium-2 large-2 columns text-center d-block  m-auto position-relative">
                                 <div class="circle">
-                                    <img id="main-photo" class="profile-pic-detail"
-                                         src="https://pbs.twimg.com/profile_images/1256443772268949511/AkGeCzZt_400x400.jpg"
-                                         style="width: 100%;">
+                                    <img id="main-photo" class="profile-pic-detail" src="@Model.ProfileImage" style="width: 100%;">
                                 </div>
                                 <div class="user-details">
-                                    <h5 class="text-center mb-0 profile-name">Ashutosh Kumar</h5>
+                                    <h5 class="text-center mb-0 profile-name">@Model.FullName</h5>
 
                                 </div>
                             </div>
@@ -267,27 +265,22 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label for="inputText"><b>Username</b></label>
-                                        <input type="text" disabled
-                                               class="form-control form-control-sm bg-light border-0"
-                                               id="inputText" value="atulsin9h_7859">
+                                        <input type="text" asp-for="UserName" class="form-control form-control-sm bg-light border-0" disabled>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="inputText1"><b>Full Name</b></label>
-                                        <input type="text" class="form-control form-control-sm"
-                                               id="inputText1" value="Atul Kumar">
+                                        <input type="text" asp-for="FullName" class="form-control form-control-sm bg-light border-0" disabled>
                                     </div>
 
 
 
                                     <div class="form-group col-md-4">
                                         <label for="inputText2"><b>Email Id</b></label>
-                                        <input type="text" class="form-control form-control-sm"
-                                               id="inputText2" value="itsatulsinghji@gmail.com">
+                                        <input type="text" asp-for="EmailId" class="form-control form-control-sm bg-light border-0" disabled>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="inputText3"><b>Mobile Number</b></label>
-                                        <input type="text" class="form-control form-control-sm"
-                                               id="inputText3" value="8868868745">
+                                        <input type="text" asp-for="MobileNumber" class="form-control form-control-sm bg-light border-0" disabled>
                                     </div>
 
                                 </div>
@@ -324,14 +317,14 @@
                                 <div class="col-sm-12">
                                     <div class="form-actions">
                                         <div class="d-flex justify-content-end">
-                                            <button type="button"
+                                           @*  <button type="button"
                                                     class="btn btn-sm btn-secondary mr-2 my-1">
                                                 Cancel
                                             </button>
                                             <button type="button"
                                                     class="btn btn-sm btn-primary my-1">
                                                 Save
-                                            </button>
+                                            </button> *@
                                         </div>
                                     </div>
                                 </div>

@@ -16,8 +16,8 @@
     }
 
     /*.pb-calendar .schedule-dot-item.blue{
-                background-color: blue;
-                }*/
+                            background-color: blue;
+                            }*/
 
     .pb-calendar .schedule-dot-item.red {
         background-color: #c53131;
@@ -46,8 +46,8 @@
     }
 
     /*.pb-calendar .schedule-dot-item.green{
-                background-color: green;
-                }*/
+                            background-color: green;
+                            }*/
 
     .green-status {
         color: green;
@@ -215,13 +215,13 @@
 <div class="page-breadcrumb">
     <div class="row mb-2">
         <div class="col-7 align-self-center">
-            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Attendance</h3>
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Team Attendance</h3>
             <div class="d-flex align-items-center">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb m-0 p-0">
                         <li class="breadcrumb-item">
                             <a class="text-muted">
-                                <b>Team Attendance</b>
+                                <b>My Team Attendance</b>
                             </a>
                         </li>
                     </ol>
@@ -235,444 +235,428 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="font-weight-medium mb-0">Attendance</h4>
+                    <button class="btn btn-sm" title="Filter" data-toggle="collapse" data-target="#filter">
+                        <i class="fa fa-filter" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class="collapse" id="filter">
+                    <div class="card card-body mb-3">
+                        <form asp-controller="Attendance" asp-action="TeamAttendance" method="get">
+                            <div class="row mt-3">
+
+                                <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
+                                    <label for="exampleFormControlSelect1"><b>Yoma ID</b></label>
+                                    <div class="form-group">
+                                        <input asp-for="SearchUserCode" placeholder="Search Yoma ID" class="form-control form-control-sm" autocomplete="off" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
+                                    <label for="exampleFormControlSelect1"><b>Attendance Date</b></label>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-sm border-bottom searchdate" value="@ViewBag.SearchDate" asp-for="SearchDate" asp-format="{0:dd/MM/yyyy}" placeholder="DD/MM/YYYY" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-sm mr-1">Search</button>
+                                <a asp-controller="Attendance" asp-action="TeamAttendance" class="btn btn-sm mr-1" title="Reset" tabindex="5">
+                                    <i class="fas fa-sync-alt">
+                                    </i>
+                                </a>
+                                @* <a asp-controller="Attendance" asp-action="ExportTeamAttendance" asp-route-SearchUserCode="@ViewBag.SearchUserCode" asp-route-SearchDate="@ViewBag.SearchDate" class="btn btn-sm mr-1" title="Export">
+                                Export
+                                </a> *@
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row mb-4 todays-insights align-items-center">
+                    <div class="col-12 col-sm-12 col-md-12 col-xl-3 col-lg-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="announcment-icon">
+                                <i class="fa fa-bullhorn"
+                                   aria-hidden="true"></i>
+                            </div>
+                            <div class="todayDate">
+                                <p class="mb-0 todayDate">@Model.Date</p>
+                                <small>
+                                    <i class="fa fa-external-link" aria-hidden="true"></i>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-xl-9 col-lg-9 mt-3">
+                        <div class="row insigths-cards">
+                            <div class="col-md-4">
+                                <div class="card total-workforce card-body">
+                                    <div>Total Associates</div>
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
+                                        <div class="total-workforce-count">@Model.TotalAssociates</div>
+                                        <div class="total-workforce-icon">
+                                            <i class="fa fa-users"
+                                               aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card total-present-workforce card-body">
+                                    <div>Total Present</div>
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
+                                        <div class="total-workforce-count">@Model.TotalPresent</div>
+                                        <div class="total-workforce-icon">
+                                            <i class="fa fa-arrow-circle-down" aria-hidden="true"
+                                               style="transform: rotate(45deg);"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card total-absent-workforce card-body">
+                                    <div>Total Absent</div>
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
+                                        <div class="total-workforce-count">@Model.TotalAbsent</div>
+                                        <div class="total-workforce-icon">
+                                            <i class="fa fa-arrow-circle-down" aria-hidden="true"
+                                               style="transform: rotate(-45deg);"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="nav nav-tabs mb-3" id="myTab2" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="teamattendance-tab" href="#">Team Attendance</a>
+                        <a class="nav-link active" id="quickttendance-tab" data-toggle="tab"
+                           href="#quickattendance" role="tab" aria-controls="quickattendance"
+                           aria-selected="false">Quick Attendance</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="selfiettendance-tab" data-toggle="tab"
+                           href="#selfieattendance" role="tab" aria-controls="selfieattendance"
+                           aria-selected="false">Selfie based Attendance</a>
                     </li>
                 </ul>
+
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="teamattendance" role="tabpanel"
-                         aria-labelledby="teamattendance-tab">
+                    <div class="tab-pane fade show active" id="quickattendance" role="tabpanel"
+                         aria-labelledby="quickattendance-tab">
+                        <div class="table-responsive">
+                            <table class="table table-sm no-wrap table-bordered">
+                                <thead id="sumit" class="text-center">
+                                    <tr>
+                                        <th scope="col">
+                                            <div>Yoma ID</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Associate Name</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Email</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Mobile No.</div>
+                                        </th>
+                                        <th>
+                                            In(LAT/LONG)
+                                        </th>
+                                        <th>
+                                            Out(LAT/LONG)
+                                        </th>
+                                        <th scope="col">
+                                            <div>Check-In</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Check-Out</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Working Hours</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>CheckIn Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>CheckOut Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Approve/Reject Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Approve/Reject Comment</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>View Attendance Log</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
 
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <h4 class="font-weight-medium mb-0">All Associates</h4>
-                            <button class="btn btn-sm" title="Filter" data-toggle="collapse"
-                                    data-target="#filter">
-                                <i class="fa fa-filter"
-                                   aria-hidden="true"></i>
-                            </button>
+                                    @{
+                                        var countSuggestion = 0;
+                                    }
+                                    @if (Model != null)
+                                    {
+                                        if (Model.quickAttendanceListing != null && Model.quickAttendanceListing.Count() > 0)
+                                        {
+                                            foreach (var item in Model.quickAttendanceListing)
+                                            {
+                                                <tr>
+                                                    <td style="text-align:center">@item.UserCode</td>
+                                                    <td class="text-dark">
+                                                        <span class="mb-0 ms-2">@item.FullName</span>
+                                                    </td>
+                                                    <td>@item.EmailId</td>
+                                                    <td>@item.MobileNumber</td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.CheckInLatitude) && !string.IsNullOrEmpty(item.CheckInLongitude))
+                                                        {
+                                                            <span>@item.CheckInLatitude - @item.CheckInLongitude</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.CheckOutLatitude) && !string.IsNullOrEmpty(item.CheckOutLongitude))
+                                                        {
+                                                            <span>@item.CheckOutLatitude - @item.CheckOutLongitude</span>
+                                                        }
+                                                    </td>
+                                                    <td>@item.CheckInTime</td>
+                                                    <td>@item.CheckOutTime</td>
+                                                    <td>@item.WorkingHours</td>
+                                                    <td>@item.CheckInStatus</td>
+                                                    <td>@item.CheckOutStatus</td>
+                                                    <td>
+                                                        @if (item.ApproveRejectStatus == "Rejected")
+                                                        {
+                                                            <span class="error-status">Rejected !</span>
+                                                        }
+                                                        else if (item.ApproveRejectStatus == "Approved")
+                                                        {
+                                                            <span class="green-status">Approved !</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="pending-status">Pending !</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.ApproveRejectComment))
+                                                        {
+                                                            <i class="fa fa-comment" data-toggle="modal" data-target="#viewComment" onclick="viewCommentQ(@countSuggestion)" id="btn_ViewCommentQ_@countSuggestion"></i>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-center">
+                                                            <input type="hidden" value="@item.ApproveRejectComment" name="quickAttendanceListing[@countSuggestion].ApproveRejectComment" />
+                                                            <button class="btn btn-sm mr-1" title="View Log" disabled>View Log</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                countSuggestion++;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
 
-                        <div class="collapse mt-3" id="filter">
-                            <div class="card mb-3">
+                    </div>
 
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <div class="font-weight-medium">Filters</div>
-                                    <div><i class="fa fa-filter"></i></div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
+                    <div class="tab-pane fade" id="selfieattendance" role="tabpanel"
+                         aria-labelledby="selfieattendance-tab">
+                        <div class="table-responsive">
+                            <table class="table table-sm no-wrap table-bordered">
+                                <thead id="sumit" class="text-center">
+                                    <tr>
 
-                                        <div class="col-md-3 col-lg-3 mt-2">
-                                            <div class="form-group">
-                                                <label for="exampleFormControlInput1" class="active">
-                                                    <b>
-                                                        Yoma
-                                                        ID
-                                                    </b>
-                                                </label>
-                                                <input type="text"
-                                                       class="form-control form-control-sm border-bottom"
-                                                       id="exampleFormControlInput1"
-                                                       placeholder="Enter Id no.">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3 col-lg-3 mt-2">
-                                            <div class="form-group">
-                                                <label for="exampleFormControlInput1"
-                                                       class="active"><b>Associate Name</b></label>
-                                                <input type="text"
-                                                       class="form-control form-control-sm border-bottom"
-                                                       id="exampleFormControlInput1"
-                                                       placeholder="Enter Associate Name">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3 col-lg-3 mt-2">
-                                            <div class="form-group">
-                                                <label for="exampleFormControlInput1"
-                                                       class="active"><b>Associate Email</b></label>
-                                                <input type="text"
-                                                       class="form-control form-control-sm border-bottom"
-                                                       id="exampleFormControlInput1"
-                                                       placeholder="Enter Associate Email">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3 col-lg-3 mt-2">
-                                            <div class="form-group">
-                                                <label for="exampleFormControlInput1"
-                                                       class="active"><b>Associate Mobile</b></label>
-                                                <input type="text"
-                                                       class="form-control form-control-sm border-bottom"
-                                                       id="exampleFormControlInput1"
-                                                       placeholder="Enter Associate Mobile">
-                                            </div>
-                                        </div>
-
-
-
-                                        <div class="col-md-3 col-lg-3 mt-2">
-                                            <div class="form-group">
-                                                <label for="exampleFormControlInput1"
-                                                       class="active"><b>Date</b></label>
-                                                <input type="text"
-                                                       class="form-control form-control-sm border-bottom"
-                                                       id="mdate" placeholder="dd-mm-yyyy">
-                                            </div>
-                                        </div>
-
-
-
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="d-flex justify-content-end">
-                                        <button class="btn btn-sm mr-1">Close</button>
-                                        <button class="btn btn-sm mr-1">Clear</button>
-                                        <button class="btn btn-sm">Search</button>
-                                    </div>
-                                </div>
-
-
-                            </div>
+                                        <th>Yoma ID</th>
+                                        <th scope="col">
+                                            <div>Associate Name</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Email</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Mobile No.</div>
+                                        </th>
+                                        <th>
+                                            In(LAT/LONG)
+                                        </th>
+                                        <th>
+                                            Out(LAT/LONG)
+                                        </th>
+                                        <th scope="col">
+                                            <div>Check-In</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Check-Out</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Working Hours</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div> In (image)</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Out (image)</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>CheckIn Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>CheckOut Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Approve/Reject Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Approve/Reject Comment</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>View Attendance Log</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    @{
+                                        var countSuggestion1 = 0;
+                                    }
+                                    @if (Model != null)
+                                    {
+                                        if (Model.selfieBasedAttendanceListing != null && Model.selfieBasedAttendanceListing.Count() > 0)
+                                        {
+                                            foreach (var item in Model.selfieBasedAttendanceListing)
+                                            {
+                                                <tr>
+                                                    <td style="text-align:center">@item.UserCode</td>
+                                                    <td class="text-dark">
+                                                        <span class="mb-0 ms-2">@item.FullName</span>
+                                                    </td>
+                                                    <td>@item.EmailId</td>
+                                                    <td>@item.MobileNumber</td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.CheckInLatitude) && !string.IsNullOrEmpty(item.CheckInLongitude))
+                                                        {
+                                                            <span>@item.CheckInLatitude - @item.CheckInLongitude</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.CheckOutLatitude) && !string.IsNullOrEmpty(item.CheckOutLongitude))
+                                                        {
+                                                            <span>@item.CheckOutLatitude - @item.CheckOutLongitude</span>
+                                                        }
+                                                    </td>
+                                                    <td>@item.CheckInTime</td>
+                                                    <td>@item.CheckOutTime</td>
+                                                    <td>@item.WorkingHours</td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.CheckInImagePath))
+                                                        {
+                                                            <img class="img" src="@Url.Content(item.CheckInImagePath)" title="CheckIn Image" style="width:60px; height:60px" />
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.CheckOutImagePath))
+                                                        {
+                                                            <img class="img" src="@Url.Content(item.CheckOutImagePath)" title="CheckOut Image" style="width:60px; height:60px" />
+                                                        }
+                                                    </td>
+                                                    <td>@item.CheckInStatus</td>
+                                                    <td>@item.CheckOutStatus</td>
+                                                    <td>
+                                                        @if (item.ApproveRejectStatus == "Rejected")
+                                                        {
+                                                            <span class="error-status">Rejected !</span>
+                                                        }
+                                                        else if (item.ApproveRejectStatus == "Approved")
+                                                        {
+                                                            <span class="green-status">Approved !</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="pending-status">Pending !</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.ApproveRejectComment))
+                                                        {
+                                                            <i class="fa fa-comment" data-toggle="modal" data-target="#viewComment" onclick="viewCommentS(@countSuggestion1)" id="btn_ViewCommentS_@countSuggestion1"></i>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-center">
+                                                            <input type="hidden" value="@item.ApproveRejectComment" name="selfieBasedAttendanceListing[@countSuggestion1].ApproveRejectComment" />
+                                                            <button class="btn btn-sm mr-1" title="View Log" disabled>View Log</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                countSuggestion1++;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                        <div class="row mb-4 todays-insights align-items-center">
-                            <div class="col-12 col-sm-12 col-md-12 col-xl-3 col-lg-3">
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <div class="announcment-icon">
-                                        <i class="fa fa-bullhorn"
-                                           aria-hidden="true"></i>
-                                    </div>
-                                    <div class="todayDate">
-                                        <p class="mb-0 todayDate">Today, 15 June 2023</p>
-                                        <small>
-                                            Today's attendance only. <i class="fa fa-external-link"
-                                                                        aria-hidden="true"></i>
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-sm-12 col-md-12 col-xl-9 col-lg-9 mt-3">
-                                <div class="row insigths-cards">
-                                    <div class="col-md-4">
-                                        <div class="card total-workforce card-body">
-                                            <div>Total Associates</div>
-                                            <div class="d-flex justify-content-between align-items-center mt-1">
-                                                <div class="total-workforce-count">5000</div>
-                                                <div class="total-workforce-icon">
-                                                    <i class="fa fa-users"
-                                                       aria-hidden="true"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="card total-present-workforce card-body">
-                                            <div>Total Present</div>
-                                            <div class="d-flex justify-content-between align-items-center mt-1">
-                                                <div class="total-workforce-count">4200</div>
-                                                <div class="total-workforce-icon">
-                                                    <i class="fa fa-arrow-circle-down" aria-hidden="true"
-                                                       style="transform: rotate(45deg);"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-4">
-                                        <div class="card total-absent-workforce card-body">
-                                            <div>Total Absent</div>
-                                            <div class="d-flex justify-content-between align-items-center mt-1">
-                                                <div class="total-workforce-count">800</div>
-                                                <div class="total-workforce-icon">
-                                                    <i class="fa fa-arrow-circle-down" aria-hidden="true"
-                                                       style="transform: rotate(-45deg);"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
+<div class="modal fade" id="viewComment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">View Comment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="approve-reject">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea id="hdnModelApproveRejectComment" class="form-control" cols="4" rows="5" placeholder="" disabled></textarea>
                         </div>
-
-                        <ul class="nav nav-tabs mb-3" id="myTab2" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="quickttendance-tab" data-toggle="tab"
-                                   href="#quickattendance" role="tab" aria-controls="quickattendance"
-                                   aria-selected="false">Quick Attendance</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="selfiettendance-tab" data-toggle="tab"
-                                   href="#selfieattendance" role="tab" aria-controls="selfieattendance"
-                                   aria-selected="false">Selfie based Attendance</a>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="quickattendance" role="tabpanel"
-                                 aria-labelledby="quickattendance-tab">
-                                <div class="table-responsive">
-                                    <table class="table table-sm no-wrap font-12 v-middle">
-                                        <thead id="sumit" class="text-center">
-                                            <tr>
-                                                <th scope="col">
-                                                    <div>Yoma Id</div>
-                                                </th>
-
-                                                <th scope="col">
-                                                    <div>Associate Name</div>
-                                                </th>
-
-
-
-                                                <th scope="col">
-                                                    <div>Email</div>
-                                                </th>
-
-                                                <th scope="col">
-                                                    <div>Mobile No.</div>
-                                                </th>
-
-                                                <th scope="col">
-                                                    <div>Check-In</div>
-                                                </th>
-
-                                                <th scope="col">
-                                                    <div>Check-Out</div>
-                                                </th>
-
-                                                <th scope="col">
-                                                    <div>Working Hours</div>
-                                                </th>
-
-                                                <th scope="col">
-                                                    <div>Arrival</div>
-                                                </th>
-
-
-                                                <th scope="col">
-                                                    <div>View Attendance Log</div>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="text-center">
-                                            <tr>
-                                                <td>YM4589689</td>
-                                                <td class="text-dark">
-                                                    <span class="mb-0 ms-2">Akshay Aggarwal</span>
-                                                </td>
-                                                <td>akshay.90@gmail.com</td>
-                                                <td>+91 9856231476</td>
-
-                                                <td>09:45 AM</td>
-                                                <td>07:12 PM</td>
-                                                <td>
-                                                    8 hours <br><span class="extra-working-time text-success fs-12">
-                                                        +2:00 hrs
-                                                        extra
-                                                    </span>
-                                                </td>
-                                                <td><span class="green-status font-12">On-Time</span></td>
-                                                <td>
-                                                    <a href="./attendance-report-log.html" class="btn btn-sm"
-                                                       role="button">
-                                                        View Log
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>YM4589689</td>
-                                                <td class="text-dark">
-                                                    <span class="mb-0 ms-2">Ramesh Singh</span>
-                                                </td>
-                                                <td>singh.90@gmail.com</td>
-                                                <td>+91 9856231476</td>
-
-                                                <td>09:45 AM</td>
-                                                <td>07:12 PM</td>
-                                                <td>
-                                                    8 hours <br><span class="extra-working-time text-success fs-12">
-                                                        +2:00 hrs
-                                                        extra
-                                                    </span>
-                                                </td>
-                                                <td><span class="green-status font-12">On-Time</span></td>
-                                                <td>
-                                                    <a href="./attendance-report-log.html" class="btn btn-sm"
-                                                       role="button">
-                                                        View Log
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-
-
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-
-                            <div class="tab-pane fade" id="selfieattendance" role="tabpanel"
-                                 aria-labelledby="selfieattendance-tab">
-                                <div class="table-responsive">
-                                    <table class="table participant-table table-sm no-wrap font-12 v-middle">
-                                        <thead id="sumit" class="text-center">
-                                            <tr>
-
-                                                <th>Yoma Id</th>
-                                                <th scope="col">
-                                                    <div>Associate Name</div>
-                                                </th>
-
-
-
-                                                <th scope="col">
-                                                    <div>Email</div>
-                                                </th>
-
-                                                <th scope="col">
-                                                    <div>Mobile No.</div>
-                                                </th>
-
-                                                <th scope="col">
-                                                    <div> In (image)</div>
-                                                </th>
-
-                                                <th scope="col">
-                                                    <div>Out (image)</div>
-                                                </th>
-
-                                                <th>
-                                                    In(LAT/LONG)
-                                                </th>
-
-                                                <th>
-                                                    Out(LAT/LONG)
-                                                </th>
-
-
-                                                <th scope="col">
-                                                    <div>Check-In</div>
-                                                </th>
-
-                                                <th scope="col">
-                                                    <div>Check-Out</div>
-                                                </th>
-
-                                                <th scope="col">
-                                                    <div>Working Hours</div>
-                                                </th>
-
-                                                <th scope="col">
-                                                    <div>Arrival</div>
-                                                </th>
-
-
-                                                <th scope="col">
-                                                    <div>View Attendance Log</div>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="text-center">
-                                            <tr>
-                                                <td>YM004589689</td>
-                                                <td class="text-dark">
-                                                    <span class="mb-0 ms-2">Akshay Aggarwal</span>
-                                                </td>
-                                                <td>akshay.90@gmail.com</td>
-                                                <td>+91 9856231476</td>
-                                                <td class="">
-                                                    <div style="width:60px; height:60px">
-                                                        <img class="img-fluid"
-                                                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCjECcSdecnMTM7RkIK8MCyLjitm8TLzRFKV4h8IOgYhMBWpY2HnBL0TnAZ2PEjMGS_YM&usqp=CAU"
-                                                             alt=""><br>
-                                                    </div>
-
-                                                </td>
-                                                <td>
-                                                    <div style="width:60px; height:60px">
-                                                        <img class="img-fluid"
-                                                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCjECcSdecnMTM7RkIK8MCyLjitm8TLzRFKV4h8IOgYhMBWpY2HnBL0TnAZ2PEjMGS_YM&usqp=CAU"
-                                                             alt="">
-                                                    </div>
-                                                </td>
-                                                <td>(40.7128, -74.0060)</td>
-                                                <td>(40.7128, -74.0060)</td>
-
-                                                <td>09:45 AM</td>
-                                                <td>07:12 PM</td>
-                                                <td>
-                                                    8 hours <br><span class="extra-working-time text-success fs-12">
-                                                        +2:00 hrs
-                                                        extra
-                                                    </span>
-                                                </td>
-                                                <td><span class="green-status font-12">On-Time</span></td>
-                                                <td>
-                                                    <a href="./attendance-report-log.html" class="btn btn-sm"
-                                                       role="button">
-                                                        View Log
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>YM4589689</td>
-                                                <td class="text-dark">
-                                                    <span class="mb-0 ms-2">Ramesh Singh</span>
-                                                </td>
-                                                <td>singh.90@gmail.com</td>
-                                                <td>+91 9856231476</td>
-                                                <td class="">
-                                                    <div style="width:60px; height:60px">
-                                                        <img class="img-fluid"
-                                                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCjECcSdecnMTM7RkIK8MCyLjitm8TLzRFKV4h8IOgYhMBWpY2HnBL0TnAZ2PEjMGS_YM&usqp=CAU"
-                                                             alt="">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div style="width:60px; height:60px">
-                                                        <img class="img-fluid"
-                                                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCjECcSdecnMTM7RkIK8MCyLjitm8TLzRFKV4h8IOgYhMBWpY2HnBL0TnAZ2PEjMGS_YM&usqp=CAU"
-                                                             alt="">
-                                                    </div>
-                                                </td>
-                                                <td>(40.7128, -74.0060)</td>
-                                                <td>(40.7128, -74.0060)</td>
-                                                <td>09:45 AM</td>
-                                                <td>07:12 PM</td>
-                                                <td>
-                                                    8 hours <br><span class="extra-working-time text-success fs-12">
-                                                        +2:00 hrs
-                                                        extra
-                                                    </span>
-                                                </td>
-                                                <td><span class="pending-status font-12">Late</span></td>
-                                                <td>
-                                                    <a href="./attendance-report-log.html" class="btn btn-sm"
-                                                       role="button">
-                                                        View Log
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -686,7 +670,13 @@
 
             toastr.success('Team Attendance');
 
-           
+            $('.searchdate').bootstrapMaterialDatePicker({
+                weekStart: 0,
+                time: false,
+                format: 'DD/MM/YYYY',
+                clearButton: true
+            });
+
         });
 
     </script>

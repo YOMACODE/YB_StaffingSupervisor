@@ -11,8 +11,11 @@ namespace YB_StaffingSupervisor.DataAccess.Entities.Custom
 	{
         #region Search and Sorting Parameter
         public string SupervisorId { get; set; }
-        public string SearchAttendanceDate { get; set; }
-		public string SortOrderBy { get; set; }
+        public string SearchUserCode { get; set; }
+        public string SearchAttendanceFrom { get; set; }
+        public string SearchAttendanceTo { get; set; }
+        public string SearchStatusType { get; set; }
+        public string SortOrderBy { get; set; }
 		public string SortColumnName { get; set; }
 		public int? PageSize { get; set; }
         #endregion

@@ -9,6 +9,6 @@ namespace YB_StaffingSupervisor.DataAccess.Contract
     public interface IAttendanceCorrectionRepository
     {
         Task<AttendanceCorrectionRequestCustom> GetAttendanceCorrectionListing(int Page, int PageSize, AttendanceCorrectionRequestCustom SearchRequest);
-        Task<long> AttendanceCorrectionVerification(string attendanceCorrectionRequestId, int approveRejectstatus, string approveRejectComment, string approveRejectBy);
+        Task<long> AttendanceCorrectionVerification(string attendanceCorrectionRequestId, string approveRejectstatus, string approveRejectComment, string approveRejectBy);
     }
 }

@@ -48,48 +48,99 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             {
                 ViewBag.SearchUserCode = SearchRequest.SearchUserCode;
             }
-            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchFullName))
-            {
-                ViewBag.SearchFullName = SearchRequest.SearchFullName;
-            }
-            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchMobileNumber))
-            {
-                ViewBag.SearchMobileNumber = SearchRequest.SearchMobileNumber;
-            }
-            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchEmailId))
-            {
-                ViewBag.SearchEmailId = SearchRequest.SearchEmailId;
-            }
-            TeamAttendanceCustom attendanceCustom = new TeamAttendanceCustom();
+            
+            TeamAttendanceCustom teamAttendanceCustom = new TeamAttendanceCustom();
             SearchRequest.SupervisorId = _dataProtector.Unprotect(baseModel.UserId);
-            //attendanceCustom = await _service.AttendanceRepository.GetDailyAttendanceListing(SearchRequest);
-            //if (attendanceCustom != null && attendanceCustom.quickAttendanceListing != null)
-            //{
-            //    attendanceCustom.quickAttendanceListing.ToList().ForEach(c =>
-            //    {
-            //        c.DailyAttendanceId = _dataProtector.Protect(c.DailyAttendanceId);
-            //    });
-            //}
-            //if (attendanceCustom != null && attendanceCustom.selfieBasedAttendanceListing != null)
-            //{
-            //    attendanceCustom.selfieBasedAttendanceListing.ToList().ForEach(c =>
-            //    {
-            //        c.DailyAttendanceId = _dataProtector.Protect(c.DailyAttendanceId);
-            //    });
-            //}
+            teamAttendanceCustom = await _service.AttendanceRepository.GetDailyTeamAttendanceListing(SearchRequest);
+            if (teamAttendanceCustom != null && teamAttendanceCustom.quickAttendanceListing != null)
+            {
+                teamAttendanceCustom.quickAttendanceListing.ToList().ForEach(c =>
+                {
+                    c.DailyAttendanceId = _dataProtector.Protect(c.DailyAttendanceId);
+                    c.UserId = _dataProtector.Protect(c.UserId);
+                });
+            }
+            if (teamAttendanceCustom != null && teamAttendanceCustom.selfieBasedAttendanceListing != null)
+            {
+                teamAttendanceCustom.selfieBasedAttendanceListing.ToList().ForEach(c =>
+                {
+                    c.DailyAttendanceId = _dataProtector.Protect(c.DailyAttendanceId);
+                    c.UserId = _dataProtector.Protect(c.UserId);
+                });
+            }
 
-            return View(attendanceCustom);
+            return View(teamAttendanceCustom);
         }
         [HttpGet]
-        public async Task<IActionResult> AttendanceRequests([FromQuery] AttendanceRequestCustom SearchRequest)
+        public async Task<IActionResult> AttendanceRequests([FromQuery] AttendanceRequestCustom SearchRequest, string sortOrder, string sortColumn, string pagesize, int page = 1)
         {
             if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("UserId")))
             {
                 return RedirectToAction("Logout", "Home", new { area = "" }).WithWarning("Warning !", "Unauthorized Access.");
             }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchUserCode))
+            {
+                ViewBag.SearchUserCode = SearchRequest.SearchUserCode;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchAttendanceFrom))
+            {
+                ViewBag.SearchAttendanceFrom = SearchRequest.SearchAttendanceFrom;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchAttendanceTo))
+            {
+                ViewBag.SearchAttendanceTo = SearchRequest.SearchAttendanceTo;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchStatusType))
+            {
+                ViewBag.SearchStatusType = SearchRequest.SearchStatusType;
+            }
+            if (sortOrder == "desc")
+            {
+                ViewData["sortOrder"] = "asce";
+            }
+            else
+            {
+                ViewData["sortOrder"] = "desc";
+            }
+            ViewData["sortOrderForPagination"] = sortOrder;
+            SearchRequest.SortColumnName = sortColumn ?? String.Empty;
+            SearchRequest.SortOrderBy = (sortOrder == null || sortOrder == "desc") ? "desc" : "asce";
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SortColumnName))
+            {
+                ViewData["sortColumnName"] = SearchRequest.SortColumnName;
+            }
+            int PageSize;
+            if (pagesize == null)
+            {
+                PageSize = 10;
+            }
+            else if (sortColumn != string.Empty)
+            {
+                PageSize = Convert.ToInt32(pagesize);
+            }
+            else
+            {
+                PageSize = Convert.ToInt32(pagesize);
+            }
+            ViewBag.page = page;
+            ViewBag.PageSize = PageSize;
 
-            
-            return View(SearchRequest);
+            AttendanceRequestCustom attendanceRequestCustom = new AttendanceRequestCustom();
+            SearchRequest.SupervisorId = _dataProtector.Unprotect(baseModel.UserId);
+
+            attendanceRequestCustom = await _service.AttendanceRepository.GetAttendanceRequestListing(page, PageSize, SearchRequest);
+            if (attendanceRequestCustom != null && attendanceRequestCustom.attendanceListing != null)
+            {
+                attendanceRequestCustom.attendanceListing.ToList().ForEach(c =>
+                {
+                    c.DailyAttendanceId = _dataProtector.Protect(c.DailyAttendanceId);
+                    c.UserId = _dataProtector.Protect(c.UserId);
+                    //c.ClientId = _dataProtector.Protect(c.ClientId);
+                    //c.BusinessSelectionId = _dataProtector.Protect(c.BusinessSelectionId);
+                });
+            }
+
+            return View(attendanceRequestCustom);
         }
         
         [HttpGet]
@@ -101,6 +152,49 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             }
 
             return View(SearchRequest);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ApproveRejectAttendance(string AttendanceRequestId, string ApproveRejectStatus, string ApproveRejectComment, string Token)
+        {
+            string msg = "";
+            try
+            {
+                var routeValues = ControllerContext.HttpContext.Request.RouteValues;
+                var url = $"/{routeValues["area"]}/{routeValues["controller"]}/{routeValues["action"]}";
+                bool checkToken = _loginUserRepo.ValidateCurrentToken(Token, url);
+                if (checkToken == false)
+                {
+                    return RedirectToAction("Logout", "Home").WithWarning("Warning !", "Unauthorized Access.");
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(AttendanceRequestId))
+                    {
+                        long result = await _service.AttendanceRepository.AttendanceVerification(_dataProtector.Unprotect(AttendanceRequestId), ApproveRejectStatus, ApproveRejectComment, _dataProtector.Unprotect(baseModel.UserId));
+                        if (result == 1)
+                        {
+                            if (ApproveRejectStatus == "Approve")
+                            {
+                                msg = "Approved successfully.";
+                            }
+                            else if (ApproveRejectStatus == "Approve")
+                            {
+                                msg = "Rejected successfully.";
+                            }
+                        }
+                        else
+                        {
+                            msg = "Something went wrong,Please try again.";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+            }
+            return Json(new { msg });
+
         }
     }
 }

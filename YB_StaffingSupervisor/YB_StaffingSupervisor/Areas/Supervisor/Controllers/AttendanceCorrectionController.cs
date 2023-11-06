@@ -41,11 +41,22 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
                 return RedirectToAction("Logout", "Home", new { area = "" }).WithWarning("Warning !", "Unauthorized Access.");
             }
 
-            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchAttendanceDate))
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchUserCode))
             {
-                ViewBag.SearchAttendanceDate = SearchRequest.SearchAttendanceDate;
+                ViewBag.SearchUserCode = SearchRequest.SearchUserCode;
             }
-
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchAttendanceFrom))
+            {
+                ViewBag.SearchAttendanceFrom = SearchRequest.SearchAttendanceFrom;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchAttendanceTo))
+            {
+                ViewBag.SearchAttendanceTo = SearchRequest.SearchAttendanceTo;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchStatusType))
+            {
+                ViewBag.SearchStatusType = SearchRequest.SearchStatusType;
+            }
             if (sortOrder == "desc")
             {
                 ViewData["sortOrder"] = "asce";
@@ -87,11 +98,10 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
                     c.AttendanceCorrectionRequestId = _dataProtector.Protect(c.AttendanceCorrectionRequestId);
                 });
             }
-            attendanceCorrectionRequestCustom.SupervisorId = SearchRequest.SupervisorId;
             return View(attendanceCorrectionRequestCustom);
         }
         [HttpPost]
-        public async Task<IActionResult> ApproveRejectAttendanceCorrection(string AttendanceCorrectionRequestId, int Status, string Reason, string Token)
+        public async Task<IActionResult> ApproveRejectAttendanceCorrection(string AttendanceCorrectionRequestId, string ApproveRejectStatus, string ApproveRejectComment, string Token)
         {
             string msg = "";
             try
@@ -107,18 +117,22 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
                 {
                     if (!string.IsNullOrEmpty(AttendanceCorrectionRequestId))
                     {
-                        long result = await _service.AttendanceCorrectionRepository.AttendanceCorrectionVerification(_dataProtector.Unprotect(AttendanceCorrectionRequestId), Status, Reason, _dataProtector.Unprotect(baseModel.UserId));
+                        long result = await _service.AttendanceCorrectionRepository.AttendanceCorrectionVerification(_dataProtector.Unprotect(AttendanceCorrectionRequestId), ApproveRejectStatus, ApproveRejectComment, _dataProtector.Unprotect(baseModel.UserId));
                         if (result == 1)
                         {
-                            if (Status == 1)
+                            if (ApproveRejectStatus == "Approve")
                             {
                                 msg = "Approved successfully.";
                             }
-                            else
+                            else if(ApproveRejectStatus == "Approve")
                             {
                                 msg = "Rejected successfully.";
                             }
                         }
+                        //else if (result == -1)
+                        //{
+
+                        //}
                         else
                         {
                             msg = "Something went wrong,Please try again.";

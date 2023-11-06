@@ -17,7 +17,7 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
         }
 
         #region user profile detail based on userId
-        public UserProfileModel UserProfile(string UserId)
+        public async Task<UserProfileModel> UserProfile(string UserId)
         {
             UserProfileModel userProfile = new UserProfileModel();
             using (var dbconnect = connectionFactory.GetDAL)
@@ -31,8 +31,10 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                 {
                     userProfile.UserId = dataTable.Rows[0]["UserId"] == DBNull.Value ? "0" : Convert.ToString(dataTable.Rows[0]["UserId"]);
                     userProfile.UserName = dataTable.Rows[0]["UserName"] == DBNull.Value ? string.Empty : Convert.ToString(dataTable.Rows[0]["UserName"]);
+                    userProfile.FullName = dataTable.Rows[0]["FullName"] == DBNull.Value ? string.Empty : Convert.ToString(dataTable.Rows[0]["FullName"]);
                     userProfile.EmailId = dataTable.Rows[0]["EmailId"] == DBNull.Value ? string.Empty : Convert.ToString(dataTable.Rows[0]["EmailId"]);
                     userProfile.MobileNumber = dataTable.Rows[0]["MobileNumber"] == DBNull.Value ? string.Empty : Convert.ToString(dataTable.Rows[0]["MobileNumber"]);
+                    userProfile.ProfileImage = dataTable.Rows[0]["ProfileImage"] == DBNull.Value ? string.Empty : Convert.ToString(dataTable.Rows[0]["ProfileImage"]);
                 }
                 else
                 {

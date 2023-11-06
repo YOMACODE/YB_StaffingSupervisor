@@ -1,65 +1,88 @@
-﻿
-function viewApproveRejectAttendance(id, btnText) {
+﻿function viewComment(id) {
     var viewbtnId = id;
-    var AttendanceId = $('[name = "auditInvoiceListing[' + viewbtnId + '].DailyAttendanceId"]').val();
-    var comment = $('[name = "userAttendanceListing[' + viewbtnId + '].ApproveRejectedComment"]').val();
-    $("#hdnModelDailyAttendanceId").val(AttendanceId);
-    $("#approveRejectReason").val(comment);
-
-    var isAttendanceApproved = $('[name = "userAttendanceListing[' + viewbtnId + '].IsInvoiceApprovedByAudit"]').val();
-    if (isAttendanceApproved == 'Approved' || btnText == 'Rejected View' || btnText == 'Approved View') {
-        $("#approve").hide();
-    }
-    else {
-        $("#approve").show();
-    }
-
-    if (btnText == 'Reject') {
-        $("#approve").val("Reject");
-    }
-    else {
-        $("#approve").val("Approve");
-    }
+    var ApproveRejectComment = $('[name = "attendanceListing[' + viewbtnId + '].ApproveRejectComment"]').val();
+    $("#hdnModelApproveRejectComment").val(ApproveRejectComment);
 }
-
-function funComment() {
+function viewVerifyAttendance(id) {
+    var viewbtnId = id;
+    var AttendanceId = $('[name = "attendanceListing[' + viewbtnId + '].DailyAttendanceId"]').val();
+    $("#hdnModelAttendanceId").val(AttendanceId);
+    $('#ApproveRejectStatus').val("");
+    $('#ApproveRejectStatus-Error').text("");
+    $('#ApproveRejectComment').val("");
+    $('#ApproveRejectComment-Error').text("");
+}
+function ValidateApproveRejectStatus() {
     var isValid = true;
-    var comment = $('#approveRejectReason').val();
-    var statusVal = $('#approve').val();
-    if (comment == "" && statusVal == "Reject") {
-        $('#errorComment').text('*Please enter comment.');
+    var ApproveRejectStatus = $('#ApproveRejectStatus').val();
+
+    if (ApproveRejectStatus == "") {
+        $("#ApproveRejectStatus-Error").text("*Please select Approve/Reject Status.");
+        $("#ApproveRejectStatus-Error").attr("style", "display:Inline;");
         isValid = false;
     }
     else {
-        $('#errorComment').text('');
+        $("#ApproveRejectStatus-Error").text("");
+        $("#ApproveRejectStatus-Error").attr("style", "display:Inline;");
+    }
+    return isValid;
+}
+function ValidateApproveRejectComment() {
+    var isValid = true;
+    var ApproveRejectComment = $('#ApproveRejectComment').val();
+    if (ApproveRejectComment == "") {
+        $("#ApproveRejectComment-Error").text("*Please enter comment.");
+        $("#ApproveRejectComment-Error").attr("style", "display:Inline;");
+        isValid = false;
+    }
+    else {
+        var regX = /^[\W]+$/;
+        if ($.isNumeric(ApproveRejectComment) || regX.test(ApproveRejectComment)) {
+            $("#ApproveRejectComment-Error").text("*Please enter valid comment.");
+            $("#ApproveRejectComment-Error").attr("style", "display:Inline;");
+            isValid = false;
+        }
+        else {
+            $("#ApproveRejectComment-Error").text("");
+            $("#ApproveRejectComment-Error").attr("style", "display:Inline;");
+        }
     }
     return isValid;
 }
 
 function ApproveRejectAttendance() {
-    if (funComment() == false) {
-        return false;
+    var IsFormValid = true;
+    if (ValidateApproveRejectStatus() == false) {
+        IsFormValid = false;
     }
-    else {
-        var chkButton = $("#approve").val();
-        var Status;
-        if (chkButton == "Approve") {
-            Status = 1;
-        }
-        else {
-            Status = 0;
-        }
+    if (ValidateApproveRejectComment() == false) {
+        IsFormValid = false;
+    }
+    
+    if (IsFormValid) {
         var AttendanceId = $("#hdnModelAttendanceId").val();
-        var Reason = $('#approveRejectReason').val();
+        var ApproveRejectStatus = $('#ApproveRejectStatus').val();
+        var ApproveRejectComment = $('#ApproveRejectComment').val();
         var Token = $('#hdn_TokenValue').val();
-        $("body").addClass("loading");
+        var DTO = {
+            attendanceId: AttendanceId,
+            ApproveRejectStatus: ApproveRejectStatus,
+            ApproveRejectComment: ApproveRejectComment,
+            Token: Token
+        };
+        $('#btnApproveRejectAttendance').attr("disabled", "disabled");
         $.ajax({
             cache: false,
             type: "POST",
             url: "/Supervisor/Attendance/ApproveRejectAttendance",
-            data: { "AttendanceId": AttendanceId, "Status": Status, "Reason": Reason, "Token": Token },
+            beforeSend: function (x) {
+                $(".preloader").attr("style", "display:block;");
+            },
+            data: DTO,
             success: function (data) {
-                if (data.msg == "Attendance approved successfully." || data.msg == "Attendance rejected successfully.") {
+                $(".preloader").attr("style", "display:none;");
+                $('#btnApproveRejectAttendance').removeAttr("disabled", "disabled");
+                if (data.msg == "Approved successfully." || data.msg == "Rejected successfully.") {
                     toastr.success(data.msg, "Success !");
                     location.reload();
                 }
@@ -68,9 +91,14 @@ function ApproveRejectAttendance() {
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                $("body").removeClass("loading");
+                $(".preloader").attr("style", "display:none;");
+                toastr.error("Server error.", "Error !");
+                $('#btnApproveRejectAttendance').removeAttr("disabled", "disabled");
+                if (xhr.status == 403) {
+                    var url = $.parseJSON(xhr.responseText);
+                    window.location.href = url;
+                }
             }
         });
     }
 }
-

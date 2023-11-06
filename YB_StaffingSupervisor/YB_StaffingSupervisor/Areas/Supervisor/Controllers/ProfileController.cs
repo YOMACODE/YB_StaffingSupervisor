@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YB_StaffingSupervisor.Common;
 using YB_StaffingSupervisor.Controllers;
+using YB_StaffingSupervisor.DataAccess.Entities;
 using YB_StaffingSupervisor.DataAccess.Entities.Custom;
 using YB_StaffingSupervisor.DataAccess.UnitOfWork;
 using YB_StaffingSupervisor.LoginRepository.ILoginRepository;
@@ -34,8 +35,9 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             {
                 return RedirectToAction("Logout", "Home", new { area = "" }).WithWarning("Warning !", "Unauthorized Access.");
             }
+            UserProfileModel userProfileModel = await _service.UserProfileRepository.UserProfile(_dataProtector.Unprotect(baseModel.UserId));
 
-            return View();
+            return View(userProfileModel);
         }
     }
 }
