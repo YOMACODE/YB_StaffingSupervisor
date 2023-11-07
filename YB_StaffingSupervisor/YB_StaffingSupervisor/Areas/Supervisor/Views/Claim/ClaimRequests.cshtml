@@ -1,0 +1,154 @@
+﻿@model YB_StaffingSupervisor.DataAccess.Entities.Custom.ClaimRequestsCustom
+@{
+    ViewData["Title"] = "Claim Requests";
+    Layout = "~/Views/Shared/_ProantoV2MasterLayout.cshtml";
+}
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="teamattendance" role="tabpanel" aria-labelledby="teamattendance-tab">
+
+                    <div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+                        <h5 class="font-weight-medium">All Requests</h5>
+
+                        <button class="btn btn-sm" title="Filter" data-toggle="collapse" data-target="#filter"><i class="fa fa-filter" aria-hidden="true"></i></button>
+                    </div>
+
+                    <div class="collapse mt-3" id="filter">
+                        <form asp-controller="ClaimRequests" asp-action="ClaimRequests" method="get">
+                            <div class="card mb-3">
+
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div class="font-weight-medium">Filters</div>
+                                    <div><i class="fa fa-filter"></i></div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="col-md-3 col-lg-3 mt-2">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlInput1" class="active"><b>Yoma ID</b></label>
+                                                <input type="text" id="yomaid" asp-for="SearchUserCode" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3 col-lg-3 mt-2">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlInput1" class="active"><b>Associate Name</b></label>
+                                                <input type="text" id="name" asp-for="SearchAssociateName" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Associate name.">
+                                            </div>
+                                        </div>
+
+
+                                        @*  <div class="col-md-3 col-lg-3 mt-2">
+                                        <div class="form-group">
+                                        <label for="exampleFormControlInput1" class="active"><b>Date</b></label>
+                                        <input type="text" id="name"asp-for="se" class="form-control form-control-sm border-bottom" id="mdate" placeholder="dd-mm-yyyy">
+                                        </div>
+                                        </div> *@
+
+                                        <div class="col-md-3 col-lg-3 mt-2">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlInput1" class="active"><b>Status</b></label>
+                                                <select class="form-control foprm-control-sm" id="status" asp-for="SearchStatus">
+                                                    <option>Select</option>
+                                                    <option>Approved</option>
+                                                    <option>Rejected</option>
+                                                    <option>Pending</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-flex justify-content-end">
+                                        <button type="button" class="btn btn-sm mr-1" onclick="return ExportLeaveApprovalReReport()">Export</button>
+                                        <button class="btn btn-sm mr-1">Clear</button>
+                                        <button type="submit" class="btn btn-sm">Search</button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm text-center v-middle" style="font-size: 12px;">
+                            <thead id="sumit">
+                                <tr>
+                                    <th>S. No.</th>
+                                    <th>Yoma Id</th>
+                                    <th>Associate Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile Number</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center" class="text-center">
+                                @if (Model != null)
+                                {
+                                    if (Model.ClaimRequestListing != null && Model.ClaimRequestListing.Count() > 0)
+                                    {
+                                        foreach (var item in Model.ClaimRequestListing)
+                                        {
+                                            <tr>
+                                                <td>@item.SNo</td>
+                                                <td>@item.YomaId</td>
+                                                <td>@item.AssociateName</td>
+                                                <td>@item.Email</td>
+                                                <td>@item.MobileNumber</td>
+
+                                                @*    <td>
+                                    <i class="fa fa-comment" data-toggle="modal"
+                                    data-target="#commentModal" onclick="bindCommentModel('@item.Comment');"></i>
+                                    </td> *@
+
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="25" style="text-align:center;">** No Record Found **</td>
+                                        </tr>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <tr><td colspan="25" style="text-align:center;">** No Record Found **</td></tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            toastr.success('Claim Requests');
+
+        });
+        
+    </script>
+    <script src="~/js/Areas/Claim/ClaimRequests.js" asp-append-version="true"></script>
+}

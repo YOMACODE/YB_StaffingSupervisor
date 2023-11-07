@@ -11,6 +11,6 @@ namespace YB_StaffingSupervisor.DataAccess.Contract
 	public interface IMyTeamRepository
 	{
 		Task<TeamMemberCustom> GetTeamMembersListing(int Page, int PageSize, TeamMemberCustom SearchRequest);
-		Task<DataTable> ExportTeamMemberList(string SearchUserCode, string SearchFullName, string SearchMobileNumber, string SearchEmailId, string SearchDesignation, string SearchJoiningDate); 
-	}
+        Task<DataTable> ExportTeamMemberList(string SearchUserCode, string SearchFullName, string SearchMobileNumber, string SearchEmailId, string SearchDesignation, string SearchJoiningDate);
+    }
 }

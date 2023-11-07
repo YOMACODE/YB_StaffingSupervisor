@@ -73,6 +73,7 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
             }
         }
         #endregion
+
         #region IUserTokensRepository
         IUserTokensRepository _userTokensRepository;
         public IUserTokensRepository UserTokensRepository
@@ -87,6 +88,7 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
             }
         }
 		#endregion
+
 		#region IMyTeamRepository
 		IMyTeamRepository _myTeamRepository;
 		public IMyTeamRepository MyTeamRepository
@@ -102,20 +104,95 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
 		}
         #endregion
 
-
-        #region ILeaveApprovalsRepository
-        ILeaveApprovalsRepository _leaveApprovalsRepository;
-        public ILeaveApprovalsRepository LeaveApprovalsRepository
+        #region IDesignationRepository
+        IDesignationRepository _designationRepository;
+        public IDesignationRepository DesignationRepository
         {
             get
             {
-                if (_leaveApprovalsRepository == null)
+                if (_designationRepository == null)
                 {
-                    _leaveApprovalsRepository = new LeaveApprovalsRepository(_connectionFactory);
+                    _designationRepository = new DesignationRepository(_connectionFactory);
                 }
-                return _leaveApprovalsRepository;
+                return _designationRepository;
             }
         }
+        #endregion
+
+        #region  IUserProfileRepository 
+        public IUserProfileRepository _userProfileRepository;
+        public IUserProfileRepository UserProfileRepository
+        {
+            get
+            {
+                if (_userProfileRepository == null)
+                {
+                    _userProfileRepository = new UserProfileRepository(_connectionFactory);
+                }
+                return _userProfileRepository;
+            }
+        }
+        #endregion
+
+        #region  IAttendanceRepository 
+        public IAttendanceRepository _attendanceRepository;
+        public IAttendanceRepository AttendanceRepository
+        {
+            get
+            {
+                if (_attendanceRepository == null)
+                {
+                    _attendanceRepository = new AttendanceRepository(_connectionFactory);
+                }
+                return _attendanceRepository;
+            }
+        }
+        #endregion
+
+        #region  IAttendanceCorrectionRepository 
+        public IAttendanceCorrectionRepository _attendanceCorrectionRepository;
+        public IAttendanceCorrectionRepository AttendanceCorrectionRepository
+        {
+            get
+            {
+                if (_attendanceCorrectionRepository == null)
+                {
+                    _attendanceCorrectionRepository = new AttendanceCorrectionRepository(_connectionFactory);
+                }
+                return _attendanceCorrectionRepository;
+            }
+        }
+        #endregion
+
+        #region  IOnDutyRepository 
+        public IOnDutyRepository _onDutyRepository;
+        public IOnDutyRepository OnDutyRepository
+        {
+            get
+            {
+                if (_onDutyRepository == null)
+                {
+                    _onDutyRepository = new OnDutyRepository(_connectionFactory);
+                }
+                return _onDutyRepository;
+            }
+        }
+		#endregion
+
+
+		#region ILeaveApprovalsRepository
+		ILeaveApprovalsRepository _leaveApprovalsRepository;
+		public ILeaveApprovalsRepository LeaveApprovalsRepository
+		{
+			get
+			{
+				if (_leaveApprovalsRepository == null)
+				{
+					_leaveApprovalsRepository = new LeaveApprovalsRepository(_connectionFactory);
+				}
+				return _leaveApprovalsRepository;
+			}
+		}
 		#endregion
 
 		#region IClaimRequestsRepository
@@ -144,21 +221,6 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
                     _userClaimRequestsRepository = new UserClaimRequestsRepository(_connectionFactory);
                 }
                 return _userClaimRequestsRepository;
-            }
-        }
-        #endregion
-
-        #region IOnDutyRequesteRepository
-        IOnDutyRequesteRepository _onDutyRequesteRepository;
-        public IOnDutyRequesteRepository OnDutyRequesteRepository
-        {
-            get
-            {
-                if (_onDutyRequesteRepository == null)
-                {
-                    _onDutyRequesteRepository = new OnDutyRequestRepository(_connectionFactory);
-                }
-                return _onDutyRequesteRepository;
             }
         }
         #endregion

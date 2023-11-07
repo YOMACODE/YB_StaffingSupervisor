@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.csproj": {}
+    "D:\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj": {
+    "D:\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj",
+        "projectUniqueName": "D:\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj",
         "projectName": "YB_StaffingSupervisor.DataAccess",
-        "projectPath": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\obj\\",
+        "projectPath": "D:\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj",
+        "packagesPath": "C:\\Users\\Shubham YT391\\.nuget\\packages\\",
+        "outputPath": "D:\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Shubham YT391\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -73,21 +73,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.csproj": {
+    "D:\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.csproj",
+        "projectUniqueName": "D:\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.csproj",
         "projectName": "YB_StaffingSupervisor",
-        "projectPath": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\obj\\",
+        "projectPath": "D:\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.csproj",
+        "packagesPath": "C:\\Users\\Shubham YT391\\.nuget\\packages\\",
+        "outputPath": "D:\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Shubham YT391\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -101,8 +101,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj": {
-                "projectPath": "C:\\Users\\Lenovo\\Desktop\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj"
+              "D:\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj": {
+                "projectPath": "D:\\YB_StaffingSupervisor\\YB_StaffingSupervisor\\YB_StaffingSupervisor.DataAccess\\YB_StaffingSupervisor.DataAccess.csproj"
               }
             }
           }
@@ -117,6 +117,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "ClosedXML": {
+              "target": "Package",
+              "version": "[0.102.1, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[3.1.0, )"
@@ -169,7 +173,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

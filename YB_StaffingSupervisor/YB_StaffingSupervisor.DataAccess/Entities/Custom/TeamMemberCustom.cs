@@ -21,6 +21,7 @@ namespace YB_StaffingSupervisor.DataAccess.Entities.Custom
 		#endregion
 		public IEnumerable<TeamMemberModel> TeamMemberModels { get; set; }
 		public IEnumerable<TeamMemberModel> TeamMemberListing { get; set; }
+		public IEnumerable<DesignationModel> DesignationModels { get; set; }
 		#region Pagination
 		public CustomPagination CustomPagination { get; set; }
 		#endregion
