@@ -48,7 +48,7 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             {
                 ViewBag.SearchUserCode = SearchRequest.SearchUserCode;
             }
-            
+
             TeamAttendanceCustom teamAttendanceCustom = new TeamAttendanceCustom();
             SearchRequest.SupervisorId = _dataProtector.Unprotect(baseModel.UserId);
             teamAttendanceCustom = await _service.AttendanceRepository.GetDailyTeamAttendanceListing(SearchRequest);
@@ -142,7 +142,7 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
 
             return View(attendanceRequestCustom);
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> AttendanceLogs(UserAttendanceCustom SearchRequest)
         {
@@ -151,7 +151,36 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
                 return RedirectToAction("Logout", "Home", new { area = "" }).WithWarning("Warning !", "Unauthorized Access.");
             }
 
-            return View(SearchRequest);
+            if (string.IsNullOrEmpty(SearchRequest.UserId))
+            {
+                return RedirectToAction("Index", "MyDashboard", new { area = "Dashboard" }).WithWarning("Warning !", "Invalid user.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchMonth))
+            {
+                ViewBag.SearchMonth = SearchRequest.SearchMonth;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchYear))
+            {
+                ViewBag.SearchYear = SearchRequest.SearchYear;
+            }
+
+            UserAttendanceCustom userAttendanceCustom = new UserAttendanceCustom();
+            SearchRequest.SupervisorId = _dataProtector.Unprotect(baseModel.UserId);
+            SearchRequest.UserId = _dataProtector.Unprotect(SearchRequest.UserId);
+            userAttendanceCustom = await _service.AttendanceRepository.GetUserAttendanceListing(SearchRequest);
+            if (userAttendanceCustom != null && userAttendanceCustom.attendanceListing != null)
+            {
+                userAttendanceCustom.attendanceListing.ToList().ForEach(c =>
+                {
+                    c.DailyAttendanceId = _dataProtector.Protect(c.DailyAttendanceId);
+                    c.UserId = _dataProtector.Protect(c.UserId);
+                });
+            }
+            userAttendanceCustom.monthModelsListing = new SelectList(DateTimeFormatInfo.InvariantInfo.MonthNames.Where(m => !String.IsNullOrEmpty(m)).Select((monthName, index) => new SelectListItem { Value = (index + 1).ToString(), Text = monthName }), "Value", "Text");
+            userAttendanceCustom.yearModelsListing = new SelectList(Enumerable.Range(DateTime.Today.Year - 10, 20).Select(x => new SelectListItem() { Text = x.ToString(), Value = x.ToString() }), "Value", "Text");
+            userAttendanceCustom.UserId = _dataProtector.Protect(SearchRequest.UserId);
+            return View(userAttendanceCustom);
         }
         [HttpPost]
         public async Task<IActionResult> ApproveRejectAttendance(string AttendanceRequestId, string ApproveRejectStatus, string ApproveRejectComment, string Token)

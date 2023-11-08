@@ -16,8 +16,8 @@
     }
 
     /*.pb-calendar .schedule-dot-item.blue{
-                            background-color: blue;
-                            }*/
+                                background-color: blue;
+                                }*/
 
     .pb-calendar .schedule-dot-item.red {
         background-color: #c53131;
@@ -46,8 +46,8 @@
     }
 
     /*.pb-calendar .schedule-dot-item.green{
-                            background-color: green;
-                            }*/
+                                background-color: green;
+                                }*/
 
     .green-status {
         color: green;
@@ -461,7 +461,7 @@
                                                     <td>
                                                         <div class="d-flex justify-content-center">
                                                             <input type="hidden" value="@item.ApproveRejectComment" name="quickAttendanceListing[@countSuggestion].ApproveRejectComment" />
-                                                            <button class="btn btn-sm mr-1" title="View Log" disabled>View Log</button>
+                                                            <a asp-controller="Attendance" asp-action="AttendanceLogs" asp-route-UserId="@item.UserId" class="btn btn-sm mr-1" title="View Log" disabled>View Log</a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -611,7 +611,7 @@
                                                     <td>
                                                         <div class="d-flex justify-content-center">
                                                             <input type="hidden" value="@item.ApproveRejectComment" name="selfieBasedAttendanceListing[@countSuggestion1].ApproveRejectComment" />
-                                                            <button class="btn btn-sm mr-1" title="View Log" disabled>View Log</button>
+                                                            <a asp-controller="Attendance" asp-action="AttendanceLogs" asp-route-UserId="@item.UserId" class="btn btn-sm mr-1" title="View Log" disabled>View Log</a>
                                                         </div>
                                                     </td>
                                                 </tr>

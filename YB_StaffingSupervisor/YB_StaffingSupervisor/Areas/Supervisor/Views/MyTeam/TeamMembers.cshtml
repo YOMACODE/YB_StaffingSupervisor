@@ -15,91 +15,90 @@
 						<h4 class="font-weight-medium">All Team Members</h4>
 
 						<div>
-							<button class="btn btn-sm mr-1" title="Export"><i class="fa fa-reply" aria-hidden="true"></i> Export</button>
+							<button type="button" class="btn btn-sm mr-1" onclick="return ExportTeamMemberReport()">Export</button>
 							<button class="btn btn-sm" title="Filter" data-toggle="collapse" data-target="#filter"><i class="fa fa-filter" aria-hidden="true"></i></button>
 						</div>
 					</div>
-					
-					<div class="collapse mt-3" id="filter">
-						<div class="card mb-3">
-							<form asp-controller="MyTeam" asp-action="TeamMembers" method="get">
-								<div class="card mb-3">
+					<form asp-controller="MyTeam" asp-action="TeamMembers" method="get">
+						<div class="mt-3 collapse" id="filter" style="">
+							<div class="card mb-3">
 
-									<div class="card-header d-flex justify-content-between align-items-center">
-										<div class="font-weight-medium">Filters</div>
-										<div><i class="fa fa-filter"></i></div>
-									</div>
-									<div class="card-body">
-										<div class="row">
+								<div class="card-header d-flex justify-content-between align-items-center">
+									<div class="font-weight-medium">Filters</div>
+									<div><i class="fa fa-filter"></i></div>
+								</div>
+								<div class="card-body">
+									<div class="row">
 
-											<div class="col-md-3 col-lg-3 mt-2">
-												<div class="form-group">
-													<label for="exampleFormControlInput1" class="active"><b>Yoma Code</b></label>
-													<input type="text" asp-for="SearchUserCode" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
-												</div>
-											</div>
+										<div class="col-md-3 col-lg-3 mt-2">
+											<div class="form-group">
+												<label for="exampleFormControlSelect1"><b>Yoma Id</b></label>
+												<input asp-for="SearchUserCode" id="yomaid" type="text" class="form-control form-control-sm border-bottom" placeholder="Yoma Id">
 
-											<div class="col-md-3 col-lg-3 mt-2">
-												<div class="form-group">
-													<label for="exampleFormControlInput1" class="active"><b>Associate Name</b></label>
-													<input type="text" asp-for="SearchFullName" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
-												</div>
-											</div>
-
-											<div class="col-md-3 col-lg-3 mt-2">
-												<div class="form-group">
-													<label for="exampleFormControlInput1" class="active"><b>Mobile No.</b></label>
-													<input type="text" asp-for="SearchMobileNumber" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
-												</div>
-											</div>
-
-											<div class="col-md-3 col-lg-3 mt-2">
-												<div class="form-group">
-													<label for="exampleFormControlInput1" class="active"><b>Email id</b></label>
-													<input type="text" asp-for="SearchEmailId" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter email id">
-												</div>
-											</div>
-
-											<div class="col-md-3 col-lg-3 mt-2">
-												<div class="form-group">
-													<label for="exampleFormControlSelect1"><b>Designation</b> </label>
-													<select asp-for="SearchDesignation" asp-items="@(new SelectList(Model.DesignationModels, "DesignationId", "DesignationName", null))" class="form-control form-control-sm border-bottom">
-														<option value="">--Select--</option>
-													</select>
-												</div>
-											</div>
-
-											<div class="col-md-3 col-lg-3 mt-2">
-												<div class="form-group">
-													<label for="exampleFormControlInput1" class="active"><b>Joining Date</b></label>
-													<input type="text" asp-for="SearchJoiningDate" class="form-control form-control-sm border-bottom" id="mdate" placeholder="dd-mm-yyyy">
-												</div>
 											</div>
 										</div>
-									</div>
-									<div class="card-footer">
-										<div class="d-flex justify-content-end">
-											<button type="button" class="btn btn-sm mr-1">Close</button>
-											<button type="button" class="btn btn-sm mr-1">Clear</button>
-											<button type="submit" class="btn btn-sm">Search</button>
+
+										<div class="col-md-3 col-lg-3 mt-2">
+											<div class="form-group">
+												<label for="exampleFormControlInput1" class="active"><b>Associate Name</b></label>
+												<input asp-for="SearchFullName" type="text" id="name" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
+											</div>
+										</div>
+
+										<div class="col-md-3 col-lg-3 mt-2">
+											<div class="form-group">
+												<label for="exampleFormControlInput1" class="active"><b>Mobile No.</b></label>
+												<input asp-for="SearchMobileNumber" type="text" id="mobile" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
+											</div>
+										</div>
+
+										<div class="col-md-3 col-lg-3 mt-2">
+											<div class="form-group">
+												<label for="exampleFormControlInput1" class="active"><b>Email id</b></label>
+												<input asp-for="SearchEmailId" type="text" id="email" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter email id">
+											</div>
+										</div>
+
+										<div class="col-md-3 col-lg-3 mt-2">
+											<div class="form-group">
+												<label for="exampleFormControlSelect1"><b>Designation</b> </label>
+												<select asp-for="SearchDesignation" asp-items="@(new SelectList(Model.DesignationModels, "DesignationId", "DesignationName", null))" class="form-control form-control-sm border-bottom">
+													<option>--Select--</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="col-md-3 col-lg-3 mt-2">
+											<div class="form-group">
+												<label for="exampleFormControlInput1" class="active"><b>Joining Date</b></label>
+												<input asp-for="SearchJoiningDate" type="text" id="joining" class="form-control form-control-sm border-bottom" id="mdate" placeholder="dd-mm-yyyy">
+											</div>
 										</div>
 									</div>
 								</div>
-							</form>
+								<div class="card-footer">
+									<div class="d-flex justify-content-end">
+										<button class="btn btn-sm mr-1">Close</button>
+										<button class="btn btn-sm mr-1">Clear</button>
+										<button class="btn btn-sm">Search</button>
+									</div>
+								</div>
+							</div>
 						</div>
-					</div>
+					</form>
+
 
 					<div class="table-resposive mt-3">
 						<table class="table-sm table table-bordered no-wrap">
 							<thead id="sumit">
-							<tr>
-							<th>Yoma Id</th>
-							<th>Associate Name</th>
-							<th>Email</th>
-							<th>Mobile No.</th>
-							<th>Designation</th>
-							<th>Joined On</th>
-							</tr>
+								<tr>
+									<th>Yoma Id</th>
+									<th>Associate Name</th>
+									<th>Email</th>
+									<th>Mobile No.</th>
+									<th>Designation</th>
+									<th>Joined On</th>
+								</tr>
 							</thead>
 							<tbody class="text-center" class="text-center">
 								@if (Model != null)
@@ -142,11 +141,11 @@
 							{
 								<div class="one_str medium">
 									<select class="form-control form-control-sm" style="width:auto" asp-for="PageSize" onchange="showListForPageSize()">
-										<option value="/MyTeam/MyTeam/TeamMembers/?pagesize=100000&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">ALL</option>
-										<option value="/MyTeam/MyTeam/TeamMembers/?pagesize=10&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">10</option>
-										<option value="/MyTeam/MyTeam/TeamMembers/?pagesize=25&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">25</option>
-										<option value="/MyTeam/MyTeam/TeamMembers/?pagesize=50&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">50</option>
-										<option value="/MyTeam/MyTeam/TeamMembers/?pagesize=100&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">100</option>
+										<option value="/Supervisor/MyTeam/TeamMembers/?pagesize=100000&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">ALL</option>
+										<option value="/Supervisor/MyTeam/TeamMembers/?pagesize=10&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">10</option>
+										<option value="/Supervisor/MyTeam/TeamMembers/?pagesize=25&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">25</option>
+										<option value="/Supervisor/MyTeam/TeamMembers/?pagesize=50&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">50</option>
+										<option value="/Supervisor/MyTeam/TeamMembers/?pagesize=100&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">100</option>
 									</select>
 								</div>
 							}
@@ -159,25 +158,25 @@
 											@if (Model.CustomPagination.CurrentPage > 1)
 											{
 												<li class="medium">
-													<a href="~/MyTeam/MyTeam/TeamMembers/?pagesize=@ViewBag.PageSize&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">First</a>
+													<a href="~/Supervisor/MyTeam/TeamMembers/?pagesize=@ViewBag.PageSize&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">First</a>
 												</li>
 												<li class="medium">
-													<a href="~/MyTeam/MyTeam/TeamMembers/?page=@(Model.CustomPagination.CurrentPage - 1)&pagesize=@ViewBag.PageSize&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">Previous</a>
+													<a href="~/Supervisor/MyTeam/TeamMembers/?page=@(Model.CustomPagination.CurrentPage - 1)&pagesize=@ViewBag.PageSize&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">Previous</a>
 												</li>
 											}
 											@for (var Page = Model.CustomPagination.StartPage; Page <= Model.CustomPagination.EndPage; Page++)
 											{
 												<li class="medium">
-													<a class="@(Page == Model.CustomPagination.CurrentPage ? "active" : "")" href="~/MyTeam/MyTeam/TeamMembers/?page=@Page&pagesize=@ViewBag.PageSize&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">@Page</a>
+													<a class="@(Page == Model.CustomPagination.CurrentPage ? "active" : "")" href="~/Supervisor/MyTeam/TeamMembers/?page=@Page&pagesize=@ViewBag.PageSize&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">@Page</a>
 												</li>
 											}
 											@if (Model.CustomPagination.CurrentPage < Model.CustomPagination.TotalPages)
 											{
 												<li class="medium">
-													<a href="~/MyTeam/MyTeam/TeamMembers/?page=@(Model.CustomPagination.CurrentPage + 1)&pagesize=@ViewBag.PageSize&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">Next</a>
+													<a href="~/Supervisor/MyTeam/TeamMembers/?page=@(Model.CustomPagination.CurrentPage + 1)&pagesize=@ViewBag.PageSize&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">Next</a>
 												</li>
 												<li class="medium">
-													<a href="~/MyTeam/MyTeam/TeamMembers/?page=@(Model.CustomPagination.TotalPages)&pagesize=@ViewBag.PageSize&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">Last</a>
+													<a href="~/Supervisor/MyTeam/TeamMembers/?page=@(Model.CustomPagination.TotalPages)&pagesize=@ViewBag.PageSize&SearchUserCode=@ViewBag.SearchUserCode&SearchFullName=@ViewBag.SearchFullName&SearchMobileNumber=@ViewBag.SearchMobileNumber&SearchEmailId=@ViewBag.SearchEmailId&SearchDesignation=@ViewBag.SearchDesignation&SearchJoiningDate=@ViewBag.SearchJoiningDate">Last</a>
 												</li>
 											}
 										</ul>
@@ -191,6 +190,9 @@
 		</div>
 	</div>
 </div>
+@section Scripts{
+	<script src="~/js/Areas/TeamMember/TeamMember.js" asp-append-version="true"></script>
+}
 <script>
 	$(document).ready(function () {
 		var selectedText = @ViewBag.PageSize;
@@ -205,7 +207,5 @@
 	function showListForPageSize() {
 		window.location.href = $("#PageSize").val();
 	};
-
-	
 
 </script>

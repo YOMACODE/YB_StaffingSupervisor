@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.DataProtection;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using YB_StaffingSupervisor.Common;
@@ -34,8 +37,7 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             {
                 return RedirectToAction("Logout", "Home", new { area = "" }).WithWarning("Warning !", "Unauthorized Access.");
             }
-
-            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchUserCode))
+			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchUserCode))
 			{
 				ViewBag.SearchUserCode = SearchRequest.SearchUserCode;
 			}
@@ -80,5 +82,54 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
 			teamMemberCustom.DesignationModels = await _service.DesignationRepository.DropdownDesignationList();
 			return View(teamMemberCustom);
 		}
+
+        #region Export TeamMember Report
+
+        [HttpGet]
+        public async Task<IActionResult> ExportTeamMemberReport(string SearchUserCode, string SearchFullName, string SearchMobileNumber, string SearchEmailId, string SearchDesignation, string SearchJoiningDate)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataSet ds = new DataSet();
+                //var clientId = !string.IsNullOrEmpty(ClientId) ? _dataProtector.Unprotect(ClientId) : null;
+                dt = await _service.MyTeamRepository.ExportTeamMemberList(SearchUserCode, SearchFullName, SearchMobileNumber, SearchEmailId, SearchDesignation, SearchJoiningDate);
+                //Do Export for 
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    var totalrowcount = dt.Rows.Count;
+                    var totalcolcount = dt.Columns.Count;
+                    //dt.Columns.Remove("DisplayOrder");
+                    ds.Tables.Add(dt.Copy());
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        var sheetPFFormat = wb.Worksheets.Add("TeamMember Report");
+
+                        sheetPFFormat.FirstRow().FirstCell().InsertTable(dt);
+                        sheetPFFormat.Columns().AdjustToContents();
+                        sheetPFFormat.FirstRow().Style.Font.Bold = true;
+
+                        Response.Clear();
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        using (MemoryStream MyMemoryStream = new MemoryStream())
+                        {
+                            wb.SaveAs(MyMemoryStream);
+                            return File(MyMemoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "TeamMember.xlsx");
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("TeamMembers", "MyTeam").WithInfo("Info !", "No data found!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("TeamMembers", "MyTeam").WithDanger("Error !", "Something went wrong.please try again.");
+            }
+        }
+        #endregion
+
     }
 }

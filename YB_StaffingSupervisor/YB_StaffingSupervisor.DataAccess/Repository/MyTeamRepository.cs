@@ -62,5 +62,24 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
 			}
 			return teamMemberCustom;
 		}
-	}
+
+        public async Task<DataTable> ExportTeamMemberList(string SearchUserCode, string SearchFullName, string SearchMobileNumber, string SearchEmailId, string SearchDesignation, string SearchJoiningDate)
+        {
+            using (var dbconnect = connectionFactory.GetDAL)
+            {
+                SqlParameter[] sqlparameters =
+                {
+                    new SqlParameter("@chvnSearchUserCode", SqlDbType.NVarChar) { Value =  SearchUserCode},
+                    new SqlParameter("@chvnSearchFullName", SqlDbType.NVarChar) { Value = SearchFullName},
+                    new SqlParameter("@chvnSearchMobileNumber", SqlDbType.NVarChar) { Value = SearchMobileNumber },
+                    new SqlParameter("@chvnSearchEmailId", SqlDbType.NVarChar) { Value = SearchEmailId },
+                    new SqlParameter("@chvnSearchDesignation", SqlDbType.NVarChar) { Value = SearchDesignation },
+                    new SqlParameter("@dtmSearchJoiningDate", SqlDbType.NVarChar) { Value = SearchJoiningDate },
+                };
+                DataTable dataTable = await Task.Run(() => dbconnect.SPExecuteDataTable("[WebApplication_SP].[usp_DownloadTeamMemberReport_New]", sqlparameters, "dt"));
+
+                return dataTable;
+            }
+        }
+    }
 }

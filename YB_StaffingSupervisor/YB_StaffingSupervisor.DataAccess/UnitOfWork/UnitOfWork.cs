@@ -177,8 +177,53 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
                 return _onDutyRepository;
             }
         }
+		#endregion
+
+
+		#region ILeaveApprovalsRepository
+		ILeaveApprovalsRepository _leaveApprovalsRepository;
+		public ILeaveApprovalsRepository LeaveApprovalsRepository
+		{
+			get
+			{
+				if (_leaveApprovalsRepository == null)
+				{
+					_leaveApprovalsRepository = new LeaveApprovalsRepository(_connectionFactory);
+				}
+				return _leaveApprovalsRepository;
+			}
+		}
+		#endregion
+
+		#region IClaimRequestsRepository
+		IClaimRequestsRepository _claimRequestsRepository;
+		public IClaimRequestsRepository ClaimRequestsRepository
+		{
+			get
+			{
+				if (_claimRequestsRepository == null)
+				{
+					_claimRequestsRepository = new ClaimRequestsRepository(_connectionFactory);
+				}
+				return _claimRequestsRepository;
+			}
+		}
         #endregion
 
+        #region IUserClaimRequestsRepository
+        IUserClaimRequestsRepository _userClaimRequestsRepository;
+        public IUserClaimRequestsRepository UserClaimRequestsRepository
+        {
+            get
+            {
+                if (_userClaimRequestsRepository == null)
+                {
+                    _userClaimRequestsRepository = new UserClaimRequestsRepository(_connectionFactory);
+                }
+                return _userClaimRequestsRepository;
+            }
+        }
+        #endregion
 
         #region IDisposable Support
         void IUnitOfWork.Complete()
