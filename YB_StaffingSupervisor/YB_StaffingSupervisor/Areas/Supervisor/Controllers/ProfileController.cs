@@ -39,5 +39,28 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
 
             return View(userProfileModel);
         }
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(string Username, string NewPassword)
+        {
+            string msg = "";
+            try
+            {
+                long result = await _service.UserProfileRepository.ResetPassword(Username, NewPassword);
+                if (result == 1)
+                {
+                    msg = "Password Changed Successfully.";
+                }
+                else
+                {
+                    msg = "Something went wrong,Please try again.";
+                }
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+            }
+            return Json(new { msg });
+
+        }
     }
 }

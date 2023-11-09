@@ -265,7 +265,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label for="inputText"><b>Username</b></label>
-                                        <input type="text" asp-for="UserName" class="form-control form-control-sm bg-light border-0" disabled>
+                                        <input type="text" asp-for="UserName" class="form-control form-control-sm bg-light border-0" id="username" disabled>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="inputText1"><b>Full Name</b></label>
@@ -351,36 +351,16 @@
                 </button>
             </div>
             <div class="modal-body">
-
                 <div>
                     <div class="position-relative">
-                        <div class="px-5 text-center otp-body">
-                            <h3>OTP Verification</h3>
-                            <div>
-                                Please enter the OTP sent to <b>XXXXXX8745</b> in order to reset your password.
-                            </div>
-                            <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
-                                <input class="m-2 text-center form-control rounded" type="text" id="first"
-                                       maxlength="1" />
-                                <input class="m-2 text-center form-control rounded" type="text" id="second"
-                                       maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text"
-                                                               id="third" maxlength="1" /> <input class="m-2 text-center form-control rounded"
-                                                                                                  type="text" id="fourth" maxlength="1" /> <input class="m-2 text-center form-control rounded" type="text" id="fifth"
-                                                                                                                                                  maxlength="1" />
-                                <input class="m-2 text-center form-control rounded" type="text" id="sixth"
-                                       maxlength="1" />
-                            </div>
-                        </div>
-
-                        <div class="password-body" style="display: none;">
-                            <!-- <h3 class="mb-4 text-center">Change your Password</h3> -->
+                        <div class="password-body" style="display: block;">
                             <div class="row mb-3">
                                 <div class="col-4">
                                     <label for="">New Password</label>
                                 </div>
                                 <div class="col-8">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Enter New Password">
+                                        <input type="text" id="newpassword" class="form-control" placeholder="Enter New Password">
                                         <div class="input-group-append">
                                             <span class="input-group-text bg-white" id="basic-addon2">
                                                 <i class="fa fa-eye"></i>
@@ -395,7 +375,7 @@
                                 </div>
                                 <div class="col-8">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Confirm New Password">
+                                        <input type="text" id="confirmpassword" class="form-control" placeholder="Confirm New Password">
                                         <div class="input-group-append">
                                             <span class="input-group-text bg-white" id="basic-addon2">
                                                 <i class="fa fa-eye"></i>
@@ -406,28 +386,13 @@
                             </div>
 
                         </div>
-
-
-                        <div class="mt-3 otp-body-footer">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p class="mb-0">
-                                    <a href="#" class="text-decoration-none ms-3">Resend(1/3)</a> in
-                                    <span>
-                                        00:30
-                                    </span>
-                                </p>
-                                <button class="btn btn-primary px-4 bg-theme validate-btn">Validate</button>
-                            </div>
-                        </div>
-
-                        <div class="mt-3 password-body-footer" style="display: none;">
+                        <div class="mt-3 password-body-footer" style="display: block;">
                             <div class="d-flex justify-content-center align-items-center">
-                                <button class="btn btn-primary">Update Password</button>
+                                <button type="button" class="btn btn-primary" onclick="ResetPassword();">Update Password</button>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -483,7 +448,8 @@
             } 
             OTPInput();
         });
-        
+        //Reset Password
+       
     </script>
     <script src="~/js/Areas/Profile/MyProfile.js" asp-append-version="true"></script>
 }

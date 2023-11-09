@@ -8,5 +8,6 @@ namespace YB_StaffingSupervisor.DataAccess.Contract
     public interface IUserProfileRepository
     {
         Task<UserProfileModel> UserProfile(string userId);
+        Task<long> ResetPassword(string Username,string NewPassword);
     }
 }

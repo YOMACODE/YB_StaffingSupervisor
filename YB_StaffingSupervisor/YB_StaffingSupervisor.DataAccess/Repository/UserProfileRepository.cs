@@ -44,5 +44,28 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
             return userProfile;
         }
         #endregion
+        public async Task<long> ResetPassword(string Username, string NewPassword)
+        {
+            try
+            {
+                long result = 0;
+                using (var dbConnect = connectionFactory.GetDAL)
+                {
+                    SqlParameter[] sqlparameters =
+                    {
+                    new SqlParameter("@chvnUserName", SqlDbType.NVarChar) { Value = Username },
+                    new SqlParameter("@chvnNewPassword", SqlDbType.NVarChar) { Value = NewPassword },
+                    new SqlParameter("@chvnOperationType",SqlDbType.NVarChar){ Value = "CHANGEPASSWORD"}
+                    };
+                    result = await Task.Run(() => dbConnect.SPExecuteScalarReturnValue("[WebApplication_SP].[usp_user_Profile_ChangePassword]", sqlparameters));
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _ = ex.Message;
+                return 0;
+            }
+        }
     }
 }
