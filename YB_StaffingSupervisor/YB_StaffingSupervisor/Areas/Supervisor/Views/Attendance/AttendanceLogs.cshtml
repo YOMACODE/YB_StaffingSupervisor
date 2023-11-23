@@ -205,118 +205,43 @@
         margin: unset;
     }
 
-    .offcanvas {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        right: -350px;
-        width: 350px;
-        background-color: #fff;
-        z-index: 1050;
-        transition: right 0.3s ease-in-out;
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-        overflow-y: scroll;
-    }
-
-        .offcanvas.show {
-            right: 0;
-        }
-
-    .offcanvas-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        position: sticky;
-        top: 0;
-        background-color: #fff !important;
-        padding: 1rem;
-        z-index: 100;
-    }
-
-    .offcanvas-title {
-        margin-bottom: 0;
-        line-height: 1.5;
-    }
-
-    .offcanvas-body {
-        padding-top: 1rem;
-        padding-left: 2rem;
-        padding-right: 1rem;
-        /* padding-left: 2rem; */
-    }
-
-    .list-group-flush .list-group-item {
-        border-right: 0;
-        border-left: 0;
-        border-radius: 0;
-    }
-
-    /* ===================== */
-    /* ===================== */
-
-    /* Timeline */
-    /* Code Here ↓ */
-    ul.timeline {
-        list-style-type: none;
+    .calendar-table td,
+    .table th {
+        padding: .75rem;
+        vertical-align: top;
+        border-top: 1px solid #e8eef3;
         position: relative;
     }
 
-        ul.timeline:before {
-            content: ' ';
-            background: #d4d9df;
-            display: inline-block;
-            position: absolute;
-            left: -3.5px;
-            width: 2px;
-            height: 100%;
-            z-index: 10;
-        }
-
-        ul.timeline > li {
-            margin: 20px 0;
-            padding-left: 20px;
-        }
-
-            ul.timeline > li:before {
-                content: ' ';
-                background: white;
-                display: inline-block;
-                position: absolute;
-                border-radius: 50%;
-                border: 3px solid #2a69b2;
-                left: -14px;
-                width: 20px;
-                height: 20px;
-                z-index: 10;
-            }
-
-    .offcanvas::-webkit-scrollbar {
-        width: 3px;
-        height: 3px;
+    .disabled-text {
+        color: #d6d6d6;
     }
 
-    .offcanvas::-webkit-scrollbar-thumb {
-        background-color: gainsboro;
-        border-radius: 5px;
+    .date-dot {
+        font-size: 8px;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
     }
 
-        .offcanvas::-webkit-scrollbar-thumb:hover {
-            background-color: #c0c0c0;
-        }
-
-    .text-theme {
-        font-weight: 500;
+    .green-dot {
+        color: #5bc712;
     }
 
-    .offcanvas-footer {
-        padding: 11px 24px;
-        background: #f7f7f7;
-        position: fixed;
-        bottom: 0;
-        z-index: 11;
-        width: 100%;
+    .red-dot {
+        color: #C53131;
+    }
+
+    .blue-dot {
+        color: #2a69b2;
+    }
+
+    .red-half-dot {
+        outline: 1px solid #C53131;
+        color: #fff;
+        border-radius: 50% 50%;
+        font-size: 6px !important;
     }
 </style>
 
@@ -422,7 +347,9 @@
                                 <div class="card h-100" style="border-radius: 0px;">
                                     <div class="card-header d-flex justify-content-between align-items-center bg-white">
                                         <div><b>Details</b></div>
-                                        <!-- <div><button class="btn btn-sm toggle-daywise">Toggle Day Wise</button></div> -->
+                                        <div>
+                                            <h6 class="mb-0"><b><span style="color: #2A69B2;">@Model.Month</span> @Model.Year</b></h6>
+                                        </div>
                                     </div>
                                     <div class="card-body" style="padding: 0px 0px 0px 10px;">
                                         <div class="row">
@@ -482,153 +409,46 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-10 pl-0">
+                                                <div class="table-responsive">
 
-                                                <div class="pb-calendar">
-                                                    <div class="top-frame">
-                                                        <div class="year-month-frame"><span class="year">@Model.Year</span><span class="month">@Model.Month</span></div>
-                                                        <div class="control-frame">
-                                                        </div>
-                                                    </div>
-                                                    <div class="calendar-head-frame">
-                                                        <div class="row row-dayname">
-                                                            <div class="col col-dayname">SUN</div>
-                                                            <div class="col col-dayname">MON</div>
-                                                            <div class="col col-dayname">TUE</div>
-                                                            <div class="col col-dayname">WED</div>
-                                                            <div class="col col-dayname">THU</div>
-                                                            <div class="col col-dayname">FRI</div>
-                                                            <div class="col col-dayname">SAT</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="calendar-body-frame">
-                                                        <div class="row row-day">
-                                                            <div class="col before-month holiday" data-day-yyyymmdd="20231029">
-                                                                29<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col before-month" data-day-yyyymmdd="20231030">
-                                                                30<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col before-month" data-day-yyyymmdd="20231031">
-                                                                31<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231101">
-                                                                01<div class="schedule-dot-list">
-                                                                    <span class="schedule-dot-item redp"></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231102">
-                                                                02<div class="schedule-dot-list">
-                                                                    <span class="schedule-dot-item redp"></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231103">
-                                                                03<div class="schedule-dot-list">
-                                                                    <span class="schedule-dot-item red"></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col  holiday" data-day-yyyymmdd="20231104">
-                                                                04<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row row-day">
-                                                            <div class="col  holiday" data-day-yyyymmdd="20231105">
-                                                                05<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231106">
-                                                                06<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231107">
-                                                                07<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231108">
-                                                                08<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231109">
-                                                                09<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231110">
-                                                                10<div class="schedule-dot-list">
-                                                                    <span class="schedule-dot-item redh"></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col  holiday" data-day-yyyymmdd="20231111">
-                                                                11<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row row-day">
-                                                            <div class="col  holiday" data-day-yyyymmdd="20231112">
-                                                                12<div class="schedule-dot-list">
-                                                                    <span class="schedule-dot-item redb"></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231113">
-                                                                13<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231114">
-                                                                14<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231115">
-                                                                15<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231116">
-                                                                16<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231117">
-                                                                17<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col  holiday" data-day-yyyymmdd="20231118">
-                                                                18<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row row-day">
-                                                            <div class="col  holiday" data-day-yyyymmdd="20231119">
-                                                                19<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231120">
-                                                                20<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231121">
-                                                                21<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231122">
-                                                                22<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231123">
-                                                                23<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col " data-day-yyyymmdd="20231124">
-                                                                24<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col  holiday" data-day-yyyymmdd="20231125">
-                                                                25<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row row-day">
-                                                            <div class="col  holiday" data-day-yyyymmdd="20231126">
-                                                                26<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col" data-day-yyyymmdd="20231127">
-                                                                27<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col" data-day-yyyymmdd="20231128">
-                                                                28<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col" data-day-yyyymmdd="20231129">
-                                                                29<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col" data-day-yyyymmdd="20231130">
-                                                                30<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col after-month" data-day-yyyymmdd="20231201">
-                                                                01<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                            <div class="col after-month holiday" data-day-yyyymmdd="20231202">
-                                                                02<div class="schedule-dot-list"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <table class="table mb-0 table-bordered calendar-table">
+                                                        <tbody>
+                                                            
+                                                            @if (Model != null)
+                                                            {
+                                                                if (Model.attendanceCalendarListing != null && Model.attendanceCalendarListing.Count() > 0)
+                                                                {
+                                                                    <tr>
+                                                                        @for (int i = 0; i < 7; i++)
+                                                                        {
+                                                                            <th>@Model.attendanceCalendarListing[i].Day.Substring(0,3).ToUpper()</th>
+                                                                        }
+                                                                    </tr>
+                                                                    <tr>
+                                                                        @for (int i = 0; i < Model.attendanceCalendarListing.Count; i++)
+                                                                        {
+                                                                            if (i % 7 == 0)
+                                                                            {
+                                                                                @:</tr><tr>
+                                                                            }
+                                                                            <td>
+                                                                                <p class="mb-0">@Model.attendanceCalendarListing[i].DateDay</p>
+                                                                                <p class="mb-0">@Model.attendanceCalendarListing[i].Month</p>
+                                                                            </td>
+                                                                        }
+                                                                    </tr>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <tr>
+                                                                        <td style="text-align:center;">** No Record Found !!</td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        
+                                                        </tbody>
+                                                    </table>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -648,12 +468,12 @@
                                 </h4>
                             </div>
                             @* <div>
-                                <button class="btn btn-sm" data-target="#verifyModal"
-                                        data-toggle="modal">
-                                    Verify Attendane
-                                </button>
-                                <button class="btn btn-sm"><i class="fa fa-download"></i> Export</button>
-                                <!-- <button class="btn btn-sm"><i class="fa fa-filter"></i></button> -->
+                            <button class="btn btn-sm" data-target="#verifyModal"
+                            data-toggle="modal">
+                            Verify Attendane
+                            </button>
+                            <button class="btn btn-sm"><i class="fa fa-download"></i> Export</button>
+                            <!-- <button class="btn btn-sm"><i class="fa fa-filter"></i></button> -->
                             </div> *@
                         </div>
 
@@ -672,6 +492,7 @@
                                             <th>Completed Hours</th>
                                             <th>CheckIn Image</th>
                                             <th>CheckOut Image</th>
+                                            <th>View Route Map</th>
                                             <th>Status</th>
                                             <th>Comment</th>
                                             <th>Action</th>
@@ -711,6 +532,9 @@
                                                             }
                                                         </td>
                                                         <td>
+                                                            <button class="btn btn-sm mr-1" title="View Map" data-toggle="offcanvas" data-target="#myOffcanvas" id="btn_ViewMap_@countSuggestion" onclick="viewMap(@countSuggestion)">View Map</button>
+                                                        </td>
+                                                        <td>
                                                             @if (item.ApproveRejectStatus == "Rejected")
                                                             {
                                                                 <span class="error-status">Rejected !</span>
@@ -733,6 +557,7 @@
                                                         <td>
                                                             <div class="d-flex justify-content-center">
                                                                 <input type="hidden" value="@item.DailyAttendanceId" name="attendanceListing[@countSuggestion].DailyAttendanceId" />
+                                                                <input type="hidden" value="@item.AttendanceDate" name="attendanceListing[@countSuggestion].AttendanceDate" />
                                                                 <input type="hidden" value="@item.ApproveRejectStatus" name="attendanceListing[@countSuggestion].ApproveRejectStatus" />
                                                                 <input type="hidden" value="@item.ApproveRejectComment" name="attendanceListing[@countSuggestion].ApproveRejectComment" />
                                                                 @if (item.ApproveRejectStatus == "Rejected" || item.ApproveRejectStatus == "Approved")
@@ -847,12 +672,13 @@
     </div>
 </div>
 
+<div id="divViewMap"></div>
+
 @section Scripts{
     <script>
         $(document).ready(function () {
 
             toastr.success('Attendance Logs');
-
 
         });
 

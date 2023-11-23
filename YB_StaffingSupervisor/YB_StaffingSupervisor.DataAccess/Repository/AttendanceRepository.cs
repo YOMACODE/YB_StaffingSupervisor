@@ -221,6 +221,8 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                             attendanceCalendarModel.Date = dataSet.Tables[1].Rows[i]["Date"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[1].Rows[i]["Date"]);
                             attendanceCalendarModel.Day = dataSet.Tables[1].Rows[i]["Day"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[1].Rows[i]["Day"]);
                             attendanceCalendarModel.DateDay = dataSet.Tables[1].Rows[i]["DateDay"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[1].Rows[i]["DateDay"]);
+                            attendanceCalendarModel.Month = dataSet.Tables[1].Rows[i]["Month"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[1].Rows[i]["Month"]);
+                            attendanceCalendarModel.Year = dataSet.Tables[1].Rows[i]["Year"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[1].Rows[i]["Year"]);
                             attendanceCalendarModels.Add(attendanceCalendarModel);
                         }
                         userAttendanceCustom.attendanceCalendarListing = attendanceCalendarModels;

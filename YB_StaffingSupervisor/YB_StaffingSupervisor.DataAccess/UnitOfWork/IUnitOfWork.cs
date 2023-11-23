@@ -19,7 +19,7 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
         IUserClaimRequestsRepository UserClaimRequestsRepository { get; }
         ILeaveApprovalsRepository LeaveApprovalsRepository { get; }
 		IOnDutyRepository OnDutyRepository { get; }
-
+        IAttendanceMeetingMapRepository AttendanceMeetingMapRepository { get; }
 
         void Complete();
     }

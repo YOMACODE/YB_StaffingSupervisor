@@ -1,0 +1,180 @@
+﻿@model YB_StaffingSupervisor.DataAccess.Entities.Custom.AttendanceMeetingMapCustom
+@{ }
+
+<style type="text/css">
+
+    .offcanvas {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: -350px;
+        width: 350px;
+        background-color: #fff;
+        z-index: 1050;
+        transition: right 0.3s ease-in-out;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        overflow-y: scroll;
+    }
+
+        .offcanvas.show {
+            right: 0;
+        }
+
+    .offcanvas-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        background-color: #fff !important;
+        padding: 1rem;
+        z-index: 100;
+    }
+
+    .offcanvas-title {
+        margin-bottom: 0;
+        line-height: 1.5;
+    }
+
+    .offcanvas-body {
+        padding-top: 1rem;
+        padding-left: 2rem;
+        padding-right: 1rem;
+        /* padding-left: 2rem; */
+    }
+
+    .list-group-flush .list-group-item {
+        border-right: 0;
+        border-left: 0;
+        border-radius: 0;
+    }
+
+    /* ===================== */
+    /* ===================== */
+
+    /* Timeline */
+    /* Code Here ↓ */
+    ul.timeline {
+        list-style-type: none;
+        position: relative;
+    }
+
+        ul.timeline:before {
+            content: ' ';
+            background: #d4d9df;
+            display: inline-block;
+            position: absolute;
+            left: -3.5px;
+            width: 2px;
+            height: 100%;
+            z-index: 10;
+        }
+
+        ul.timeline > li {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+            ul.timeline > li:before {
+                content: ' ';
+                background: white;
+                display: inline-block;
+                position: absolute;
+                border-radius: 50%;
+                border: 3px solid #2a69b2;
+                left: -14px;
+                width: 20px;
+                height: 20px;
+                z-index: 10;
+            }
+
+    .offcanvas::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+    }
+
+    .offcanvas::-webkit-scrollbar-thumb {
+        background-color: gainsboro;
+        border-radius: 5px;
+    }
+
+        .offcanvas::-webkit-scrollbar-thumb:hover {
+            background-color: #c0c0c0;
+        }
+
+    .text-theme {
+        font-weight: 500;
+    }
+
+    .offcanvas-footer {
+        padding: 11px 24px;
+        background: #f7f7f7;
+        position: fixed;
+        bottom: 0;
+        z-index: 11;
+        width: 100%;
+    }
+</style>
+
+<!---day route map-->
+<div class="offcanvas" id="myOffcanvas">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">View Route Map</h5>
+        <button type="button" class="close" onclick="$('.offcanvas').toggleClass('show');" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="offcanvas-body">
+        <h6><b>Travel date </b>: @Model.AttendanceDate</h6>
+        <ul class="timeline">
+            @if (Model != null)
+            {
+                if (Model.attendanceMeetingMapListing != null && Model.attendanceMeetingMapListing.Count() > 0)
+                {
+                    foreach (var item in Model.attendanceMeetingMapListing)
+                    {
+                        <li>
+                            <h6 class="text-theme">@item.MeetingTitle</h6>
+                            @if (@item.MeetingTitle=="Start")
+                            {
+                                <p class="font-12 text-muted mb-2">@item.CheckInTime | @item.DistanceTravel KM</p>
+                            }
+                            else if (@item.MeetingTitle == "End")
+                            {
+                                <p class="font-12 text-muted mb-2">@item.CheckOutTime | @item.DistanceTravel KM</p>
+                            }
+                            else
+                            {
+                                <p class="font-12 text-muted mb-2">@item.CheckInTime - @item.CheckOutTime | @item.DistanceTravel KM</p>
+                            }
+                            <p>@item.MeetingDescription</p>
+                        </li>
+                    }
+                }
+                else
+                {
+                }
+            }
+            else
+            {
+            }
+        </ul>
+    </div>
+
+    <div class="offcanvas-footer">
+        <h6><span class="font-weight-medium">Total Distance Travelled - </span> @Model.TotalDistanceTravel KM</h6>
+    </div>
+
+</div>
+
+
+
+@section Scripts{
+
+}
+<script type="text/javascript" asp-append-version="true">
+
+
+</script>

@@ -10,5 +10,7 @@ namespace YB_StaffingSupervisor.DataAccess.Entities.Model
         public string Date { get; set; }
 		public string Day { get; set; }
         public string DateDay { get; set; }
+        public string Month { get; set; }
+        public string Year { get; set; }
     }
 }

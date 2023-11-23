@@ -132,6 +132,7 @@
                                     <th>Completed Hours</th>
                                     <th>CheckIn Image</th>
                                     <th>CheckOut Image</th>
+                                    <th>View Route Map</th>
                                     <th>Status</th>
                                     <th>Comment</th>
                                     <th>Action</th>
@@ -168,6 +169,9 @@
                                                     }
                                                 </td>
                                                 <td>
+                                                    <button class="btn btn-sm mr-1" title="View Map" data-toggle="offcanvas" data-target="#myOffcanvas" id="btn_ViewMap_@countSuggestion" onclick="viewMap(@countSuggestion)">View Map</button>
+                                                </td>
+                                                <td>
                                                     @if (item.ApproveRejectStatus == "Rejected")
                                                     {
                                                         <span class="error-status">Rejected !</span>
@@ -190,6 +194,7 @@
                                                 <td>
                                                     <div class="d-flex justify-content-center">
                                                         <input type="hidden" value="@item.DailyAttendanceId" name="attendanceListing[@countSuggestion].DailyAttendanceId" />
+                                                        <input type="hidden" value="@item.AttendanceDate" name="attendanceListing[@countSuggestion].AttendanceDate" />
                                                         <input type="hidden" value="@item.ApproveRejectStatus" name="attendanceListing[@countSuggestion].ApproveRejectStatus" />
                                                         <input type="hidden" value="@item.ApproveRejectComment" name="attendanceListing[@countSuggestion].ApproveRejectComment" />
                                                         @if (item.ApproveRejectStatus == "Rejected" || item.ApproveRejectStatus == "Approved")
@@ -353,6 +358,8 @@
         </div>
     </div>
 </div>
+
+<div id="divViewMap"></div>
 
 @section Scripts{
     <script>

@@ -124,15 +124,23 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
                             {
                                 msg = "Approved successfully.";
                             }
-                            else if (ApproveRejectStatus == "Approve")
+                            else if (ApproveRejectStatus == "Reject")
                             {
                                 msg = "Rejected successfully.";
                             }
                         }
-                        //else if (result == -1)
-                        //{
-
-                        //}
+                        else if (result == -3)
+                        {
+                            msg = "OnDuty cannot be marked due to Attendance already exist";
+                        }
+                        else if (result == -2)
+                        {
+                            msg = "Invalid Status";
+                        }
+                        else if (result == -1)
+                        {
+                            msg = "OnDuty request not found";
+                        }
                         else
                         {
                             msg = "Something went wrong,Please try again.";

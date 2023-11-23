@@ -206,10 +206,18 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
                             {
                                 msg = "Approved successfully.";
                             }
-                            else if (ApproveRejectStatus == "Approve")
+                            else if (ApproveRejectStatus == "Reject")
                             {
                                 msg = "Rejected successfully.";
                             }
+                        }
+                        else if (result == -2)
+                        {
+                            msg = "Invalid Status";
+                        }
+                        else if (result == -1)
+                        {
+                            msg = "attendance not found";
                         }
                         else
                         {
@@ -224,6 +232,21 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             }
             return Json(new { msg });
 
+        }
+        [HttpPost]
+        public IActionResult GetAttendanceMeetingMapViewComponent(string AttendanceDate, string UserId, string Token)
+        {
+            var routeValues = ControllerContext.HttpContext.Request.RouteValues;
+            var url = $"/{routeValues["area"]}/{routeValues["controller"]}/{routeValues["action"]}";
+            bool checkToken = _loginUserRepo.ValidateCurrentToken(Token, url);
+            if (checkToken == false)
+            {
+                return RedirectToAction("Logout", "Home").WithWarning("Warning !", "Unauthorized Access.");
+            }
+            else
+            {
+                return ViewComponent("AttendanceMeetingMap", new { attendanceDate = AttendanceDate, userId = UserId });
+            }
         }
     }
 }

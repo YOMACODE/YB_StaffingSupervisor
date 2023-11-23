@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\Shared\Components\AttendanceMeetingMap\AttendanceMeetingMap.cshtml" />
     <None Include="wwwroot\js\Areas\OnDuty\OnDutyRequests.js" />
     <None Include="wwwroot\js\Areas\AttendanceCorrection\AttendanceCorrectionRequests.js" />
     <None Include="wwwroot\js\Areas\Attendance\TeamAttendance.js" />

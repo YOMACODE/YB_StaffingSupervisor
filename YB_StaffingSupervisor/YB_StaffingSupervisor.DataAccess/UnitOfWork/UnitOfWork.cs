@@ -225,6 +225,21 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
         }
         #endregion
 
+        #region  IAttendanceMeetingMapRepository 
+        public IAttendanceMeetingMapRepository _attendanceMeetingMapRepository;
+        public IAttendanceMeetingMapRepository AttendanceMeetingMapRepository
+        {
+            get
+            {
+                if (_attendanceMeetingMapRepository == null)
+                {
+                    _attendanceMeetingMapRepository = new AttendanceMeetingMapRepository(_connectionFactory);
+                }
+                return _attendanceMeetingMapRepository;
+            }
+        }
+        #endregion
+
         #region IDisposable Support
         void IUnitOfWork.Complete()
         {
