@@ -105,7 +105,7 @@ function ApproveRejectAttendance() {
 function viewMap(id) {
     var viewbtnId = id;
     var AttendanceDate = $('[name = "attendanceListing[' + viewbtnId + '].AttendanceDate"]').val();
-    var hdnUserId = $('#hdnUserId').val();
+    var hdnUserId = $('[name = "attendanceListing[' + viewbtnId + '].UserId"]').val();
     var Token = $('#hdn_TokenValue').val();
     var DTO = {
         AttendanceDate: AttendanceDate,
