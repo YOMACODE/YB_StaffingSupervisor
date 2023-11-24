@@ -65,7 +65,7 @@ function ApproveRejectAttendanceCorrection() {
         var ApproveRejectComment = $('#ApproveRejectComment').val();
         var Token = $('#hdn_TokenValue').val();
         var DTO = {
-            attendanceCorrectionId: AttendanceCorrectionId,
+            AttendanceCorrectionRequestId: AttendanceCorrectionId,
             ApproveRejectStatus: ApproveRejectStatus,
             ApproveRejectComment: ApproveRejectComment,
             Token: Token
