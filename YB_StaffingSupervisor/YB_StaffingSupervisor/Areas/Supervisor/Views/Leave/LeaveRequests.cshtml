@@ -1,278 +1,380 @@
-﻿@model YB_StaffingSupervisor.DataAccess.Entities.Custom.LeaveApprovalsCustom
+﻿@model YB_StaffingSupervisor.DataAccess.Entities.Custom.LeaveRequestCustom
 @{
     ViewData["Title"] = "Leave Requests";
     Layout = "~/Views/Shared/_ProantoV2MasterLayout.cshtml";
 }
+<style type="text/css">
+    .green-status {
+        color: green;
+        display: inline-block;
+        width: 100px;
+        height: 26px;
+        text-align: center;
+        line-height: 2.3;
+    }
 
-<div class="col-md-12">
-	<div class="card">
-		<div class="card-body">
+    .pending-status {
+        color: orange;
+        display: inline-block;
+        width: 100px;
+        height: 26px;
+        text-align: center;
+        line-height: 2.3;
+        color: #e8aa00;
+    }
 
-			<ul class="nav nav-tabs" id="myTab" role="tablist">
-				<li class="nav-item">
-					<a class="nav-link active" id="teamattendance-tab" data-toggle="tab"
-					   href="#teamattendance" role="tab" aria-controls="teamattendance"
-					   aria-selected="false">Leave Approvals</a>
-				</li>
-			</ul>
-			<div class="tab-content" id="myTabContent">
-				<div class="tab-pane fade show active" id="teamattendance" role="tabpanel"
-					 aria-labelledby="teamattendance-tab">
+    .error-status {
+        color: red;
+        display: inline-block;
+        width: 100px;
+        height: 26px;
+        text-align: center;
+        line-height: 2.3;
+    }
+</style>
 
-					<div class="d-flex justify-content-end align-items-center mt-3">
-
-						<button class="btn btn-sm" title="Filter" data-toggle="collapse"
-								data-target="#filter">
-							<i class="fa fa-filter"
-							   aria-hidden="true"></i>
-						</button>
-					</div>
-
-					<div class="collapse mt-3" id="filter">
-						<form asp-controller="Leave" asp-action="LeaveRequests" method="get">
-							<div class="card mb-3">
-
-								<div class="card-header d-flex justify-content-between align-items-center">
-									<div class="font-weight-medium">Filters</div>
-									<div><i class="fa fa-filter"></i></div>
-								</div>
-								<div class="card-body">
-									<div class="row">
-
-										<div class="col-md-3 col-lg-3 mt-2">
-											<div class="form-group">
-												<label for="exampleFormControlInput1" class="active"><b>Yoma ID</b></label>
-												<input type="text" id="yomaid" asp-for="SearchUserCode" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
-											</div>
-										</div>
-
-										<div class="col-md-3 col-lg-3 mt-2">
-											<div class="form-group">
-												<label for="exampleFormControlInput1" class="active"><b>Associate Name</b></label>
-												<input type="text" id="name" asp-for="SearchAssociateName" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
-											</div>
-										</div>
-
-										<div class="col-md-3 col-lg-3 mt-2">
-											<div class="form-group">
-												<label for="exampleFormControlInput1" class="active"><b>Date</b></label>
-												<input type="text" asp-for="SearchAppliedDate" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
-											</div>
-										</div>
-
-
-
-									</div>
-								</div>
-								<div class="card-footer">
-									<div class="d-flex justify-content-end">
-										<button type="button" class="btn btn-sm mr-1" onclick="return ExportLeaveApprovalRejectReport()">Export</button>
-
-										<button type="button" class="btn btn-sm mr-1" onclick="ClearButton()">Clear</button>
-										<button class="btn btn-sm" type="submit">Search</button>
-									</div>
-								</div>
-
-
-							</div>
-						</form>
-					</div>
-
-					<div class="table-resposive mt-3">
-						<table class="table-sm table table-bordered no-wrap">
-							<thead id="sumit">
-
-							<th>Yoma Id</th>
-							<th>Associate Name</th>
-							<th>Start Date</th>
-							<th>End Date</th>
-							<th>Type</th>
-							<th>Days</th>
-							<th>Applied On</th>
-							<th>Status</th>
-							<th>Approved by</th>
-							<th>Comment</th>
-							<th>Action</th>
-							</tr>
-							</thead>
-							<tbody class="text-center" class="text-center">
-								@if (Model != null)
-								{
-									if (Model.LeaveApprovalListing != null && Model.LeaveApprovalListing.Count() > 0)
-									{
-										foreach (var item in Model.LeaveApprovalListing)
-										{
-											<tr>
-												<td>@item.UserCode</td>
-												<td>@item.AssociateName</td>
-												<td>@item.StartDate</td>
-												<td>@item.EndDate</td>
-												<td>@item.LeaveType</td>
-												<td>@item.LeaveDays</td>
-												<td>@item.AppliedDate</td>
-												<td>@item.Status</td>
-												<td>@item.Approvedby</td>
-												<td>
-													<i class="fa fa-comment" data-toggle="modal"
-													   data-target="#commentModal" onclick="bindCommentModel('@item.Comment');"></i>
-												</td>
-												@if (item.Status == "Pending")
-												{
-													<td>
-														<button class="btn btn-sm" data-toggle="modal" onclick="BindLeaveId('@item.LeaveRequestId')"
-																data-target="#verifyModal">
-															Approved/Reject
-														</button>
-													</td>
-												}
-											</tr>
-										}
-									}
-									else
-									{
-										<tr>
-											<td colspan="25" style="text-align:center;">** No Record Found **</td>
-										</tr>
-									}
-
-								}
-								else
-								{
-									<tr><td colspan="25" style="text-align:center;">** No Record Found **</td></tr>
-								}
-
-							</tbody>
-
-						</table>
-					</div>
-
-
-				</div>
-
-			</div>
-
-
-
-		</div>
-	</div>
+<div class="page-breadcrumb">
+    <div class="row">
+        <div class="col-7 align-self-center">
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Leave Requests</h3>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item">
+                            <a href="#" class="text-muted">
+                                My Team
+                            </a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
 </div>
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="font-weight-medium mb-0">Leave Requests</h4>
+                        <button class="btn btn-sm" title="Filter" data-toggle="collapse" data-target="#filter">
+                            <i class="fa fa-filter" aria-hidden="true"></i>
+                        </button>
+                    </div>
 
-<!---verify ar modal--->
+                    <div class="collapse" id="filter">
+                        <div class="card card-body mb-3">
+                            <form asp-controller="Leave" asp-action="LeaveRequests" method="get">
+                                <div class="row mt-3">
 
-<div class="modal fade" id="verifyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	 aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-md" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalCenterTitle">Leave Approval</h5>
-				<h5 class="modal-cut" data-dismiss="modal" aria-label="Close" aria-hidden="true">✖</h5>
-			</div>
-			<div class="modal-body">
-				<form asp-action="ApproveRejectLeave" method="post">
-					<input type="hidden" asp-for="LeaveRequestId" id="hdnLeaveRequestId" />
-					<div class="row">
-						<div class="form col-12 col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
-							<label class="active"><b>Status</b><sup class="red">*</sup></label>
-							<div class="form-group">
-								<select asp-for="Status" class="form-control form-control-sm" id="selectStatus" onchange="approveReject()">
-									<option>Select</option>
-									<option value="1">Approve</option>
-									<option value="0">Reject</option>
-								</select>
-							</div>
-						</div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
+                                        <label for="exampleFormControlSelect1"><b>Yoma ID</b></label>
+                                        <div class="form-group">
+                                            <input asp-for="SearchUserCode" placeholder="Search Yoma ID" class="form-control form-control-sm" autocomplete="off" />
+                                        </div>
+                                    </div>
 
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
+                                        <label for="exampleFormControlSelect1"><b>Leave From</b></label>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-sm border-bottom startdate" value="@ViewBag.SearchLeaveFrom" asp-for="SearchLeaveFrom" asp-format="{0:dd/MM/yyyy}" placeholder="DD/MM/YYYY" />
+                                        </div>
+                                    </div>
 
-					</div>
-					<div class="form-group">
-						<div class="nomandate" style="display: none;">
-							<label for="exampleFormControlTextarea1">
-								<b>
-									Write Comment <sup class="red">*</sup>
-								</b>
-							</label>
-							@* <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea> *@
-						</div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
+                                        <label for="exampleFormControlSelect1"><b>Leave To</b></label>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-sm border-bottom todate" value="@ViewBag.SearchLeaveTo" asp-for="SearchLeaveTo" asp-format="{0:dd/MM/yyyy}" placeholder="DD/MM/YYYY" />
+                                        </div>
+                                    </div>
 
-						<div class="mandate" style="display: none;">
-							<label for="exampleFormControlTextarea1"><b>Write Comment</b></label>
-							<textarea class="form-control" asp-for="Comment" id="exampleFormControlTextarea1" rows="3"></textarea>
-						</div>
-						<div class="modal-footer py-2">
-							<button class="btn1 btn-sm reject-btn" data-dismiss="modal">Cancel</button>
-							<button type="submit" class="btn btn-sm btn-primary approval-btn">Save</button>
-						</div>
-					</div>
-				</form>
-			</div>
+                                    <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
+                                        <label for="exampleFormControlSelect1"><b>Approval Status</b></label>
+                                        <div class="form-group">
+                                            <select asp-for="SearchStatusType" class="form-control form-control-sm border-bottom remove-select2">
+                                                <option value="">Select Status</option>
+                                                <option value="P">Pending</option>
+                                                <option value="R">Rejected</option>
+                                                <option value="A">Approved</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-		</div>
-	</div>
+                                </div>
+
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-sm mr-1">Search</button>
+                                    <a asp-controller="Leave" asp-action="LeaveRequests" class="btn btn-sm mr-1" title="Reset" tabindex="5">
+                                        <i class="fas fa-sync-alt">
+                                        </i>
+                                    </a>
+                                    @* <a asp-controller="Leave" asp-action="ExportLeaveRequests" asp-route-page="@ViewBag.page" asp-route-sortOrder="@ViewData["sortOrder"]" asp-route-sortColumn="@ViewData["sortColumnName"]" asp-route-pagesize="@ViewBag.PageSize" asp-route-SearchUserCode="@ViewBag.SearchUserCode" asp-route-SearchLeaveFrom="@ViewBag.SearchLeaveFrom" asp-route-SearchLeaveTo="@ViewBag.SearchLeaveTo" asp-route-SearchStatusType="@ViewBag.SearchStatusType" class="btn btn-sm mr-1" title="Export">
+                                    Export
+                                    </a> *@
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive mt-3">
+                        <table class="table table-sm no-wrap table-bordered">
+                            <thead id="sumit" class="text-center">
+                                <tr>
+                                    <th>Requested On</th>
+                                    <th>Yoma ID</th>
+                                    <th>Associate Name</th>
+                                    <th>Leave Type</th>
+                                    <th>Leave From Date</th>
+                                    <th>Leave To Date</th>
+                                    <th>Leave From</th>
+                                    <th>Leave To</th>
+                                    <th>Leave Reason</th>
+                                    <th>Status</th>
+                                    <th>Comment</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @{
+                                    var countSuggestion = 0;
+                                }
+                                @if (Model != null)
+                                {
+                                    if (Model.leaveListing != null && Model.leaveListing.Count() > 0)
+                                    {
+                                        foreach (var item in Model.leaveListing)
+                                        {
+                                            <tr>
+                                                <td style="text-align:center">@item.RequestedOnDate</td>
+                                                <td>@item.UserCode</td>
+                                                <th>@item.FullName</th>
+                                                <td>@item.LeaveType</td>
+                                                <td style="text-align:center">@item.LeaveFromDate</td>
+                                                <td style="text-align:center">@item.LeaveToDate</td>
+                                                <td>@item.LeaveFromHalfFullDay</td>
+                                                <td>@item.LeaveToHalfFullDay</td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(item.LeaveReason))
+                                                    {
+                                                        <i class="fa fa-comment" data-toggle="modal" data-target="#viewComment" onclick="viewLeaveReason(@countSuggestion)" id="btn_ViewLeaveReason_@countSuggestion"></i>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (item.ApproveRejectStatus == "Rejected")
+                                                    {
+                                                        <span class="error-status">Rejected !</span>
+                                                    }
+                                                    else if (item.ApproveRejectStatus == "Approved")
+                                                    {
+                                                        <span class="green-status">Approved !</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="pending-status">Pending !</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(item.ApproveRejectComment))
+                                                    {
+                                                        <i class="fa fa-comment" data-toggle="modal" data-target="#viewComment" onclick="viewComment(@countSuggestion)" id="btn_ViewComment_@countSuggestion"></i>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex justify-content-center">
+                                                        <input type="hidden" value="@item.LeaveRequestId" name="leaveListing[@countSuggestion].LeaveRequestId" />
+                                                        <input type="hidden" value="@item.ApproveRejectStatus" name="leaveListing[@countSuggestion].ApproveRejectStatus" />
+                                                        <input type="hidden" value="@item.ApproveRejectComment" name="leaveListing[@countSuggestion].ApproveRejectComment" />
+                                                        <input type="hidden" value="@item.LeaveReason" name="leaveListing[@countSuggestion].LeaveReason" />
+                                                        @if (item.ApproveRejectStatus == "Rejected" || item.ApproveRejectStatus == "Approved")
+                                                        {
+                                                            <button class="btn btn-sm mr-1" title="Verify" disabled>Verify</button>
+                                                        }
+                                                        else
+                                                        {
+                                                            <button class="btn btn-sm mr-1" title="Verify" data-toggle="modal" data-target="#viewVerifyLeave" id="btn_Verify_@countSuggestion" onclick="viewVerifyLeave(@countSuggestion)">Verify</button>
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            countSuggestion++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <div class="bottom_str">
+                        @if (Model != null && Model.CustomPagination != null)
+                        {
+                            @if (Model.CustomPagination.TotalItems > 10)
+                            {
+                                <div class="one_str">
+                                    <select class="form-control form-control-sm remove-select2" style="width:auto" asp-for="PageSize" onchange="showListForPageSize()">
+                                        <option value="/Supervisor/Leave/LeaveRequests/?pagesize=100000&SearchUserCode=@ViewBag.SearchUserCode&SearchLeaveFrom=@ViewBag.SearchLeaveFrom&SearchLeaveTo=@ViewBag.SearchLeaveTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">ALL</option>
+                                        <option value="/Supervisor/Leave/LeaveRequests/?pagesize=10&SearchUserCode=@ViewBag.SearchUserCode&SearchLeaveFrom=@ViewBag.SearchLeaveFrom&SearchLeaveTo=@ViewBag.SearchLeaveTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">10</option>
+                                        <option value="/Supervisor/Leave/LeaveRequests/?pagesize=25&SearchUserCode=@ViewBag.SearchUserCode&SearchLeaveFrom=@ViewBag.SearchLeaveFrom&SearchLeaveTo=@ViewBag.SearchLeaveTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">25</option>
+                                        <option value="/Supervisor/Leave/LeaveRequests/?pagesize=50&SearchUserCode=@ViewBag.SearchUserCode&SearchLeaveFrom=@ViewBag.SearchLeaveFrom&SearchLeaveTo=@ViewBag.SearchLeaveTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">50</option>
+                                        <option value="/Supervisor/Leave/LeaveRequests/?pagesize=100&SearchUserCode=@ViewBag.SearchUserCode&SearchLeaveFrom=@ViewBag.SearchLeaveFrom&SearchLeaveTo=@ViewBag.SearchLeaveTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">100</option>
+                                    </select>
+                                </div>
+                            }
+                            if (Model.CustomPagination.EndPage > 1 && Model.CustomPagination.TotalItems > 1)
+                            {
+                                <div class="two_str">
+                                    <div class="pagination">
+                                        <ul class="bottom-Ui">
+                                            @if (Model.CustomPagination.CurrentPage > 1)
+                                            {
+                                                <li>
+                                                    <a href="~/Supervisor/Leave/LeaveRequests/?SearchUserCode=@ViewBag.SearchUserCode&SearchLeaveFrom=@ViewBag.SearchLeaveFrom&SearchLeaveTo=@ViewBag.SearchLeaveTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&pagesize=@ViewBag.PageSize">First</a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Supervisor/Leave/LeaveRequests/?SearchUserCode=@ViewBag.SearchUserCode&SearchLeaveFrom=@ViewBag.SearchLeaveFrom&SearchLeaveTo=@ViewBag.SearchLeaveTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.CurrentPage - 1)&pagesize=@ViewBag.PageSize">Previous</a>
+                                                </li>
+                                            }
+                                            @for (var Page = Model.CustomPagination.StartPage; Page <= Model.CustomPagination.EndPage; Page++)
+                                            {
+                                                <li>
+                                                    <a class="@(Page == Model.CustomPagination.CurrentPage ? "active" : "")" href="~/Supervisor/Leave/LeaveRequests/?SearchUserCode=@ViewBag.SearchUserCode&SearchLeaveFrom=@ViewBag.SearchLeaveFrom&SearchLeaveTo=@ViewBag.SearchLeaveTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@Page&pagesize=@ViewBag.PageSize">@Page</a>
+                                                </li>
+                                            }
+                                            @if (Model.CustomPagination.CurrentPage < Model.CustomPagination.TotalPages)
+                                            {
+                                                <li>
+                                                    <a href="~/Supervisor/Leave/LeaveRequests/?SearchUserCode=@ViewBag.SearchUserCode&SearchLeaveFrom=@ViewBag.SearchLeaveFrom&SearchLeaveTo=@ViewBag.SearchLeaveTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.CurrentPage + 1)&pagesize=@ViewBag.PageSize">Next</a>
+                                                </li>
+                                                <li>
+                                                    <a href="~/Supervisor/Leave/LeaveRequests/?SearchUserCode=@ViewBag.SearchUserCode&SearchLeaveFrom=@ViewBag.SearchLeaveFrom&SearchLeaveTo=@ViewBag.SearchLeaveTo&SearchStatusType=@ViewBag.SearchStatusType&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.TotalPages)&pagesize=@ViewBag.PageSize">Last</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-
-<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-	 aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content rounded overflow-hidden">
-			<div class="modal-header py-2">
-				<h5 class="modal-title" id="exampleModalLongTitle">Comments</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">×</span>
-				</button>
-				<div class="modal-body">
-					<div class="approve-reject">
-						<div class="row">
-							<div class="col-md-12">
-								<textarea class="form-control" cols="4" rows="5" placeholder="Write Remarks"
-										  disabled="" id="commentArea"> </textarea>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
+<div class="modal fade" id="viewComment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">View Comment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="approve-reject">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea id="hdnModelApproveRejectComment" class="form-control" cols="4" rows="5" placeholder="" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<script>
-	function BindLeaveId(id) {
-		$('#hdnLeaveRequestId').val(id);
-	}
-	//verify modal
-	function approveReject() {
-		let statusValue = $('#selectStatus').val();
-		if (statusValue === '1') {
-			$('.nomandate').hide();
-			$('.mandate').show();
-		}
-		else if (statusValue === '0') {
-			$('.nomandate').hide();
-			$('.mandate').show();
-		}
 
-		else {
-			$('.nomandate').hide();
-			$('.mandate').hide();
-		}
-	}
+<div class="modal fade" id="viewVerifyLeave" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Leave Approval</h5>
+                <h5 class="modal-cut" data-dismiss="modal" aria-label="Close" aria-hidden="true">✖</h5>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="hdnModelLeaveRequestId" />
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                        <label class="active"><b>Status</b><sup class="red">*</sup></label>
+                        <div class="form-group">
+                            <select class="form-control form-control-sm remove-select2" id="ApproveRejectStatus" onchange="ValidateApproveRejectStatus()">
+                                <option value="">Select</option>
+                                <option value="Approve">Approve</option>
+                                <option value="Reject">Reject</option>
+                            </select>
+                            <span id="ApproveRejectStatus-Error" class="text-danger ApproveRejectStatus-Error"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                        <label class="active"><b>Write Comment</b><sup class="red">*</sup></label>
+                        <div class="form-group">
+                            <textarea class="form-control" id="ApproveRejectComment" rows="3" onkeyup="ValidateApproveRejectComment()"></textarea>
+                            <span id="ApproveRejectComment-Error" class="text-danger ApproveRejectComment-Error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer py-2">
+                <button class="btn1 btn-sm reject-btn" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-sm btn-primary approval-btn" id="btnApproveRejectLeave" onclick="ApproveRejectLeave()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-	function bindCommentModel(comment) {
-		$('#commentArea').val(comment);
-	}
-</script>
-
-
-
-@section Scripts{
-@*     <script>
+@section Scripts {
+    <script>
         $(document).ready(function () {
-
             toastr.success('Leave Requests');
+            //$('.remove-select2').select2('destroy');
 
+            var selectedText = @ViewBag.PageSize;
+            if (selectedText == '100000') {
+                selectedText = "All";
+            }
+            $('#PageSize option').map(function () {
+                if ($(this).text() == selectedText) return this;
+            }).attr('selected', 'selected');
+
+            $('.startdate').bootstrapMaterialDatePicker({
+                weekStart: 0,
+                time: false,
+                format: 'DD/MM/YYYY',
+                clearButton: true
+            }).on('change', function (e, date) {
+                $('.todate').bootstrapMaterialDatePicker('setMinDate', date);
+            });
+
+            $('.todate').bootstrapMaterialDatePicker({
+                weekStart: 0,
+                time: false,
+                format: 'DD/MM/YYYY',
+                clearButton: true
+            });
         });
-
-    </script> *@
+        function showListForPageSize() {
+            window.location.href = $("#PageSize").val();
+        }
+    </script>
     <script src="~/js/Areas/Leave/LeaveRequests.js" asp-append-version="true"></script>
 }

@@ -3,6 +3,11 @@
     var ApproveRejectComment = $('[name = "attendanceCorrectionListing[' + viewbtnId + '].ApproveRejectComment"]').val();
     $("#hdnModelApproveRejectComment").val(ApproveRejectComment);
 }
+function viewRemark(id) {
+    var viewbtnId = id;
+    var Reamark = $('[name = "attendanceCorrectionListing[' + viewbtnId + '].Remark"]').val();
+    $("#hdnModelApproveRejectComment").val(Reamark);
+}
 function viewVerifyAttendanceCorrection(id) {
     var viewbtnId = id;
     var AttendanceCorrectionId = $('[name = "attendanceCorrectionListing[' + viewbtnId + '].AttendanceCorrectionRequestId"]').val();

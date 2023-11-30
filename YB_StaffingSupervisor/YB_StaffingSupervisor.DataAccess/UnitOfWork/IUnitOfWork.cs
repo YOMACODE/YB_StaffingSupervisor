@@ -17,7 +17,7 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
         IAttendanceCorrectionRepository AttendanceCorrectionRepository { get; }
 		IClaimRequestsRepository ClaimRequestsRepository { get; }
         IUserClaimRequestsRepository UserClaimRequestsRepository { get; }
-        ILeaveApprovalsRepository LeaveApprovalsRepository { get; }
+        ILeaveRepository LeaveRepository { get; }
 		IOnDutyRepository OnDutyRepository { get; }
         IAttendanceMeetingMapRepository AttendanceMeetingMapRepository { get; }
 

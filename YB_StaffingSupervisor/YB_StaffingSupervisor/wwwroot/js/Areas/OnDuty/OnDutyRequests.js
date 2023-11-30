@@ -3,6 +3,11 @@
     var ApproveRejectComment = $('[name = "onDutyListing[' + viewbtnId + '].ApproveRejectComment"]').val();
     $("#hdnModelApproveRejectComment").val(ApproveRejectComment);
 }
+function viewRemark(id) {
+    var viewbtnId = id;
+    var Reamark = $('[name = "onDutyListing[' + viewbtnId + '].Remark"]').val();
+    $("#hdnModelApproveRejectComment").val(Reamark);
+}
 function viewVerifyOnDuty(id) {
     var viewbtnId = id;
     var OnDutyId = $('[name = "onDutyListing[' + viewbtnId + '].OnDutyRequestId"]').val();

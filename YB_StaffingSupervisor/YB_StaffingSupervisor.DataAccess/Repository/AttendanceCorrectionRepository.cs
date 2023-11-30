@@ -69,6 +69,7 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                                 attendanceCorrectionRequestModel.EmailId = dataSet.Tables[0].Rows[i]["EmailId"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["EmailId"]);
                                 attendanceCorrectionRequestModel.MobileNumber = dataSet.Tables[0].Rows[i]["MobileNumber"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["MobileNumber"]);
                                 attendanceCorrectionRequestModel.RequestedOnDate = dataSet.Tables[0].Rows[i]["CreateDate"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CreateDate"]);
+                                attendanceCorrectionRequestModel.Remark = dataSet.Tables[0].Rows[i]["Remark"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["Remark"]);
                                 attendanceCorrectionRequestModels.Add(attendanceCorrectionRequestModel);
                             }
                         }

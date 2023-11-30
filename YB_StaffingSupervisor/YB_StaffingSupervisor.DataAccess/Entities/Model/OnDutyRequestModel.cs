@@ -30,5 +30,6 @@ namespace YB_StaffingSupervisor.DataAccess.Entities.Model
         public string CheckInTimeTo { get; set; }
         public string CheckOutTimeFrom { get; set; }
         public string CheckOutTimeTo { get; set; }
+        public string Remark { get; set; }
     }
 }

@@ -69,6 +69,7 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                                 onDutyRequestModel.EmailId = dataSet.Tables[0].Rows[i]["EmailId"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["EmailId"]);
                                 onDutyRequestModel.MobileNumber = dataSet.Tables[0].Rows[i]["MobileNumber"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["MobileNumber"]);
                                 onDutyRequestModel.RequestedOnDate = dataSet.Tables[0].Rows[i]["CreateDate"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CreateDate"]);
+                                onDutyRequestModel.Remark = dataSet.Tables[0].Rows[i]["Remark"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["Remark"]);
                                 onDutyRequestModels.Add(onDutyRequestModel);
                             }
                         }

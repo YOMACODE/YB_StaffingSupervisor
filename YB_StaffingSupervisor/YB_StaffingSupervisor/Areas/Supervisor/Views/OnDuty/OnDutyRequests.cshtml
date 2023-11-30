@@ -129,6 +129,7 @@
                                     <th>Request Type</th>
                                     <th>CheckIn</th>
                                     <th>CheckOut</th>
+                                    <th>Remark</th>
                                     <th>Status</th>
                                     <th>Comment</th>
                                     <th>Action</th>
@@ -152,6 +153,12 @@
                                                 <td>@item.RequestType</td>
                                                 <td>@item.CheckInTime</td>
                                                 <td>@item.CheckOutTime</td>
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(item.Remark))
+                                                    {
+                                                        <i class="fa fa-comment" data-toggle="modal" data-target="#viewComment" onclick="viewRemark(@countSuggestion)" id="btn_ViewRemark_@countSuggestion"></i>
+                                                    }
+                                                </td>
                                                 <td>
                                                     @if (item.ApproveRejectStatus == "Rejected")
                                                     {
@@ -177,6 +184,7 @@
                                                         <input type="hidden" value="@item.OnDutyRequestId" name="onDutyListing[@countSuggestion].OnDutyRequestId" />
                                                         <input type="hidden" value="@item.ApproveRejectStatus" name="onDutyListing[@countSuggestion].ApproveRejectStatus" />
                                                         <input type="hidden" value="@item.ApproveRejectComment" name="onDutyListing[@countSuggestion].ApproveRejectComment" />
+                                                        <input type="hidden" value="@item.Remark" name="onDutyListing[@countSuggestion].Remark" />
                                                         @if (item.ApproveRejectStatus == "Rejected" || item.ApproveRejectStatus == "Approved")
                                                         {
                                                             <button class="btn btn-sm mr-1" title="Verify" disabled>Verify</button>

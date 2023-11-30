@@ -180,17 +180,17 @@ namespace YB_StaffingSupervisor.DataAccess.UnitOfWork
 		#endregion
 
 
-		#region ILeaveApprovalsRepository
-		ILeaveApprovalsRepository _leaveApprovalsRepository;
-		public ILeaveApprovalsRepository LeaveApprovalsRepository
+		#region ILeaveRepository
+		ILeaveRepository _leaveRepository;
+		public ILeaveRepository LeaveRepository
 		{
 			get
 			{
-				if (_leaveApprovalsRepository == null)
+				if (_leaveRepository == null)
 				{
-					_leaveApprovalsRepository = new LeaveApprovalsRepository(_connectionFactory);
+					_leaveRepository = new LeaveRepository(_connectionFactory);
 				}
-				return _leaveApprovalsRepository;
+				return _leaveRepository;
 			}
 		}
 		#endregion
