@@ -293,5 +293,23 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                 return 0;
             }
         }
+        public async Task<DataTable> GetAttendanceRequestExport(string userid, string YomaId, string AttendenceFrom, string AttendenceTo, string status)
+        {
+            using (var dbconnect = connectionFactory.GetDAL)
+            {
+                SqlParameter[] sqlparameters =
+                {
+                    new SqlParameter("@chvnSearchUserCode", SqlDbType.NVarChar) { Value =  YomaId},
+                    new SqlParameter("@intbSupervisorId", SqlDbType.Int) { Value =  userid},
+                    new SqlParameter("@chvnSearchFromDate", SqlDbType.NVarChar) { Value =  AttendenceFrom},
+                    new SqlParameter("@chvnSearchToDate", SqlDbType.NVarChar) { Value = AttendenceTo},
+                    new SqlParameter("@chvnSearchStatusType", SqlDbType.NVarChar) { Value = status },
+                    new SqlParameter("@chvnOperationType", SqlDbType.NVarChar) { Value = "Export" },
+                };
+                DataTable dataTable = await Task.Run(() => dbconnect.SPExecuteDataTable("[WebApplication_SP].[usp_Supervisor_AttendanceRequest_ApproveReject_SelectAll_SelectById]", sqlparameters, "dt"));
+
+                return dataTable;
+            }
+        }
     }
 }

@@ -22,8 +22,8 @@
                             <div class="card mb-3">
 
                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                    <div class="font-weight-medium">Filters</div>
-                                    <div><i class="fa fa-filter"></i></div>
+                                   @*  <div class="font-weight-medium">Filters</div>
+                                    <div><i class="fa fa-filter"></i></div> *@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -42,6 +42,20 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-md-3 col-lg-3 mt-2">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlInput1" class="active"><b>Mobile Number</b></label>
+                                                <input type="text" id="name" asp-for="SearchMobileNumber" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Mobile Number.">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3 col-lg-3 mt-2">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlInput1" class="active"><b>Email</b></label>
+                                                <input type="text" id="name" asp-for="SearchEmail" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Email.">
+                                            </div>
+                                        </div>
+
 
                                         @*  <div class="col-md-3 col-lg-3 mt-2">
                                         <div class="form-group">
@@ -50,7 +64,7 @@
                                         </div>
                                         </div> *@
 
-                                        <div class="col-md-3 col-lg-3 mt-2">
+                                       @*  <div class="col-md-3 col-lg-3 mt-2">
                                             <div class="form-group">
                                                 <label for="exampleFormControlInput1" class="active"><b>Status</b></label>
                                                 <select class="form-control foprm-control-sm" id="status" asp-for="SearchStatus">
@@ -60,7 +74,7 @@
                                                     <option>Pending</option>
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> *@
 
 
 
@@ -94,17 +108,26 @@
                             <tbody class="text-center" class="text-center">
                                 @if (Model != null)
                                 {
+                                    int i = 0;
                                     if (Model.ClaimRequestListing != null && Model.ClaimRequestListing.Count() > 0)
                                     {
                                         foreach (var item in Model.ClaimRequestListing)
                                         {
+                                            i++;
+
                                             <tr>
-                                                <td>@item.SNo</td>
+                                                <td>@i</td>
                                                 <td>@item.YomaId</td>
                                                 <td>@item.AssociateName</td>
                                                 <td>@item.Email</td>
                                                 <td>@item.MobileNumber</td>
-                                                <td class="d-flex justify-content-center"><button onclick="location.href='/Supervisor/UserClaimRequest/UserClaimRequest'" class="btn btn-sm">View Detail</button></td>
+                                                <td>
+                                                    @if(@item.ShowClaim=="1"){
+                                                        <a asp-area="Supervisor" asp-controller="Claim" asp-action="UserClaimrequest" asp-route-UserId="@item.UserId" class="btn btn-sm">
+                                                        View Detail
+                                                    </a>
+                                                    }
+                                                </td>
                                             </tr>
                                         }
                                     }

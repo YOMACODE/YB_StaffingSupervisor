@@ -110,9 +110,7 @@
                                         <i class="fas fa-sync-alt">
                                         </i>
                                     </a>
-                                    @* <a asp-controller="AttendanceCorrection" asp-action="ExportAttendanceCorrectionRequests" asp-route-page="@ViewBag.page" asp-route-sortOrder="@ViewData["sortOrder"]" asp-route-sortColumn="@ViewData["sortColumnName"]" asp-route-pagesize="@ViewBag.PageSize" asp-route-SearchUserCode="@ViewBag.SearchUserCode" asp-route-SearchAttendanceFrom="@ViewBag.SearchAttendanceFrom" asp-route-SearchAttendanceTo="@ViewBag.SearchAttendanceTo" asp-route-SearchStatusType="@ViewBag.SearchStatusType" class="btn btn-sm mr-1" title="Export">
-                                        Export
-                                    </a> *@
+                                    <button type="button" class="btn btn-sm mr-1" onclick="ExportAttendanceCorrectionReport();">Export</button>
                                 </div>
                             </form>
                         </div>

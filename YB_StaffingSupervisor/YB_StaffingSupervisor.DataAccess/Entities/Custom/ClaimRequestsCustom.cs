@@ -10,11 +10,18 @@ namespace YB_StaffingSupervisor.DataAccess.Entities.Custom
 	{
 		#region Search and Sorting Parameter
 		public string SearchUserCode { get; set; }
+		public string claimRequestId { get; set; }
+		public string SupervisorId { get; set; }
 		public string SearchAssociateName { get; set; }
-		public string SearchEmail { get; set; }
+        public string SearchFrom { get; set; }
+        public string SearchTo { get; set; }
+        public string SearchEmail { get; set; }
 		public string SearchMobileNumber { get; set; }
-		//public string SearchAppliedDate { get; set; }
-		public string SearchStatus { get; set; }
+        public string SearchClaimType { get; set; }
+		public string searchDOJ { get; set; }
+
+        //public string SearchAppliedDate { get; set; }
+        public string SearchStatus { get; set; }
 
 		public string SortOrderBy { get; set; }
 		public string SortColumnName { get; set; }

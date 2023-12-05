@@ -1,4 +1,5 @@
-﻿using iTextSharp.text;
+﻿using ClosedXML.Excel;
+using iTextSharp.text;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,8 +7,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using YB_StaffingSupervisor.Common;
@@ -155,5 +158,53 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             return Json(new { msg });
 
         }
+        #region AttendanceCorrection  Report
+
+        [HttpGet]
+        public async Task<IActionResult> AttendanceCorrectionReport(string userid, string YomaId, string AttendenceFrom, string AttendenceTo, string status)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataSet ds = new DataSet();
+                userid = _dataProtector.Unprotect(baseModel.UserId);
+                dt = await _service.AttendanceCorrectionRepository.GetAttendanceCorrectionExport(userid, YomaId, AttendenceFrom, AttendenceTo, status);
+                //Do Export for 
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    var totalrowcount = dt.Rows.Count;
+                    var totalcolcount = dt.Columns.Count;
+                    //dt.Columns.Remove("DisplayOrder");
+                    ds.Tables.Add(dt.Copy());
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        var sheetPFFormat = wb.Worksheets.Add("AttendanceCorrection Report");
+
+                        sheetPFFormat.FirstRow().FirstCell().InsertTable(dt);
+                        sheetPFFormat.Columns().AdjustToContents();
+                        sheetPFFormat.FirstRow().Style.Font.Bold = true;
+
+                        Response.Clear();
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        using (MemoryStream MyMemoryStream = new MemoryStream())
+                        {
+                            wb.SaveAs(MyMemoryStream);
+                            return File(MyMemoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "AttendanceCorrectionReport.xlsx");
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("AttendanceCorrectionRequests", "AttendanceCorrection").WithInfo("Info !", "No data found!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("AttendanceCorrectionRequests", "AttendanceCorrection").WithDanger("Error !", "Something went wrong.please try again.");
+            }
+        }
+        #endregion
+
     }
 }

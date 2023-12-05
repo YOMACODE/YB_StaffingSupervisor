@@ -107,3 +107,21 @@ function ApproveRejectAttendanceCorrection() {
         });
     }
 }
+
+function ExportAttendanceCorrectionReport() {
+    debugger;
+    var flag = 1;
+    if ($('#SearchStatusType').val() == '') {
+        toastr.error("* Please select Status.", "Error !");
+        flag = 0;
+    }
+
+    if (flag == 1) {
+        var YomaId = $("#SearchUserCode").val();
+        var AttendenceFrom = $("#SearchAttendanceFrom").val();
+        var AttendenceTo = $("#SearchAttendanceTo").val();
+        var status = $("#SearchStatusType").val();
+
+        window.location = "/Supervisor/AttendanceCorrection/AttendanceCorrectionReport?YomaId=" + YomaId + "&AttendenceFrom=" + AttendenceFrom + '&AttendenceTo=' + AttendenceTo + '&status=' + status;
+    }
+}
