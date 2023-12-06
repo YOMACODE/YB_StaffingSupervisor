@@ -192,7 +192,105 @@ namespace YB_StaffingSupervisor.Controllers
             HttpContext.Session.SetString("Captcha", CaptchaText);
             return Json(CaptchaText);
         }
+        //RESET PASSWORD
+        [HttpPost]
+        public async Task<IActionResult> SendEmailOTP([FromForm] string UserName)
+        {
+            string message = string.Empty;
+            try
+            {
+                if (!string.IsNullOrEmpty(UserName))
+                {
+                    long result = await _loginUserRepo.SendOtpOnEmail(UserName);
+                    if (result == 1)
+                    {
+                        message = "OTP send successfully.";
+                    }
+                    else if (result == 0)
+                    {
+                        message = "Invalid UserName!!";
+                    }
+                    else
+                    {
+                        message = "Service is not running please try again!!";
+                    }
+                }
+                else
+                {
+                    message = "Something Went Wrong!!";
+                }
+            }
+            catch (Exception ex)
+            {
+                _ = ex.Message;
+                //message = "Oops something went wrong please try again!!";
+                message = ex.Message;
+            }
+            return Json(new { mgs = message });
+        }
+        [HttpPost]
+        public async Task<IActionResult> VerifyEmailOTP([FromForm] string UserName, string OTP)
+        {
+            string message = string.Empty;
+            try
+            {
+                if (!string.IsNullOrEmpty(UserName))
+                {
+                    long result = await _loginUserRepo.VerifyEmailOtp(UserName, OTP);
+                    if (result == 1)
+                    {
+                        message = "OTP verify successfully.";
+                    }
+                    else if (result == 2)
+                    {
+                        message = "Invalid OTP!!";
+                    }
+                    else if (result == 0)
+                    {
+                        message = "Invalid Unique code!!";
+                    }
+                    else
+                    {
+                        message = "Service is not running please try again!!";
+                    }
+                }
+                else
+                {
+                    message = "Unique code missing!!";
+                }
+            }
+            catch (Exception ex)
+            {
+                _ = ex.Message;
+                //message = "Oops something went wrong please try again!!";
+                message = ex.Message;
+            }
+            return Json(new { mgs = message });
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> SaveNewPassword([FromForm] string UserName, string NewPassword)
+        {
+            string message = string.Empty;
+            try
+            {
+                long result = await _loginUserRepo.SaveNewPassword(UserName, NewPassword);
+                if (result == 1)
+                {
+                    message = "Password Saved Successfully.";
+                }
+                else
+                {
+                    message = "Something Went Wrong";
+                }
+            }
+            catch (Exception ex)
+            {
+                _ = ex.Message;
+                message = ex.Message;
+            }
+            return Json(new { mgs = message });
+        }
 
 
         /// <summary>
