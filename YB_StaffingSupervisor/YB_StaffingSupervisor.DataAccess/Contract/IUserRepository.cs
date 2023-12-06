@@ -16,5 +16,8 @@ namespace YB_StaffingSupervisor.DataAccess.Contract
         void ChangeUserTheme(Int64? userId, String themeName);
         UserModel User(Int64? userId);
         Task<IEnumerable<UserModel>> DropDownForUserList();
+        Task<long> SendOtpOnEmail(string UniqueCode);
+        Task<long> VerifyEmailOtp(string UniqueCode, string Otp);
+        Task<long> SaveNewPassword(string UniqueCode, string NewPassword);
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using YB_StaffingSupervisor.DataAccess.UnitOfWork;
 using YB_StaffingSupervisor.LoginRepository.ILoginRepository;
 using YB_StaffingSupervisor.Models;
@@ -124,6 +125,42 @@ namespace YB_StaffingSupervisor.LoginRepository
             {
                 _ = ex.Message;
                 return false;
+            }
+        }
+        public Task<long> SendOtpOnEmail(string UserName)
+        {
+            try
+            {
+                return _service.UserRepository.SendOtpOnEmail(UserName);
+            }
+            catch (Exception ex)
+            {
+                _ = ex.Message;
+                return null;
+            }
+        }
+        public Task<long> VerifyEmailOtp(string UserName, string Otp)
+        {
+            try
+            {
+                return _service.UserRepository.VerifyEmailOtp(UserName, Otp);
+            }
+            catch (Exception ex)
+            {
+                _ = ex.Message;
+                return null;
+            }
+        }
+        public Task<long> SaveNewPassword(string UserName, string NewPassword)
+        {
+            try
+            {
+                return _service.UserRepository.SaveNewPassword(UserName, NewPassword);
+            }
+            catch (Exception ex)
+            {
+                _ = ex.Message;
+                return null;
             }
         }
     }

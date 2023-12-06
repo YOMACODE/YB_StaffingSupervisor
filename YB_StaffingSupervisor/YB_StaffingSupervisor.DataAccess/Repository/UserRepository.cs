@@ -234,5 +234,51 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
             }
         }
         #endregion
+        #region Reset Password
+        public async Task<long> SendOtpOnEmail(string UserName)
+        {
+            long result = 0;
+            using (var dbConnect = connectionFactory.GetDAL)
+            {
+                SqlParameter[] sqlparameters =
+                {
+                    new SqlParameter("@chvnUserName", SqlDbType.NVarChar) { Value = UserName },
+                    new SqlParameter("@chvnOperationType",SqlDbType.NVarChar){ Value = "SENDOTPEMAIL"}
+                };
+                result = await Task.Run(() => dbConnect.SPExecuteScalarReturnValue("[WebApplication_SP].[usp_Login_Password_Reset]", sqlparameters));
+            }
+            return result;
+        }
+        public async Task<long> VerifyEmailOtp(string UserName, string Otp)
+        {
+            long result = 0;
+            using (var dbConnect = connectionFactory.GetDAL)
+            {
+                SqlParameter[] sqlparameters =
+                {
+                    new SqlParameter("@chvnUserName", SqlDbType.NVarChar) { Value = UserName },
+                    new SqlParameter("@chvnOtp", SqlDbType.NVarChar) { Value = Otp },
+                    new SqlParameter("@chvnOperationType",SqlDbType.NVarChar){ Value = "VERIFYEMAILOTP"}
+                };
+                result = await Task.Run(() => dbConnect.SPExecuteScalarReturnValue("[WebApplication_SP].[usp_Login_Password_Reset]", sqlparameters));
+            }
+            return result;
+        }
+        public async Task<long> SaveNewPassword(string UserName, string NewPassword)
+        {
+            long result = 0;
+            using (var dbConnect = connectionFactory.GetDAL)
+            {
+                SqlParameter[] sqlparameters =
+                {
+                    new SqlParameter("@chvnUserName", SqlDbType.NVarChar) { Value = UserName },
+                    new SqlParameter("@chvnPassword", SqlDbType.NVarChar) { Value = NewPassword },
+                    new SqlParameter("@chvnOperationType",SqlDbType.NVarChar){ Value = "ADDNEWPASSWORD"}
+                };
+                result = await Task.Run(() => dbConnect.SPExecuteScalarReturnValue("[WebApplication_SP].[usp_Login_Password_Reset]", sqlparameters));
+            }
+            return result;
+        }
+        #endregion
     }
 }
