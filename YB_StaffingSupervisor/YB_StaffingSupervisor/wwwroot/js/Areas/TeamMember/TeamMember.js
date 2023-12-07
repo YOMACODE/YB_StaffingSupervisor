@@ -13,6 +13,14 @@
 		var joining = $("#joining").val();
 
 
-		window.location = "/MyTeam/MyTeam/ExportTeamMemberReport?yomaid=" + yomaid + '&name=' + name + '&mobile=' + mobile + '&email=' + email + '&designation=' + designation + '&joining=' + joining;
+		window.location = "/Supervisor/MyTeam/ExportTeamMemberReport?yomaid=" + yomaid + '&name=' + name + '&mobile=' + mobile + '&email=' + email + '&designation=' + designation + '&joining=' + joining;
 	}
+}
+function ClearButton() {
+	$('#yomaid').val('');
+	$('#name').val('');
+	$('#mobile').val('');
+	$('#email').val('');
+	$('#designation').val('');
+	$('#joining').val('');
 }
