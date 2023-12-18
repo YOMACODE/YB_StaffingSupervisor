@@ -1,0 +1,687 @@
+﻿@model YB_StaffingSupervisor.DataAccess.Entities.Custom.UserAttendanceCustom
+@{
+    ViewData["Title"] = "Attendance Logs";
+    Layout = "~/Views/Shared/_ProantoV2MasterLayout.cshtml";
+}
+<link href="~/proantov2assets/css/pbcalendar.css" rel="stylesheet" />
+<style type="text/css">
+    .calendar-wrapper[data-theme='blue'] .calendar-head-card {
+        background-color: #1565c0;
+        display: none;
+    }
+
+    .form-check-label {
+        margin-bottom: 0;
+        width: 100%;
+    }
+
+    .pb-calendar .schedule-dot-item.red {
+        background-color: #c53131;
+    }
+
+    .pb-calendar .schedule-dot-item.redh {
+        border: 2px solid #c53131;
+    }
+
+    .pb-calendar .schedule-dot-item.redb {
+        background-color: #2A69B2;
+    }
+
+    .pb-calendar .schedule-dot-item.redp {
+        background-color: #5FC712;
+    }
+
+    .bs-example {
+        margin: 200px 150px 0;
+    }
+
+    .popover-title .close {
+        position: relative;
+        bottom: 3px;
+    }
+
+    .less-padding td,
+    .less-padding th {
+        padding: 1.3px;
+    }
+
+    .green-status {
+        /* background: #edffed; */
+        display: inline-block;
+        width: 100px;
+        height: 26px;
+        text-align: center;
+        line-height: 2.3;
+        color: green;
+    }
+
+    .pending-status {
+        /* background: #fff0c3; */
+        display: inline-block;
+        width: 100px;
+        height: 26px;
+        text-align: center;
+        line-height: 2.3;
+        color: #e8aa00;
+    }
+
+    .error-status {
+        color: red;
+        /* background: #fff6f6; */
+        display: inline-block;
+        width: 100px;
+        height: 26px;
+        text-align: center;
+        line-height: 2.3;
+    }
+
+    .verif-status-Cleared {
+        background: #c8ffc4;
+        color: #00924c;
+        padding: 5px 14px;
+        font-weight: 400;
+        width: 93px;
+        display: inline-block;
+    }
+
+    .verif-status-pending {
+        background: #fff9c3;
+        color: #cbb147;
+        padding: 5px 14px;
+        font-weight: 400;
+        width: 93px;
+        display: inline-block;
+    }
+
+    .verif-status-insuf {
+        background: #e9f7ff;
+        color: #006bb2;
+        padding: 5px 14px;
+        font-weight: 400;
+        width: 93px;
+        display: inline-block;
+    }
+
+    .verif-status-not-cleared {
+        background: #fff2e5;
+        color: #fe3d28;
+        padding: 5px 14px;
+        font-weight: 400;
+        width: 93px;
+        display: inline-block;
+    }
+
+    .announcment-icon {
+        background: #f5f5f5;
+        color: #2f4260;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        font-size: 31px;
+        border-radius: 50%;
+        line-height: 1.9;
+        margin-right: 10px;
+    }
+
+    .todayDate {
+        color: #274360;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1.2;
+    }
+
+        .todayDate small {
+            font-size: 11px;
+            font-weight: 100;
+        }
+
+    .total-workforce-count {
+        font-size: 18px;
+        font-weight: 600;
+        color: #346AB2;
+    }
+
+    .total-present-workforce .total-workforce-count {
+        font-size: 18px;
+        font-weight: 600;
+        color: #5DC085;
+    }
+
+    .total-absent-workforce .total-workforce-count {
+        font-size: 18px;
+        font-weight: 600;
+        color: red;
+    }
+
+    .total-workforce-icon {
+        color: #346AB2;
+        width: 30px;
+        height: 30px;
+        background: #f3faff;
+        text-align: center;
+        border-radius: 50%;
+        line-height: 2.2;
+    }
+
+    .total-present-workforce .total-workforce-icon {
+        color: #5DC085;
+        background: #E2FEEB;
+    }
+
+    .total-absent-workforce .total-workforce-icon {
+        color: red;
+        background: #fff2f2;
+    }
+
+    .shift-hour-progress {
+        background-color: #ff3b6f !important;
+    }
+
+    .extra-hour-progress {
+        background-color: #00cfc3 !important;
+    }
+
+    .ruler-line {
+        height: 10px;
+        border-right: 1px solid;
+    }
+
+    .ruler-guide {
+        position: absolute;
+        width: 100%;
+        top: 10px;
+    }
+
+    .bg-soft-success {
+        background-color: rgba(0, 201, 167, .1) !important;
+    }
+
+    .bg-soft-danger {
+        background-color: rgba(237, 76, 120, .1) !important;
+    }
+
+    .form-check-input {
+        position: unset;
+        margin: unset;
+    }
+
+    .calendar-table td,
+    .table th {
+        padding: .75rem;
+        vertical-align: top;
+        border-top: 1px solid #e8eef3;
+        position: relative;
+    }
+
+    .disabled-text {
+        color: #d6d6d6;
+    }
+
+    .date-dot {
+        font-size: 8px;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
+    }
+
+    .green-dot {
+        color: #5bc712;
+    }
+
+    .red-dot {
+        color: #C53131;
+    }
+
+    .blue-dot {
+        color: #2a69b2;
+    }
+
+    .red-half-dot {
+        outline: 1px solid #C53131;
+        color: #fff;
+        border-radius: 50% 50%;
+        font-size: 6px !important;
+    }
+</style>
+
+<div class="page-breadcrumb">
+    <div class="row my-2">
+        <div class="col-7 align-self-center">
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">
+                @Model.FullName
+            </h3>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item">
+                            <a class="text-muted">(@Model.UserCode)</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="col-5 col-md-5 align-self-center text-right">
+            <a href="/Supervisor/Attendance/TeamAttendance" class="btn btn-sm btn-dark text-white border-0" title="Go back"><i class="fa fa-reply"></i></a>
+        </div>
+
+    </div>
+</div>
+
+<div class="container-fluid" style="background: #F8F8F8; padding: 22px;">
+    <!-- *************************************************************** -->
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div class="row">
+                <div class="col-12">
+                    <div class="searchbox">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-xs-12 col-md-12 col-lg-6 col-xl-6 mb-4">
+                                <div class="card pb-2 h-100" style="border-radius: 0px;">
+                                    <div class="card-header py-3 bg-white"><b>Attendance Status</b></div>
+                                    <div class="card-body" style="padding: 0px 10px 15px 10px;">
+                                        <form asp-controller="Attendance" asp-action="AttendanceLogs" method="get" onsubmit="return Validate();">
+                                            <input type="hidden" id="hdnUserId" asp-for="UserId" value="@Model.UserId" />
+                                            <div class="row" style="background: #f7f7f7; padding-top: 20px;">
+                                                <div class="form-group col-5">
+                                                    <small><b>Choose Month</b></small>
+                                                    <select class="form-control form-control-sm selectpicker" data-live-search="true" data-container="body" asp-for="SearchMonth" asp-items="@(new SelectList(Model.monthModelsListing, "Value", "Text", null))" onchange="ValidateSearchMonth();">
+                                                        <option value="">Select</option>
+                                                    </select>
+                                                    <span id="SearchMonth-Error" asp-validation-for="SearchMonth" class="text-danger SearchMonth-Error"></span>
+                                                </div>
+
+                                                <div class="form-group col-5">
+                                                    <small><b>Choose Year</b></small>
+                                                    <select class="form-control form-control-sm selectpicker" data-live-search="true" data-container="body" asp-for="SearchYear" asp-items="@(new SelectList(Model.yearModelsListing, "Value", "Text", null))" onchange="ValidateSearchYear();">
+                                                        <option value="">Select</option>
+                                                    </select>
+                                                    <span id="SearchYear-Error" asp-validation-for="SearchYear" class="text-danger SearchYear-Error"></span>
+                                                </div>
+                                                <div class="col-2">
+                                                    <button type="submit" class="btn btn-sm btn-block" title="Search" style="margin-top: 21px">
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <table class="table table-sm table-borderless less-padding pb-0 mb-0 mt-2"
+                                               style="font-size: 13px;">
+                                            <tbody class="">
+                                                <tr>
+                                                    <td><b>Total Working Days</b></td>
+                                                    <td>@Model.TotalWorkingDays</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Present</b></td>
+                                                    <td>@Model.TotalPresents</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Leave</b></td>
+                                                    <td>@Model.TotalLeaves</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Absent</b></td>
+                                                    <td>@Model.TotalAbsents</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Holiday</b></td>
+                                                    <td>@Model.TotalHolidays</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Weekoffs</b></td>
+                                                    <td>@Model.TotalWeekoffs</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Total Working Hours</b></td>
+                                                    <td>@Model.TotalWorkingHours</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-xs-12 col-md-12 col-lg-6 col-xl-6 text-center mb-4">
+                                <div class="card h-100" style="border-radius: 0px;">
+                                    <div class="card-header d-flex justify-content-between align-items-center bg-white">
+                                        <div><b>Details</b></div>
+                                        <div>
+                                            <h6 class="mb-0"><b><span style="color: #2A69B2;">@Model.Month</span> @Model.Year</b></h6>
+                                        </div>
+                                    </div>
+                                    <div class="card-body" style="padding: 0px 0px 0px 10px;">
+                                        <div class="row">
+                                            <div class="col-md-2 text-center bg-light">
+                                                <div class="curr_data">
+                                                    <h1 id="LeaveCount" class="mb-0"
+                                                        style="color: #c53131;">
+                                                        @Model.TotalWeekoffs
+                                                    </h1>
+                                                    <small>days off</small>
+                                                    <ul type="none" class="text-left">
+                                                        <li>
+                                                            <small class="inline">
+                                                                <span style="color: #5bc712;">
+                                                                    <i class="fas fa-circle"></i>
+                                                                </span>
+                                                                Present
+                                                            </small>
+                                                        </li>
+                                                        <li>
+                                                            <small class="inline">
+                                                                <span style="color: #c53131;">
+                                                                    <i class="fas fa-circle"></i>
+                                                                </span>
+                                                                Absent
+                                                            </small>
+                                                        </li>
+                                                        <li>
+                                                            <small>
+                                                                <span style="color: #c53131;">
+                                                                    <i class="far fa-circle"></i>
+                                                                </span>
+                                                                Half Day
+                                                            </small>
+                                                        </li>
+                                                        <li></li>
+
+                                                        <li>
+                                                            <small>
+                                                                <span style="color: #2A69B2;">
+                                                                    <i class="fas fa-circle"></i>
+                                                                </span>
+                                                                Holiday
+                                                            </small>
+                                                        </li>
+                                                        <li></li>
+                                                        <li>
+                                                            <small>
+                                                                <span style="color: #f28a22;">
+                                                                    <i class="fas fa-circle"></i>
+                                                                </span>
+                                                                Leave
+                                                            </small>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-10 pl-0">
+                                                <div class="table-responsive">
+
+                                                    <table class="table mb-0 table-bordered calendar-table">
+                                                        <tbody>
+                                                            
+                                                            @if (Model != null)
+                                                            {
+                                                                if (Model.attendanceCalendarListing != null && Model.attendanceCalendarListing.Count() > 0)
+                                                                {
+                                                                    <tr>
+                                                                        @for (int i = 0; i < 7; i++)
+                                                                        {
+                                                                            <th>@Model.attendanceCalendarListing[i].Day.Substring(0,3).ToUpper()</th>
+                                                                        }
+                                                                    </tr>
+                                                                    <tr>
+                                                                        @for (int i = 0; i < Model.attendanceCalendarListing.Count; i++)
+                                                                        {
+                                                                            if (i % 7 == 0)
+                                                                            {
+                                                                                @:</tr><tr>
+                                                                            }
+                                                                            <td>
+                                                                                <p class="mb-0">@Model.attendanceCalendarListing[i].DateDay</p>
+                                                                                <p class="mb-0">@Model.attendanceCalendarListing[i].Month</p>
+                                                                            </td>
+                                                                        }
+                                                                    </tr>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <tr>
+                                                                        <td style="text-align:center;">** No Record Found !!</td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                        
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card daywise-attendance">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                            <div class="page-title">
+                                <h4 class="mb-0 font-weight-medium">
+                                    @Model.Month @Model.Year
+                                    <br><small>(Daywise Attendance)</small>
+                                </h4>
+                            </div>
+                            @* <div>
+                            <button class="btn btn-sm" data-target="#verifyModal"
+                            data-toggle="modal">
+                            Verify Attendane
+                            </button>
+                            <button class="btn btn-sm"><i class="fa fa-download"></i> Export</button>
+                            <!-- <button class="btn btn-sm"><i class="fa fa-filter"></i></button> -->
+                            </div> *@
+                        </div>
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm no-wrap table-bordered">
+                                    <thead id="sumit" class="text-center">
+                                        <tr>
+                                            @* <th><input type="checkbox" id="all" onclick="checkall();"></th> *@
+                                            <th>Attendance Date</th>
+                                            <th>Yoma ID</th>
+                                            <th>Associate Name</th>
+                                            <th>Attendance Type</th>
+                                            <th>CheckIn</th>
+                                            <th>CheckOut</th>
+                                            <th>Completed Hours</th>
+                                            <th>CheckIn Image</th>
+                                            <th>CheckOut Image</th>
+                                            <th>View Route Map</th>
+                                            <th>Status</th>
+                                            <th>Comment</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        @{
+                                            var countSuggestion = 0;
+                                        }
+                                        @if (Model != null)
+                                        {
+                                            if (Model.attendanceListing != null && Model.attendanceListing.Count() > 0)
+                                            {
+                                                foreach (var item in Model.attendanceListing)
+                                                {
+                                                    <tr>
+                                                        @* <td>
+                                            <input type="checkbox" class="trid" onclick="checkone();" value='@item.DailyAttendanceId'>
+                                            </td> *@
+                                                        <td style="text-align:center">@item.AttendanceDate</td>
+                                                        <td>@item.UserCode</td>
+                                                        <th>@item.FullName</th>
+                                                        <td>@item.AttendanceType</td>
+                                                        <td>@item.CheckInTime</td>
+                                                        <td>@item.CheckOutTime</td>
+                                                        <td>@item.WorkingHours</td>
+                                                        <td>
+                                                            @if (!string.IsNullOrEmpty(item.CheckInImagePath))
+                                                            {
+                                                                <img class="img" src="@Url.Content(item.CheckInImagePath)" title="CheckIn Image" style="width:60px; height:60px" />
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @if (!string.IsNullOrEmpty(item.CheckOutImagePath))
+                                                            {
+                                                                <img class="img" src="@Url.Content(item.CheckOutImagePath)" title="CheckOut Image" style="width:60px; height:60px" />
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-sm mr-1" title="View Map" data-toggle="offcanvas" data-target="#myOffcanvas" id="btn_ViewMap_@countSuggestion" onclick="viewMap(@countSuggestion)">View Map</button>
+                                                        </td>
+                                                        <td>
+                                                            @if (item.ApproveRejectStatus == "Rejected")
+                                                            {
+                                                                <span class="error-status">Rejected !</span>
+                                                            }
+                                                            else if (item.ApproveRejectStatus == "Approved")
+                                                            {
+                                                                <span class="green-status">Approved !</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="pending-status">Pending !</span>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @if (!string.IsNullOrEmpty(item.ApproveRejectComment))
+                                                            {
+                                                                <i class="fa fa-comment" data-toggle="modal" data-target="#viewComment" onclick="viewComment(@countSuggestion)" id="btn_ViewComment_@countSuggestion"></i>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex justify-content-center">
+                                                                <input type="hidden" value="@item.DailyAttendanceId" name="attendanceListing[@countSuggestion].DailyAttendanceId" />
+                                                                <input type="hidden" value="@item.AttendanceDate" name="attendanceListing[@countSuggestion].AttendanceDate" />
+                                                                <input type="hidden" value="@item.ApproveRejectStatus" name="attendanceListing[@countSuggestion].ApproveRejectStatus" />
+                                                                <input type="hidden" value="@item.ApproveRejectComment" name="attendanceListing[@countSuggestion].ApproveRejectComment" />
+                                                                @if (item.ApproveRejectStatus == "Rejected" || item.ApproveRejectStatus == "Approved")
+                                                                {
+                                                                    <button class="btn btn-sm mr-1" title="Verify" disabled>Verify</button>
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (!string.IsNullOrEmpty(item.CheckInTime) && !string.IsNullOrEmpty(item.CheckOutTime))
+                                                                    {
+                                                                        <button class="btn btn-sm mr-1" title="Verify" data-toggle="modal" data-target="#viewVerifyAttendance" id="btn_Verify_@countSuggestion" onclick="viewVerifyAttendance(@countSuggestion)">Verify</button>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <button class="btn btn-sm mr-1" title="Verify" disabled>Verify</button>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    countSuggestion++;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="viewComment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">View Comment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="approve-reject">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea id="hdnModelApproveRejectComment" class="form-control" cols="4" rows="5" placeholder="" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewVerifyAttendance" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Attendance Approval</h5>
+                <h5 class="modal-cut" data-dismiss="modal" aria-label="Close" aria-hidden="true">✖</h5>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="hdnModelAttendanceId" />
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                        <label class="active"><b>Status</b><sup class="red">*</sup></label>
+                        <div class="form-group">
+                            <select class="form-control form-control-sm remove-select2" id="ApproveRejectStatus" onchange="ValidateApproveRejectStatus()">
+                                <option value="">Select</option>
+                                <option value="Approve">Approve</option>
+                                <option value="Reject">Reject</option>
+                            </select>
+                            <span id="ApproveRejectStatus-Error" class="text-danger ApproveRejectStatus-Error"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                        <label class="active"><b>Write Comment</b><sup class="red">*</sup></label>
+                        <div class="form-group">
+                            <textarea class="form-control" id="ApproveRejectComment" rows="3" onkeyup="ValidateApproveRejectComment()"></textarea>
+                            <span id="ApproveRejectComment-Error" class="text-danger ApproveRejectComment-Error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer py-2">
+                <button class="btn1 btn-sm reject-btn" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-sm btn-primary approval-btn" id="btnApproveRejectAttendance" onclick="ApproveRejectAttendance()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divViewMap"></div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            toastr.success('Attendance Logs');
+
+        });
+
+    </script>
+    <script src="~/js/Areas/Attendance/AttendanceLogs.js" asp-append-version="true"></script>
+}

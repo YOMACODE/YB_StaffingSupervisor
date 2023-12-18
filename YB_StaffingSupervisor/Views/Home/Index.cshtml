@@ -1,0 +1,533 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var returnUrl = @Context.Request.Query["returnurl"];
+}
+@model YB_StaffingSupervisor.Models.LoginUser
+
+
+<style>
+    .capcha-text{
+        background: #2c62a2;
+        color: white;
+        padding: 1px 13px;
+            user-select: none;
+             border-radius: 14px;
+    }
+
+    #CaptchaText{
+        width: 53px;
+        background: transparent;
+        border: none;
+        color: white;
+       
+    }
+
+    [name="Captcha"]{
+        border-radius: 20px;
+        border: none;
+        padding: 5px;
+        background: #e8f0fe;
+    }
+
+    .capcha-reload{
+        color: #3264a0;
+        cursor: pointer;
+ 
+    }
+
+
+
+    .capcha-value:focus-visible {
+        outline: none;
+    }
+</style>
+
+
+
+<div id="body">
+
+    <!--nav-->
+
+    <div class="custom-nav d-flex justify-content-between align-items-center py-0 px-4">
+        <div><a class="brand" href="#"><img src="~/Default/img/logo.png"></a></div>
+        <div class="ms-auto"> <a href="https://www.yomabusinesssolutions.com/" target="_blank" class="btn btn-sm btn-light go-to-button"> Go to Website <i class="fa-solid fa-arrow-right-long"></i></a></div>
+    </div>
+
+
+    <section>
+
+        <div class="row m-0">
+            <div class="col-md-5 m-0 mobile-display-none">
+                <!-- <div class="slider">
+                    <div class="slider-img">
+                        <div><img src="img/slide-3.png" alt=""></div>
+                        <div><img src="img/slide-2.png" alt=""></div>
+                        <div><img src="img/slide-1.png" alt=""></div>
+                    </div>
+                </div> -->
+                <div class="banner-img"><img src="~/Default/img/supervisor.png" alt=""></div>
+            </div>
+            <div class=" col-sm-12 col-md-7 d-flex align-items-center justify-content-center">
+                <div class="shape">
+                    <div class="card  p-3 m-0">
+                        <p class="font-20 fw-bold title  mb-1">YOMA Business Solutions</p>
+                        <small class="mt-1 mb-3 text-uppercase  ">
+                            A BYLD GROUP COMPANY
+                        </small>
+                        <form asp-action="Index" asp-controller="Home" method="post" asp-route-returnurl="@returnUrl">
+                            @Html.AntiForgeryToken()
+                            <div class="user_info ps-2 pe-3 pb-2 w-100">
+                                <div class="mb-2">
+                                    <label class="mb-2">Username</label>
+                                    <input type="text" placeholder="Enter Username" asp-for="UserName" class="username-box form-control p-0 ps-3 rounded-pill border-0">
+                                </div>
+
+                                <div class="password">
+                                    <label class="mb-2">Password</label>
+                                    <input type="password" placeholder="Enter Password" asp-for="Password" class="password-box form-control p-0 ps-3 rounded-pill border-0">
+                                </div>
+
+                                <div class="text-center">
+
+
+                                    <div class="capcha-holder position-relative" id="login-window">
+
+
+
+                                        <div class="d-flex align-items-center my-3 justify-content-around">
+                                            <div class="capcha-text">
+                                              @*  <input asp-for="CaptchaText" id="CaptchaText" />*@
+                                                <div id="CaptchaText"></div>
+                                            </div>
+                                            <div><input type="text" asp-for="Captcha" id="Captcha" maxlength="6" placeholder="Enter Captcha Here" class="capcha-value mb-0"></div>
+                                            <div class="capcha-reload" onclick="resetCaptcha()" title="Refresh Captcha">
+                                                <i class="fa fa-repeat" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <a role="button" class="forgetPassword"
+                                                   style="text-decoration: none;">Forget Password ?</a>
+                                            </div>
+                                        <div class="d-flex justify-content-end">
+                                            <button type="submit" id="sign" class="btn border-0 btn-primary">Login <i class="fa-solid fa-arrow-right-long"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                                <div id="attempt-timer-window">
+                                    <div class="mt-0 warn-container container-fluid w-100">
+                                        <p class="mb-1 d-flex justify-content-center align-items-center">
+                                            <i class="fas triangle fa-exclamation-triangle me-2"></i>
+                                            <small>Too many Incorrect Login Attempts. Please wait for 60 seconds.</small>
+                                        </p>
+                                    </div>
+
+                                    <div class="time-left text-center mt-3 d-flex justify-content-center align-items-center">
+                                        <i class="fa fa-stopwatch me-2 "></i>
+                                        <h6 class="mb-0" id="countdown">60 seconds</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="otp-login-screen-two" style="display: none;">
+                                <div style="display: block;" class="otp-box">
+                                    <div class="position-relative">
+                                        <div class="text-center">
+                                            <p class="heading-text mb-1">
+                                                Please enter the one time password <br> has been
+                                                sent to the Registered Email Id</span>
+                                            </p>
+                                            @*<small class="fs-6">useremailid@gmail.com</small>*@
+
+
+                                            <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+                                                <input autocomplete="off" class="m-2 text-center form-control rounded" type="text" id="first"
+                                                       maxlength="1">
+                                                <input autocomplete="off" class="m-2 text-center form-control rounded" type="text" id="second"
+                                                       maxlength="1"> <input autocomplete="off" class="m-2 text-center form-control rounded"
+                                                                             type="text" id="third" maxlength="1"> <input autocomplete="off" class="m-2 text-center form-control rounded" type="text" id="fourth"
+                                                                                                                          maxlength="1"> <input autocomplete="off" class="m-2 text-center form-control rounded"
+                                                                                                                                                type="text" id="fifth" maxlength="1">
+                                                <input autocomplete="off" class="m-2 text-center form-control rounded" type="text" id="sixth"
+                                                       maxlength="1">
+                                            </div>
+
+                                            @*<div class="erroe-msg text-danger">Please enter a valid OTP no.</div>*@
+                                            <div class="mt-2">
+                                                <button type="button" class="btn btn-primary px-4 validate">
+                                                    Validate
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="resend-flow">
+                                            <div class=" d-flex justify-content-center mt-1 ">
+                                                <p class="mb-2" style="font-size:14px ;">
+                                                    <span id="resendResetPwdOtpEmailCountdown"><span class="text-primary">Resend code</span> <span> in <span id="resendResetPwdOtpEmailCountdowntimer"> 30 </span> Seconds</span></span>
+                                                    <span id="resendResetPwdOtpEmail" style="display: none;"> <span class="text-primary resendHover" onclick="SendResetPwdEmailOTP()">Resend code</span> </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        @*<div class="resend-limit-over mt-2" style="display: none;">
+                                        <span class="text-danger">
+                                        Your OTP resend limit is over. Please try again after
+                                        15 minutes.
+                                        </span>
+                                        </div>*@
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="otp-login-screen-one" style="display: none;">
+                                <div class="pwdMask mb-2">
+                                    <label class="mb-2">New Password</label>
+                                    <input type="password" autocomplete="off" @*onclick="checkPassword(this);" onkeyup="checkPassword(this);"*@ id="password" placeholder="Enter New Password"
+                                           class="username-box form-control p-0 ps-3 rounded-pill border-0"
+                                           data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
+                                           data-bs-content="<div><ul class='mb-0'><li id='charcount'>Minimum 8 characters</li><li id='upperlower'>Atleast one uppercase & Lowercase</li><li id='findnumspcl'>Atleast one number & special character.</li></ul></div>" />
+                                    <!-- <i class="pwd-toggle fa fa-eye-slash checkSlash"></i> -->
+                                </div>
+
+                                <div class="pwdMask mb-2">
+                                    <label class="mb-2">Confirm Password</label>
+                                    <input type="password" autocomplete="off" @*onclick="checkPassword(this);" onkeyup="checkPassword(this);" *@id="passwordAgain" placeholder="Enter Confirm Password"
+                                           class="username-box form-control p-0 ps-3 rounded-pill border-0"
+                                           data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
+                                           data-bs-content="<div><ul class='mb-0'><li id='charcount'>Minimum 8 characters</li><li id='upperlower'>Atleast one uppercase & Lowercase</li><li id='findnumspcl'>Atleast one number & special character.</li></ul></div>" />
+                                    <!-- <i class="fa fa-eye-slash checkSlash pwd-toggle"></i> -->
+                                </div>
+
+                                <div class="d-flex flex-row justify-content-center mt-3 align-items-center">
+
+                                    <button type="button" onclick="SaveNewPassword();" class="btn border-0 btn-primary send-otp">Reset Password</button>
+                                </div>
+                            </div>
+                        </form>
+                       
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+
+</div>
+<!---floating website-->
+
+<link href="~/Proantov2assets/css/toastr.css" rel="stylesheet" asp-append-version="true" />
+<link href="~/ProantoV2assets/css/sweetalert.min.css" rel="stylesheet" asp-append-version="true" />
+<link href="~/ProantoV2assets/css/float.css" rel="stylesheet" asp-append-version="true" />
+@section Scripts{
+    <style>
+        .toast-bottom-center {
+            top: 50px;
+            bottom: 12px;
+            margin: 0 auto;
+            left: 50%;
+            margin-left: -150px;
+            color: red;
+        }
+
+        .toast-warning {
+            background-color: #f89406;
+        }
+
+        .warn-container {
+            margin-top:20px !important;
+            background-color: #FFD8D8;
+            border-radius: 10px;
+            padding: 5px 10px 10px 10px;
+        }
+
+            .warn-container small {
+                color: #d42323da !important;
+            }
+
+        .triangle {
+            color: #D42323 !important;
+            margin-top: 4px;
+            font-size: 15px;
+        }
+
+        .time-left h6 {
+            color: #1c426d;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#attempt-timer-window').css("display", "none");
+            $('#resendOTP').css("display", "none");
+            var msg = '@TempData["Message"]';
+            var loginattempt = '@TempData["LoginLimitExceeded"]';
+
+
+            if (loginattempt != '') {
+                $('#attempt-timer-window').css("display", "block");
+                $('#login-window').css("display", "none");
+                setInterval(updateCountdown, 1000);
+            }
+            if (msg != '') {
+                toastr.options.timeOut = 1500;
+                toastr.warning(msg);
+            }
+            resetCaptcha();
+        });
+        $('#UserName').change(function () {
+            var UserName = $('#UserName').val();
+            if (UserName.trim() != "") {
+                $('#UserName_error').text('');
+            }
+            else {
+                $('#UserName_error').text('** Please enter username.');
+            }
+        });
+        $('#Password').change(function () {
+            var Password = $('#Password').val();
+            if (Password.trim() != "") {
+                $('#Password_error').text('');
+            }
+            else {
+                $('#Password_error').text('** Please enter password.');
+            }
+        });
+        //const startingMinutes = 1;
+        //let time = startingMinutes * 59;
+
+        //const countdownEl = document.getElementById('countdown');
+
+
+        //function updateCountdown() {
+        //    const minutes = Math.floor(time / 60);
+        //    let seconds = time % 60;
+        //    countdownEl.innerHTML = `${seconds} seconds`;
+        //    if (seconds > 0) {
+        //        time--;
+        //    }
+        //    else if (seconds == 0) {
+        //        $('#resendOTP').css("display", "block");
+        //        time = 59;
+        //        reset();
+        //    }
+        //}
+        var timerForResetPwdOTPEmail;
+
+        function startTimerForResetPwdOTPEmail() {
+            var timeLeftResetPwdOTPEmail = 60;
+            var timerDisplayResetPwdOTPEmail = document.getElementById('resendResetPwdOtpEmailCountdowntimer');
+            timerDisplayResetPwdOTPEmail.innerText = timeLeftResetPwdOTPEmail;
+
+            timerForResetPwdOTPEmail = setInterval(function () {
+                timeLeftResetPwdOTPEmail--;
+                timerDisplayResetPwdOTPEmail.innerText = timeLeftResetPwdOTPEmail;
+
+                if (timeLeftResetPwdOTPEmail === 0) {
+                    clearInterval(timerForResetPwdOTPEmail);
+                    $('#resendResetPwdOtpEmailCountdown').css("display", "none");
+                    $('#resendResetPwdOtpEmail').css("display", "block");
+                }
+            }, 1000);
+        }
+
+        function resetTimerForResetPwdOTPEmail() {
+            clearInterval(timerForResetPwdOTPEmail);
+            $('#resendResetPwdOtpEmailCountdown').css("display", "block");
+            $('#resendResetPwdOtpEmail').css("display", "none");
+            startTimerForResetPwdOTPEmail();
+        }
+
+        function reset() {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "/Home/ResetCountVariable",
+                data: null,
+                dataType: "json",
+                success: function (response) {
+                }, error: function (_xhr) {
+                    if (_xhr.status == 403) {
+                        var url = $.parseJSON(_xhr.responseText);
+                        window.location.href = url;
+                    }
+                }
+            });
+        }
+        function resetCaptcha() {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                url: "/Home/ResetCaptcha",
+                dataType: "json",
+                success: function (response) {
+                    $("#CaptchaText").text(response);
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript">
+        //initilizing popover
+
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+
+            function OTPInput() {
+                const inputs = document.querySelectorAll('#otp > *[id]');
+                for (let i = 0; i < inputs.length; i++) { inputs[i].addEventListener('keydown', function (event) { if (event.key === "Backspace") { inputs[i].value = ''; if (i !== 0) inputs[i - 1].focus(); } else { if (i === inputs.length - 1 && inputs[i].value !== '') { return true; } else if (event.keyCode > 47 && event.keyCode < 58) { inputs[i].value = event.key; if (i !== inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); } else if (event.keyCode > 64 && event.keyCode < 91) { inputs[i].value = String.fromCharCode(event.keyCode); if (i !== inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); } } }); }
+            } OTPInput();
+
+
+        });
+    </script>
+
+    <script>
+        function SendResetPwdEmailOTP() {
+            var userName = $('#UserName').val();
+            if (userName != null && userName != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/SendEmailOTP",
+                    data: { 'userName': userName },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.mgs == 'OTP send successfully.') {
+                            $('.otp-login-screen-one, .user_info').hide();
+                            $('.otp-login-screen-two').fadeIn(500);
+                            $('#first').val('');
+                            $('#second').val('');
+                            $('#third').val('');
+                            $('#fourth').val('');
+                            $('#fifth').val('');
+                            $('#sixth').val('');
+                            resetTimerForResetPwdOTPEmail();
+                            toastr.success(response.mgs,"Success");
+                        }
+                        else {
+                            toastr.error(response.mgs,"Error!");
+                        }
+                    }
+                });
+            }
+            else {
+                toastr.error("Please Enter Your UserName!","Error!");
+            }
+        };
+        function VerifyOTP() {
+            debugger;
+            var userName = $('#UserName').val();
+            var oTP = $('#first').val() + $('#second').val() + $('#third').val() + $('#fourth').val() + $('#fifth').val() + $('#sixth').val();
+            if (oTP != null && oTP != '' && oTP.length == 6) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/VerifyEmailOTP",
+                    data: { 'userName': userName, 'oTP': oTP },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.mgs == 'OTP verify successfully.') {
+                            debugger;
+                            $(".otp-login-screen-two").hide();
+                            $(".otp-login-screen-one").show();
+                            //$('#UserName').val('');
+                            $('#password').val('');
+                            toastr.success(response.mgs,"Success");
+                        }
+                        else {
+                            toastr.error(response.mgs,"Error!");
+                        }
+                    }
+                });
+            }
+            else {
+                toastr.error("Please Enter OTP!","Error!");
+            }
+        };
+        function SaveNewPassword() {
+            debugger;
+            var userName = $('#UserName').val();
+            var password = $('#password').val();
+            var confirmPassword = $('#passwordAgain').val();
+            if (password == confirmPassword) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/SaveNewPassword",
+                    data: { 'userName': userName, 'newPassword': password },
+                    dataType: "json",
+                    success: function (response) {
+                        debugger;
+                        if (response.mgs == 'Password Saved Successfully.') {
+                            toastr.success(response.mgs, "Success");
+                            window.location.href = "/Home/Index";
+                        }
+                        else {
+                            toastr.error(response.mgs, "Error!");
+                        }
+                    }
+                });
+            }
+            else {
+                toastr.warning('Entered Password and Confirm Password Does Not Match!');
+            }
+        };
+        function FunResendOTP() {
+
+            var userName = $('#UserName').val();
+            if (userName != null && userName != '') {
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/SendEmailOTP",
+                    data: { 'userName': userName },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.mgs == 'OTP send successfully.') {
+                            toastr.success(response.mgs, "Success");
+                            debugger;
+                            $('.otp-login-screen-one, .user_info').hide();
+                            $('.otp-login-screen-two').fadeIn(500);
+                            $('#resendOTP').css("display", "none");
+                            $('#first').val('');
+                            $('#second').val('');
+                            $('#third').val('');
+                            $('#fourth').val('');
+                            $('#fifth').val('');
+                            $('#sixth').val('');
+                            setInterval(updateCountdown, 1000);
+                        }
+                        else {
+                            toastr.error(response.mgs, "Error!");
+                        }
+                    }
+                });
+            }
+            else {
+                toastr.warning('Please Enter Your UserName!');
+            }
+        };
+        $('.forgetPassword').click(function () {
+            SendResetPwdEmailOTP();
+        });
+        $(".validate").click(function () {
+            VerifyOTP();
+        });
+        $('#resendOTP').click(function () {
+            FunResendOTP();
+        });
+    </script>
+}

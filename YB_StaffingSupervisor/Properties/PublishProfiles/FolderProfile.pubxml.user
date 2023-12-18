@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\Web_YB_PublishCode\YB_StaffingSupervisor_Publish</_PublishTargetUrl>
+    <History>True|2023-12-07T05:02:47.5988804Z;True|2023-12-06T15:08:33.4345666+05:30;True|2023-12-05T16:15:38.0964724+05:30;True|2023-12-05T16:12:45.3848045+05:30;True|2023-12-04T16:21:12.2866436+05:30;True|2023-12-04T16:20:51.6591450+05:30;True|2023-11-30T17:22:19.9220976+05:30;True|2023-11-23T17:37:48.1425485+05:30;True|2023-11-23T16:07:14.5833733+05:30;True|2023-11-23T15:47:21.7778069+05:30;True|2023-11-23T15:46:11.9403664+05:30;True|2023-11-22T18:21:06.1322146+05:30;True|2023-11-08T13:00:00.8007582+05:30;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

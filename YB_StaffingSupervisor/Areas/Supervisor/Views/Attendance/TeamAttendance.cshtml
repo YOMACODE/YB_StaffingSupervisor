@@ -1,0 +1,684 @@
+﻿@model YB_StaffingSupervisor.DataAccess.Entities.Custom.TeamAttendanceCustom
+@{
+    ViewData["Title"] = "Team Attendance";
+    Layout = "~/Views/Shared/_ProantoV2MasterLayout.cshtml";
+}
+
+<style type="text/css">
+    .calendar-wrapper[data-theme='blue'] .calendar-head-card {
+        background-color: #1565c0;
+        display: none;
+    }
+
+    .form-check-label {
+        margin-bottom: 0;
+        width: 100%;
+    }
+
+    /*.pb-calendar .schedule-dot-item.blue{
+                                background-color: blue;
+                                }*/
+
+    .pb-calendar .schedule-dot-item.red {
+        background-color: #c53131;
+    }
+
+    .pb-calendar .schedule-dot-item.redh {
+        border: 2px solid #c53131;
+    }
+
+    .pb-calendar .schedule-dot-item.redb {
+        background-color: #2A69B2;
+    }
+
+    .bs-example {
+        margin: 200px 150px 0;
+    }
+
+    .popover-title .close {
+        position: relative;
+        bottom: 3px;
+    }
+
+    .less-padding td,
+    .less-padding th {
+        padding: 1.3px;
+    }
+
+    /*.pb-calendar .schedule-dot-item.green{
+                                background-color: green;
+                                }*/
+
+    .green-status {
+        color: green;
+        display: inline-block;
+        width: 100px;
+        height: 26px;
+        text-align: center;
+        line-height: 2.3;
+    }
+
+    .pending-status {
+        color: orange;
+        display: inline-block;
+        width: 100px;
+        height: 26px;
+        text-align: center;
+        line-height: 2.3;
+        color: #e8aa00;
+    }
+
+    .error-status {
+        color: red;
+        display: inline-block;
+        width: 100px;
+        height: 26px;
+        text-align: center;
+        line-height: 2.3;
+    }
+
+    .verif-status-Cleared {
+        background: #c8ffc4;
+        color: #00924c;
+        padding: 5px 14px;
+        font-weight: 400;
+        width: 93px;
+        display: inline-block;
+    }
+
+    .verif-status-pending {
+        background: #fff9c3;
+        color: #cbb147;
+        padding: 5px 14px;
+        font-weight: 400;
+        width: 93px;
+        display: inline-block;
+    }
+
+    .verif-status-insuf {
+        background: #e9f7ff;
+        color: #006bb2;
+        padding: 5px 14px;
+        font-weight: 400;
+        width: 93px;
+        display: inline-block;
+    }
+
+    .verif-status-not-cleared {
+        background: #fff2e5;
+        color: #fe3d28;
+        padding: 5px 14px;
+        font-weight: 400;
+        width: 93px;
+        display: inline-block;
+    }
+
+    .announcment-icon {
+        background: #f5f5f5;
+        color: #2f4260;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        font-size: 31px;
+        border-radius: 50%;
+        line-height: 1.9;
+        margin-right: 10px;
+    }
+
+    .todayDate {
+        color: #274360;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1.2;
+    }
+
+        .todayDate small {
+            font-size: 11px;
+            font-weight: 100;
+        }
+
+    .total-workforce-count {
+        font-size: 18px;
+        font-weight: 600;
+        color: #346AB2;
+    }
+
+    .total-present-workforce .total-workforce-count {
+        font-size: 18px;
+        font-weight: 600;
+        color: #5DC085;
+    }
+
+    .total-absent-workforce .total-workforce-count {
+        font-size: 18px;
+        font-weight: 600;
+        color: red;
+    }
+
+    .total-workforce-icon {
+        color: #346AB2;
+        width: 30px;
+        height: 30px;
+        background: #f3faff;
+        text-align: center;
+        border-radius: 50%;
+        line-height: 2.2;
+    }
+
+    .total-present-workforce .total-workforce-icon {
+        color: #5DC085;
+        background: #E2FEEB;
+    }
+
+    .total-absent-workforce .total-workforce-icon {
+        color: red;
+        background: #fff2f2;
+    }
+
+    .shift-hour-progress {
+        background-color: #ff3b6f !important;
+    }
+
+    .extra-hour-progress {
+        background-color: #00cfc3 !important;
+    }
+
+    .ruler-line {
+        height: 10px;
+        border-right: 1px solid;
+    }
+
+    .ruler-guide {
+        position: absolute;
+        width: 100%;
+        top: 10px;
+    }
+
+    .bg-soft-success {
+        background-color: rgba(0, 201, 167, .1) !important;
+    }
+
+    .bg-soft-danger {
+        background-color: rgba(237, 76, 120, .1) !important;
+    }
+
+    .form-check-input {
+        position: unset;
+        margin: unset;
+    }
+
+    .text-success {
+        color: green !important;
+    }
+</style>
+
+<div class="page-breadcrumb">
+    <div class="row mb-2">
+        <div class="col-7 align-self-center">
+            <h3 class="page-title text-truncate text-dark font-weight-medium mb-1">Team Attendance</h3>
+            <div class="d-flex align-items-center">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb m-0 p-0">
+                        <li class="breadcrumb-item">
+                            <a class="text-muted">
+                                <b>My Team Attendance</b>
+                            </a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" style="padding-bottom: 740px; background: #F8F8F8; padding: 22px;">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="font-weight-medium mb-0">Attendance</h4>
+                    <button class="btn btn-sm" title="Filter" data-toggle="collapse" data-target="#filter">
+                        <i class="fa fa-filter" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class="collapse" id="filter">
+                    <div class="card card-body mb-3">
+                        <form asp-controller="Attendance" asp-action="TeamAttendance" method="get">
+                            <div class="row mt-3">
+
+                                <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
+                                    <label for="exampleFormControlSelect1"><b>Yoma ID</b></label>
+                                    <div class="form-group">
+                                        <input asp-for="SearchUserCode" placeholder="Search Yoma ID" class="form-control form-control-sm" autocomplete="off" />
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
+                                    <label for="exampleFormControlSelect1"><b>Attendance Date</b></label>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-sm border-bottom searchdate" value="@ViewBag.SearchDate" asp-for="SearchDate" asp-format="{0:dd/MM/yyyy}" placeholder="DD/MM/YYYY" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-sm mr-1">Search</button>
+                                <a asp-controller="Attendance" asp-action="TeamAttendance" class="btn btn-sm mr-1" title="Reset" tabindex="5">
+                                    <i class="fas fa-sync-alt">
+                                    </i>
+                                </a>
+                                @* <a asp-controller="Attendance" asp-action="ExportTeamAttendance" asp-route-SearchUserCode="@ViewBag.SearchUserCode" asp-route-SearchDate="@ViewBag.SearchDate" class="btn btn-sm mr-1" title="Export">
+                                Export
+                                </a> *@
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row mb-4 todays-insights align-items-center">
+                    <div class="col-12 col-sm-12 col-md-12 col-xl-3 col-lg-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="announcment-icon">
+                                <i class="fa fa-bullhorn"
+                                   aria-hidden="true"></i>
+                            </div>
+                            <div class="todayDate">
+                                <p class="mb-0 todayDate">@Model.Date</p>
+                                <small>
+                                    <i class="fa fa-external-link" aria-hidden="true"></i>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-12 col-md-12 col-xl-9 col-lg-9 mt-3">
+                        <div class="row insigths-cards">
+                            <div class="col-md-4">
+                                <div class="card total-workforce card-body">
+                                    <div>Total Associates</div>
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
+                                        <div class="total-workforce-count">@Model.TotalAssociates</div>
+                                        <div class="total-workforce-icon">
+                                            <i class="fa fa-users"
+                                               aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card total-present-workforce card-body">
+                                    <div>Total Present</div>
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
+                                        <div class="total-workforce-count">@Model.TotalPresent</div>
+                                        <div class="total-workforce-icon">
+                                            <i class="fa fa-arrow-circle-down" aria-hidden="true"
+                                               style="transform: rotate(45deg);"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card total-absent-workforce card-body">
+                                    <div>Total Absent</div>
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
+                                        <div class="total-workforce-count">@Model.TotalAbsent</div>
+                                        <div class="total-workforce-icon">
+                                            <i class="fa fa-arrow-circle-down" aria-hidden="true"
+                                               style="transform: rotate(-45deg);"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="nav nav-tabs mb-3" id="myTab2" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="quickttendance-tab" data-toggle="tab"
+                           href="#quickattendance" role="tab" aria-controls="quickattendance"
+                           aria-selected="false">Quick Attendance</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="selfiettendance-tab" data-toggle="tab"
+                           href="#selfieattendance" role="tab" aria-controls="selfieattendance"
+                           aria-selected="false">Selfie based Attendance</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="quickattendance" role="tabpanel"
+                         aria-labelledby="quickattendance-tab">
+                        <div class="table-responsive">
+                            <table class="table table-sm no-wrap table-bordered">
+                                <thead id="sumit" class="text-center">
+                                    <tr>
+                                        <th scope="col">
+                                            <div>Yoma ID</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Associate Name</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Email</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Mobile No.</div>
+                                        </th>
+                                        <th>
+                                            In(LAT/LONG)
+                                        </th>
+                                        <th>
+                                            Out(LAT/LONG)
+                                        </th>
+                                        <th scope="col">
+                                            <div>Check-In</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Check-Out</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Working Hours</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>CheckIn Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>CheckOut Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Approve/Reject Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Approve/Reject Comment</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>View Attendance Log</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+
+                                    @{
+                                        var countSuggestion = 0;
+                                    }
+                                    @if (Model != null)
+                                    {
+                                        if (Model.quickAttendanceListing != null && Model.quickAttendanceListing.Count() > 0)
+                                        {
+                                            foreach (var item in Model.quickAttendanceListing)
+                                            {
+                                                <tr>
+                                                    <td style="text-align:center">@item.UserCode</td>
+                                                    <td class="text-dark">
+                                                        <span class="mb-0 ms-2">@item.FullName</span>
+                                                    </td>
+                                                    <td>@item.EmailId</td>
+                                                    <td>@item.MobileNumber</td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.CheckInLatitude) && !string.IsNullOrEmpty(item.CheckInLongitude))
+                                                        {
+                                                            <span>@item.CheckInLatitude - @item.CheckInLongitude</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.CheckOutLatitude) && !string.IsNullOrEmpty(item.CheckOutLongitude))
+                                                        {
+                                                            <span>@item.CheckOutLatitude - @item.CheckOutLongitude</span>
+                                                        }
+                                                    </td>
+                                                    <td>@item.CheckInTime</td>
+                                                    <td>@item.CheckOutTime</td>
+                                                    <td>@item.WorkingHours</td>
+                                                    <td>@item.CheckInStatus</td>
+                                                    <td>@item.CheckOutStatus</td>
+                                                    <td>
+                                                        @if (item.ApproveRejectStatus == "Rejected")
+                                                        {
+                                                            <span class="error-status">Rejected !</span>
+                                                        }
+                                                        else if (item.ApproveRejectStatus == "Approved")
+                                                        {
+                                                            <span class="green-status">Approved !</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="pending-status">Pending !</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.ApproveRejectComment))
+                                                        {
+                                                            <i class="fa fa-comment" data-toggle="modal" data-target="#viewComment" onclick="viewCommentQ(@countSuggestion)" id="btn_ViewCommentQ_@countSuggestion"></i>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-center">
+                                                            <input type="hidden" value="@item.ApproveRejectComment" name="quickAttendanceListing[@countSuggestion].ApproveRejectComment" />
+                                                            <a asp-controller="Attendance" asp-action="AttendanceLogs" asp-route-UserId="@item.UserId" class="btn btn-sm mr-1" title="View Log" disabled>View Log</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                countSuggestion++;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane fade" id="selfieattendance" role="tabpanel"
+                         aria-labelledby="selfieattendance-tab">
+                        <div class="table-responsive">
+                            <table class="table table-sm no-wrap table-bordered">
+                                <thead id="sumit" class="text-center">
+                                    <tr>
+
+                                        <th>Yoma ID</th>
+                                        <th scope="col">
+                                            <div>Associate Name</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Email</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Mobile No.</div>
+                                        </th>
+                                        <th>
+                                            In(LAT/LONG)
+                                        </th>
+                                        <th>
+                                            Out(LAT/LONG)
+                                        </th>
+                                        <th scope="col">
+                                            <div>Check-In</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Check-Out</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Working Hours</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div> In (image)</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Out (image)</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>CheckIn Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>CheckOut Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Approve/Reject Status</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>Approve/Reject Comment</div>
+                                        </th>
+                                        <th scope="col">
+                                            <div>View Attendance Log</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center">
+                                    @{
+                                        var countSuggestion1 = 0;
+                                    }
+                                    @if (Model != null)
+                                    {
+                                        if (Model.selfieBasedAttendanceListing != null && Model.selfieBasedAttendanceListing.Count() > 0)
+                                        {
+                                            foreach (var item in Model.selfieBasedAttendanceListing)
+                                            {
+                                                <tr>
+                                                    <td style="text-align:center">@item.UserCode</td>
+                                                    <td class="text-dark">
+                                                        <span class="mb-0 ms-2">@item.FullName</span>
+                                                    </td>
+                                                    <td>@item.EmailId</td>
+                                                    <td>@item.MobileNumber</td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.CheckInLatitude) && !string.IsNullOrEmpty(item.CheckInLongitude))
+                                                        {
+                                                            <span>@item.CheckInLatitude - @item.CheckInLongitude</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.CheckOutLatitude) && !string.IsNullOrEmpty(item.CheckOutLongitude))
+                                                        {
+                                                            <span>@item.CheckOutLatitude - @item.CheckOutLongitude</span>
+                                                        }
+                                                    </td>
+                                                    <td>@item.CheckInTime</td>
+                                                    <td>@item.CheckOutTime</td>
+                                                    <td>@item.WorkingHours</td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.CheckInImagePath))
+                                                        {
+                                                            <img class="img" src="@Url.Content(item.CheckInImagePath)" title="CheckIn Image" style="width:60px; height:60px" />
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.CheckOutImagePath))
+                                                        {
+                                                            <img class="img" src="@Url.Content(item.CheckOutImagePath)" title="CheckOut Image" style="width:60px; height:60px" />
+                                                        }
+                                                    </td>
+                                                    <td>@item.CheckInStatus</td>
+                                                    <td>@item.CheckOutStatus</td>
+                                                    <td>
+                                                        @if (item.ApproveRejectStatus == "Rejected")
+                                                        {
+                                                            <span class="error-status">Rejected !</span>
+                                                        }
+                                                        else if (item.ApproveRejectStatus == "Approved")
+                                                        {
+                                                            <span class="green-status">Approved !</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="pending-status">Pending !</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.ApproveRejectComment))
+                                                        {
+                                                            <i class="fa fa-comment" data-toggle="modal" data-target="#viewComment" onclick="viewCommentS(@countSuggestion1)" id="btn_ViewCommentS_@countSuggestion1"></i>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-center">
+                                                            <input type="hidden" value="@item.ApproveRejectComment" name="selfieBasedAttendanceListing[@countSuggestion1].ApproveRejectComment" />
+                                                            <a asp-controller="Attendance" asp-action="AttendanceLogs" asp-route-UserId="@item.UserId" class="btn btn-sm mr-1" title="View Log" disabled>View Log</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                countSuggestion1++;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="10" style="text-align:center;">** No Record Found !!</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewComment" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">View Comment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="approve-reject">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea id="hdnModelApproveRejectComment" class="form-control" cols="4" rows="5" placeholder="" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            toastr.success('Team Attendance');
+
+            $('.searchdate').bootstrapMaterialDatePicker({
+                weekStart: 0,
+                time: false,
+                format: 'DD/MM/YYYY',
+                clearButton: true
+            });
+
+        });
+
+    </script>
+    <script src="~/js/Areas/Attendance/TeamAttendance.js" asp-append-version="true"></script>
+}
