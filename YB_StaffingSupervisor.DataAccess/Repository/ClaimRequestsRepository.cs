@@ -89,8 +89,6 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                     {
                     new SqlParameter("@intUserid",SqlDbType.BigInt){Value = SearchRequest1.UserId},
                     new SqlParameter("@chvnsearchClaimType",SqlDbType.VarChar){Value = SearchRequest1.SearchClaimType},
-                    new SqlParameter("@chvnSearchFromDate",SqlDbType.VarChar){Value = SearchRequest1.SearchFrom},
-                    new SqlParameter("@chvnSearchToDate",SqlDbType.VarChar){Value = SearchRequest1.SearchTo},
                     new SqlParameter("@chvnSearchStatusType",SqlDbType.VarChar){Value = SearchRequest1.SearchStatus},
                     new SqlParameter("@intOffsetValue",SqlDbType.Int){ Value=(Page-1) * PageSize },
                     new SqlParameter("@intPagingSize",SqlDbType.Int){ Value=PageSize },
@@ -118,13 +116,15 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                                 claimRequestsModel.ApproveRejectComment = dataSet.Tables[0].Rows[i]["ApproveRejectComment"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["ApproveRejectComment"]);
                                 claimRequestsModel.ApproveRejectStatus = dataSet.Tables[0].Rows[i]["ApproveRejectStatus"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["ApproveRejectStatus"]);
                                 claimRequestsModel.UserId = dataSet.Tables[0].Rows[i]["UserId"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["UserId"]);
+                                claimRequestsModel.AdditionalStatus = dataSet.Tables[0].Rows[i]["AdditionalStatus"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["AdditionalStatus"]);
+                                
                                 claimRequestsModel.ClaimRequestId = dataSet.Tables[0].Rows[i]["ClaimRequestId"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["ClaimRequestId"]);
                                 claimRequestsModels.Add(claimRequestsModel);
                             }
                         }
-                        //var pager = new CustomPagination((dataSet.Tables[1] != null && dataSet.Tables[1].Rows.Count > 0 && dataSet.Tables[1].Columns.Contains("TotalRecords") == true) ? Convert.ToInt32(dataSet.Tables[1].Rows[0]["TotalRecords"]) : 0, Page, PageSize);
+                        var pager = new CustomPagination((dataSet.Tables[1] != null && dataSet.Tables[1].Rows.Count > 0 && dataSet.Tables[1].Columns.Contains("TotalRecords") == true) ? Convert.ToInt32(dataSet.Tables[1].Rows[0]["TotalRecords"]) : 0, Page, PageSize);
                         claimRequestsCustom.ClaimRequestListing = claimRequestsModels;
-                        //claimRequestsCustom.CustomPagination = pager;
+                        claimRequestsCustom.CustomPagination = pager;
                     }
                 }
             }

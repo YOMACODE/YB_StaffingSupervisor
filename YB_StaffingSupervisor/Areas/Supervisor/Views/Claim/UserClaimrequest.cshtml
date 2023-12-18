@@ -140,13 +140,40 @@
                                     <tr>
                                         <td>@i</td>
                                         <td>@item.ClaimInitiateDate</td>
-                                        <td>@item.DistanceTravelled</td>
-                                        <td>@item.DistanceCharge</td>
                                         <td>
-                                            <button data-toggle="offcanvas" data-target="#myOffcanvas"
-                                                    class="btn-sm btn">
-                                                View Map
-                                            </button>
+                                            @if(item.ClaimType == "Travel"){
+                                                @item.DistanceTravelled
+                                            }
+                                            else
+                                            {
+                                                <b>----</b>
+                                            }
+                                          </td>
+                                        <td>
+                                            @if (item.ClaimType == "Travel")
+                                            {
+                                                @item.DistanceCharge
+                                            }
+                                            else
+                                            {
+                                                <b>----</b>
+                                            }
+                                        </td>
+                                            
+                                        <td>
+                                        @if(item.ClaimType == "Travel" && item.AdditionalStatus=="0")
+                                        {
+                                            
+                                                <input type="hidden" value="@item.UserId" name="ClaimRequestListing[@countSuggestion].UserId" />
+                                                <input type="hidden" value="@item.ClaimInitiateDate" name="ClaimRequestListing[@countSuggestion].ClaimInitiateDate" />
+                                                <button class="btn btn-sm mr-1" title="View Map" data-toggle="offcanvas" data-target="#myOffcanvas" id="btn_ViewMap_@countSuggestion" onclick="viewMap(@countSuggestion)">View Map</button>
+
+                                            }
+                                            else
+                                            {
+                                                <b>----</b>
+                                            }
+                                         
                                         </td>
                                         <td>@item.ClaimType</td>
                                         <td>@item.ClaimAmount</td>
@@ -184,14 +211,20 @@
                                             {
                                                 <span class="pending-status">Pending !</span>
                                             }
-                                            @* @item.ApproveRejectStatus</td> *@
                                         <td>
-                                            @* <button class="btn btn-sm" data-toggle="modal" onclick="BindLeaveId('@item.')"
-                                                    data-target="#verifyModal">
-                                                Approved/Reject
-                                            </button> *@
-                                            <button class="btn btn-sm mr-1" title="Verify" data-toggle="modal" data-target="#viewVerifyApprove" id="btn_viewVerifyApprove_@countSuggestion" onclick="viewVerifyapprovereject('@item.ClaimRequestId')">Approved/Reject</button>
-                                        </td>
+                                           
+                                                @if(item.ApproveRejectStatus == "Pending")
+                                                {
+                                                    <button class="btn btn-sm mr-1" title="Verify" data-toggle="modal" data-target="#viewVerifyApprove" id="btn_viewVerifyApprove_@countSuggestion" onclick="viewVerifyapprovereject('@item.ClaimRequestId')">Approved/Reject</button>
+
+                                                }
+                                                else
+                                                {
+                                                <button class="btn btn-sm mr-1" title="Verify" disabled data-toggle="modal" data-target="#viewVerifyApprove" id="btn_viewVerifyApprove_@countSuggestion" onclick="viewVerifyapprovereject('@item.ClaimRequestId')">Approved/Reject</button>
+
+                                                }
+                                            </td>
+
 
 
                                     </tr>
@@ -216,6 +249,59 @@
 
 
 
+        </div>
+        <div class="footer">
+            <div class="bottom_str">
+                @if (Model != null && Model.CustomPagination != null)
+                {
+                    @if (Model.CustomPagination.TotalItems > 10)
+                    {
+                        <div class="one_str">
+                            <select class="form-control form-control-sm remove-select2" style="width:auto" asp-for="PageSize" onchange="showListForPageSize()">
+                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=100000&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">ALL</option>
+                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=10&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">10</option>
+                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=25&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">25</option>
+                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=50&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">50</option>
+                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=100&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">100</option>
+                            </select>
+                        </div>
+                    }
+                    if (Model.CustomPagination.EndPage > 1 && Model.CustomPagination.TotalItems > 1)
+                    {
+                        <div class="two_str">
+                            <div class="pagination">
+                                <ul class="bottom-Ui">
+                                    @if (Model.CustomPagination.CurrentPage > 1)
+                                    {
+                                        <li>
+                                            <a href="~/Supervisor/Claim/UserClaimRequest/?SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&pagesize=@ViewBag.PageSize">First</a>
+                                        </li>
+                                        <li>
+                                            <a href="~/Supervisor/Claim/UserClaimRequest/?SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.CurrentPage - 1)&pagesize=@ViewBag.PageSize">Previous</a>
+                                        </li>
+                                    }
+                                    @for (var Page = Model.CustomPagination.StartPage; Page <= Model.CustomPagination.EndPage; Page++)
+                                    {
+                                        <li>
+                                            <a class="@(Page == Model.CustomPagination.CurrentPage ? "active" : "")" href="~/Supervisor/Claim/UserClaimRequest/?SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@Page&pagesize=@ViewBag.PageSize">@Page</a>
+                                        </li>
+                                    }
+                                    @if (Model.CustomPagination.CurrentPage < Model.CustomPagination.TotalPages)
+                                    {
+                                        <li>
+                                            <a href="~/Supervisor/Claim/UserClaimRequest/?SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.CurrentPage + 1)&pagesize=@ViewBag.PageSize">Next</a>
+                                        </li>
+                                        <li>
+                                            <a href="~/Supervisor/Claim/UserClaimRequest/?SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.TotalPages)&pagesize=@ViewBag.PageSize">Last</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                }
+
+            </div>
         </div>
     </div>
 </div>
@@ -421,7 +507,8 @@
         </div>
     </div>
 </div>
-
+@* <div id="divViewMap"></div> *@
+<div id="divViewMap"></div>
 
 @section Scripts{
 <script>
@@ -589,5 +676,43 @@
                 });
             }
         }
+
+       
+            $(document).ready(function () {
+                toastr.success('Attendance Requests');
+                //$('.remove-select2').select2('destroy');
+
+                var selectedText = @ViewBag.PageSize;
+                if (selectedText == '100000') {
+                    selectedText = "All";
+                }
+                $('#PageSize option').map(function () {
+                    if ($(this).text() == selectedText) return this;
+                }).attr('selected', 'selected');
+
+                $('.startdate').bootstrapMaterialDatePicker({
+                    weekStart: 0,
+                    time: false,
+                    format: 'DD/MM/YYYY',
+                    clearButton: true
+                }).on('change', function (e, date) {
+                    $('.todate').bootstrapMaterialDatePicker('setMinDate', date);
+                });
+
+                $('.todate').bootstrapMaterialDatePicker({
+                    weekStart: 0,
+                    time: false,
+                    format: 'DD/MM/YYYY',
+                    clearButton: true
+                });
+            });
+        function showListForPageSize() {
+            window.location.href = $("#PageSize").val();
+        }
+
+
+
 </script>
+    <script src="~/js/Areas/UserClaimrequest/UserClaimrequest.js" asp - append - version="true"></script>
+
 }

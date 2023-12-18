@@ -11,6 +11,7 @@ namespace YB_StaffingSupervisor.DataAccess.Entities.Model
 		public string YomaId { get; set;}
 		public string ClaimRequestId { get; set;}
 		public string UserId { get; set;}
+		public string AdditionalStatus { get; set;}
 		public string SNo { get; set;}
 		public string AssociateName { get; set;}
 		public string Email { get; set;}

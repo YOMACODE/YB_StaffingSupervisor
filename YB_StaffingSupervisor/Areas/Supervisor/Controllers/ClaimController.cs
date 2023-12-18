@@ -154,6 +154,13 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
 
             }
             claimRequestsCustom1 = await _service.ClaimRequestsRepository.GetUserRequestsListing(page, PageSize, SearchRequest);
+            if (claimRequestsCustom1 != null && claimRequestsCustom1.ClaimRequestListing != null)
+            {
+                claimRequestsCustom1.ClaimRequestListing.ToList().ForEach(c =>
+                {
+                    c.UserId = _dataProtector.Protect(c.UserId);
+                });
+            }
             claimRequestsCustom1.UserId = baseModel.UserId;
             return View(claimRequestsCustom1);
         }
