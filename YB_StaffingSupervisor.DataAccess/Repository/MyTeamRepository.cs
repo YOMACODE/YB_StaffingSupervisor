@@ -32,7 +32,7 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
 					new SqlParameter("@chvnSearchUserCode", SqlDbType.NVarChar) { Value = SearchRequest.SearchUserCode},
 					new SqlParameter("@chvnSearchFullName", SqlDbType.NVarChar, 16) { Value = SearchRequest.SearchFullName },
 					new SqlParameter("@chvnSearchMobileNumber", SqlDbType.NVarChar, 16) { Value = SearchRequest.SearchMobileNumber },
-					new SqlParameter("@dtmSearchJoiningDate", SqlDbType.DateTime) { Value = SearchRequest.SearchJoiningDate },
+					new SqlParameter("@dtmSearchJoiningDate", SqlDbType.VarChar) { Value = SearchRequest.SearchJoiningDate },
 					new SqlParameter("@chvnSearchEmailId", SqlDbType.NVarChar) { Value = SearchRequest.SearchEmailId },
 					new SqlParameter("@chvnSearchDesignation", SqlDbType.BigInt) { Value = SearchRequest.SearchDesignation },
 					new SqlParameter("@chvnOperationType", SqlDbType.NVarChar) { Value = "SELECTALL" },
@@ -74,7 +74,7 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                     new SqlParameter("@chvnSearchMobileNumber", SqlDbType.NVarChar) { Value = SearchMobileNumber },
                     new SqlParameter("@chvnSearchEmailId", SqlDbType.NVarChar) { Value = SearchEmailId },
                     new SqlParameter("@chvnSearchDesignation", SqlDbType.NVarChar) { Value = SearchDesignation },
-                    new SqlParameter("@dtmSearchJoiningDate", SqlDbType.NVarChar) { Value = SearchJoiningDate },
+                    new SqlParameter("@dtmSearchJoiningDate", SqlDbType.VarChar) { Value = SearchJoiningDate },
                 };
                 DataTable dataTable = await Task.Run(() => dbconnect.SPExecuteDataTable("[WebApplication_SP].[usp_DownloadTeamMemberReport_New]", sqlparameters, "dt"));
 

@@ -1,5 +1,4 @@
 ﻿function ExportTeamMemberReport() {
-	debugger;
 	var flag = 1;
 	//if (Validate() == false) {
 	//	flag = 0;
@@ -13,6 +12,6 @@
 		var joining = $("#joining").val();
 
 
-		window.location = "/MyTeam/MyTeam/ExportTeamMemberReport?yomaid=" + yomaid + '&name=' + name + '&mobile=' + mobile + '&email=' + email + '&designation=' + designation + '&joining=' + joining;
+		window.location = "/Supervisor/MyTeam/ExportTeamMemberReport?yomaid=" + yomaid + '&name=' + name + '&mobile=' + mobile + '&email=' + email + '&designation=' + designation + '&joining=' + joining;
 	}
 }
