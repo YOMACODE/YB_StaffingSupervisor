@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.DataProtection;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Options;
 using System;
+using System.Data;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using YB_StaffingSupervisor.Common;
@@ -30,26 +35,26 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
         [HttpGet]
 		public async Task<IActionResult> ClaimRequests([FromQuery] ClaimRequestsCustom SearchRequest, string sortOrder, string sortColumn, string pagesize, int page = 1)
 		{
-			if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("UserId")))
-			{
-				return RedirectToAction("Logout", "Home", new { area = "" }).WithWarning("Warning !", "Unauthorized Access.");
-			}
+			//if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("UserId")))
+			//{
+			//	return RedirectToAction("Logout", "Home", new { area = "" }).WithWarning("Warning !", "Unauthorized Access.");
+			//}
 
 			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchUserCode))
 			{
 				ViewBag.SearchUserCode = SearchRequest.SearchUserCode;
 			}
-			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchEmail))
-			{
-				ViewBag.SearchAttendanceFrom = SearchRequest.SearchEmail;
-			}
 			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchAssociateName))
 			{
-				ViewBag.SearchAttendanceTo = SearchRequest.SearchAssociateName;
+				ViewBag.SearchAssociateName = SearchRequest.SearchAssociateName;
 			}
 			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchMobileNumber))
 			{
-				ViewBag.SearchStatusType = SearchRequest.SearchMobileNumber;
+				ViewBag.SearchMobileNumber = SearchRequest.SearchMobileNumber;
+			}
+			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchEmail))
+			{
+				ViewBag.SearchEmail = SearchRequest.SearchEmail;
 			}
 			if (sortOrder == "desc")
 			{
@@ -115,7 +120,15 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             {
                 ViewBag.SearchStatus = SearchRequest.SearchStatus;
             }
-           
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchMonth))
+            {
+                ViewBag.SearchMonth = SearchRequest.SearchMonth;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchYear))
+            {
+                ViewBag.SearchYear = SearchRequest.SearchYear;
+            }
+
             if (sortOrder == "desc")
             {
                 ViewData["sortOrder"] = "asce";
@@ -154,14 +167,9 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
 
             }
             claimRequestsCustom1 = await _service.ClaimRequestsRepository.GetUserRequestsListing(page, PageSize, SearchRequest);
-            if (claimRequestsCustom1 != null && claimRequestsCustom1.ClaimRequestListing != null)
-            {
-                claimRequestsCustom1.ClaimRequestListing.ToList().ForEach(c =>
-                {
-                    c.UserId = _dataProtector.Protect(c.UserId);
-                });
-            }
             claimRequestsCustom1.UserId = baseModel.UserId;
+            claimRequestsCustom1.monthModelsListing = new SelectList(DateTimeFormatInfo.InvariantInfo.MonthNames.Where(m => !String.IsNullOrEmpty(m)).Select((monthName, index) => new SelectListItem { Value = (index + 1).ToString(), Text = monthName }), "Value", "Text");
+            claimRequestsCustom1.yearModelsListing = new SelectList(Enumerable.Range(DateTime.Today.Year - 10, 20).Select(x => new SelectListItem() { Text = x.ToString(), Value = x.ToString() }), "Value", "Text");
             return View(claimRequestsCustom1);
         }
 
@@ -211,5 +219,127 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
         }
 
 
+
+		#region Export ClaimRrequest Report
+
+		[HttpGet]
+		public async Task<IActionResult> ExportClaimRequestReport(string SearchUserCode, string SearchAssociateName, string SearchEmail, string SearchMobileNumber)
+		{
+			try
+			{
+				DataTable dt = new DataTable();
+				DataSet ds = new DataSet();
+				//var clientId = !string.IsNullOrEmpty(ClientId) ? _dataProtector.Unprotect(ClientId) : null;
+				dt = await _service.ClaimRequestsRepository.ExportClaimRequestsList(SearchUserCode, SearchAssociateName,SearchEmail,SearchMobileNumber);
+				//Do Export for 
+				if (dt != null && dt.Rows.Count > 0)
+				{
+					var totalrowcount = dt.Rows.Count;
+					var totalcolcount = dt.Columns.Count;
+					//dt.Columns.Remove("DisplayOrder");
+					ds.Tables.Add(dt.Copy());
+
+					using (XLWorkbook wb = new XLWorkbook())
+					{
+						var sheetPFFormat = wb.Worksheets.Add("ClaimRequest Report");
+
+						sheetPFFormat.FirstRow().FirstCell().InsertTable(dt);
+						sheetPFFormat.Columns().AdjustToContents();
+						sheetPFFormat.FirstRow().Style.Font.Bold = true;
+
+						Response.Clear();
+						Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+						using (MemoryStream MyMemoryStream = new MemoryStream())
+						{
+							wb.SaveAs(MyMemoryStream);
+							return File(MyMemoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ClaimRequest.xlsx");
+						}
+					}
+				}
+				else
+				{
+					return RedirectToAction("ClaimRequests", "Claim").WithInfo("Info !", "No data found!");
+				}
+			}
+			catch (Exception ex)
+			{
+				return RedirectToAction("ClaimRequests", "Claim").WithDanger("Error !", "Something went wrong.please try again.");
+			}
+		}
+        #endregion
+
+        #region Export User ClaimRrequest Report
+
+        [HttpGet]
+        public async Task<IActionResult> ExportUserClaimrequestReport(string ClaimType, string ClaimStatus, string Month, string Year)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataSet ds = new DataSet();
+                //var clientId = !string.IsNullOrEmpty(ClientId) ? _dataProtector.Unprotect(ClientId) : null;
+                ds = await _service.ClaimRequestsRepository.ExportUserClaimrequestList( ClaimType,ClaimStatus,Month,Year);
+                //Do Export for 
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    //var totalrowcount = dt.Rows.Count;
+                    //var totalcolcount = dt.Columns.Count;
+                    //dt.Columns.Remove("DisplayOrder");
+                    ds.Tables.Add(dt.Copy());
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        var sheetPFFormat = wb.Worksheets.Add("Total Claim");
+                        var sheetPFFormat2 = wb.Worksheets.Add("Travel");
+                        var sheetPFFormat3 = wb.Worksheets.Add("Hotel");
+                       // var sheetPFFormat4 = wb.Worksheets.Add("Courier/ Stationary");
+                        var sheetPFFormat5 = wb.Worksheets.Add("Mobile Bills");
+                      
+
+
+                        sheetPFFormat.FirstRow().FirstCell().InsertTable(ds.Tables[0]);
+                        sheetPFFormat.Columns().AdjustToContents();
+                        sheetPFFormat.FirstRow().Style.Font.Bold = true;
+
+                        sheetPFFormat2.FirstRow().FirstCell().InsertTable(ds.Tables[1]);
+                        sheetPFFormat2.Columns().AdjustToContents();
+                        sheetPFFormat2.FirstRow().Style.Font.Bold = true;
+
+                        sheetPFFormat3.FirstRow().FirstCell().InsertTable(ds.Tables[2]);
+                        sheetPFFormat3.Columns().AdjustToContents();
+                        sheetPFFormat3.FirstRow().Style.Font.Bold = true;
+
+
+                        //sheetPFFormat4.FirstRow().FirstCell().InsertTable(ds.Tables[3]);
+                        //sheetPFFormat4.Columns().AdjustToContents();
+                        //sheetPFFormat4.FirstRow().Style.Font.Bold = true;
+
+
+                        sheetPFFormat5.FirstRow().FirstCell().InsertTable(ds.Tables[4]);
+                        sheetPFFormat5.Columns().AdjustToContents();
+                        sheetPFFormat5.FirstRow().Style.Font.Bold = true;
+
+
+
+                        Response.Clear();
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        using (MemoryStream MyMemoryStream = new MemoryStream())
+                        {
+                            wb.SaveAs(MyMemoryStream);
+                            return File(MyMemoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "UserClaimrequest.xlsx");
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("UserClaimrequest", "Claim").WithInfo("Info !", "No data found!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("UserClaimrequest", "Claim").WithDanger("Error !", "Something went wrong.please try again.");
+            }
+        }
+        #endregion
     }
 }
