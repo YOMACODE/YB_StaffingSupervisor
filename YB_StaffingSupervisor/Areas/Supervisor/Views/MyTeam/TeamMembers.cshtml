@@ -25,7 +25,7 @@
 
 								<div class="card-header d-flex justify-content-between align-items-center">
 									<div class="font-weight-medium">Filters</div>
-									<div><i class="fa fa-filter"></i></div>
+									<div>@* <i class="fa fa-filter"></i> *@</div>
 								</div>
 								<div class="card-body">
 									<div class="row">
@@ -41,14 +41,14 @@
 										<div class="col-md-3 col-lg-3 mt-2">
 											<div class="form-group">
 												<label for="exampleFormControlInput1" class="active"><b>Associate Name</b></label>
-												<input asp-for="SearchFullName" type="text" id="name" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
+												<input asp-for="SearchFullName" type="text" id="name" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter associate name">
 											</div>
 										</div>
 
 										<div class="col-md-3 col-lg-3 mt-2">
 											<div class="form-group">
 												<label for="exampleFormControlInput1" class="active"><b>Mobile No.</b></label>
-												<input asp-for="SearchMobileNumber" type="text" id="mobile" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter Id no.">
+												<input asp-for="SearchMobileNumber" type="text" id="mobile" class="form-control form-control-sm border-bottom" id="exampleFormControlInput1" placeholder="Enter mobile no.">
 											</div>
 										</div>
 
@@ -63,7 +63,7 @@
 											<div class="form-group">
 												<label for="exampleFormControlSelect1"><b>Designation</b> </label>
 												<select asp-for="SearchDesignation" asp-items="@(new SelectList(Model.DesignationModels, "DesignationId", "DesignationName", null))" class="form-control form-control-sm border-bottom">
-													<option>--Select--</option>
+													<option value="">--Select--</option>
 												</select>
 											</div>
 										</div>
@@ -71,16 +71,18 @@
 										<div class="col-md-3 col-lg-3 mt-2">
 											<div class="form-group">
 												<label for="exampleFormControlInput1" class="active"><b>Joining Date</b></label>
-												<input asp-for="SearchJoiningDate" type="text" id="joining" class="form-control form-control-sm border-bottom" id="mdate" placeholder="dd-mm-yyyy">
+												<input type="text" class="form-control form-control-sm border-bottom mdate" id="joining" asp-for="SearchJoiningDate" asp-format="{0:dd/MM/yyyy}" placeholder="DD/MM/YYYY">
 											</div>
 										</div>
 									</div>
 								</div>
 								<div class="card-footer">
 									<div class="d-flex justify-content-end">
-										<button class="btn btn-sm mr-1">Close</button>
-										<button class="btn btn-sm mr-1">Clear</button>
-										<button class="btn btn-sm">Search</button>
+										<button type="submit" class="btn btn-sm mr-1">Search</button>
+										<a asp-controller="MyTeam" asp-action="TeamMembers" class="btn btn-sm mr-1" title="Reset" tabindex="5">
+											<i class="fas fa-sync-alt">
+											</i>
+										</a>
 									</div>
 								</div>
 							</div>
@@ -90,7 +92,7 @@
 
 					<div class="table-resposive mt-3">
 						<table class="table-sm table table-bordered no-wrap">
-							<thead id="sumit">
+							<thead id="sumit" class="text-center">
 								<tr>
 									<th>Yoma Id</th>
 									<th>Associate Name</th>
@@ -100,7 +102,7 @@
 									<th>Joined On</th>
 								</tr>
 							</thead>
-							<tbody class="text-center" class="text-center">
+							<tbody class="text-center">
 								@if (Model != null)
 								{
 									if (Model.TeamMemberListing != null && Model.TeamMemberListing.Count() > 0)
@@ -191,21 +193,29 @@
 	</div>
 </div>
 @section Scripts{
+	<script>
+		$(document).ready(function () {
+			var selectedText = @ViewBag.PageSize;
+			if (selectedText == '100000') {
+				selectedText = "All";
+			}
+			$('#PageSize option').map(function () {
+				if ($(this).text() == selectedText) return this;
+			}).attr('selected', 'selected');
+
+			$('.mdate').bootstrapMaterialDatePicker({
+				weekStart: 0,
+				time: false,
+				format: 'DD/MM/YYYY',
+				clearButton: true
+			});
+		});
+
+		function showListForPageSize() {
+			window.location.href = $("#PageSize").val();
+		};
+
+	</script>
+	
 	<script src="~/js/Areas/TeamMember/TeamMember.js" asp-append-version="true"></script>
 }
-<script>
-	$(document).ready(function () {
-		var selectedText = @ViewBag.PageSize;
-		if (selectedText == '100000') {
-			selectedText = "All";
-		}
-		$('#PageSize option').map(function () {
-			if ($(this).text() == selectedText) return this;
-		}).attr('selected', 'selected');
-	});
-
-	function showListForPageSize() {
-		window.location.href = $("#PageSize").val();
-	};
-
-</script>

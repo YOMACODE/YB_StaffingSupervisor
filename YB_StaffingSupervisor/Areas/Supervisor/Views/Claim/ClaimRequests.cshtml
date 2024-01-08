@@ -18,12 +18,12 @@
                     </div>
 
                     <div class="collapse mt-3" id="filter">
-                        <form asp-controller="ClaimRequests" asp-action="ClaimRequests" method="get">
+                        <form asp-controller="Claim" asp-action="ClaimRequests" method="get">
                             <div class="card mb-3">
 
                                 <div class="card-header d-flex justify-content-between align-items-center">
-                                   @*  <div class="font-weight-medium">Filters</div>
-                                    <div><i class="fa fa-filter"></i></div> *@
+                                    <div class="font-weight-medium">Filters</div>
+                                    <div>@* <i class="fa fa-filter"></i> *@</div>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -83,8 +83,11 @@
                                 <div class="card-footer">
                                     <div class="d-flex justify-content-end">
                                         <button type="button" class="btn btn-sm mr-1" onclick="return ExportLeaveApprovalReReport()">Export</button>
-                                        <button class="btn btn-sm mr-1">Clear</button>
-                                        <button type="submit" class="btn btn-sm">Search</button>
+                                        <button type="submit" class="btn btn-sm mr-1">Search</button>
+                                        <a asp-controller="Claim" asp-action="ClaimRequests" class="btn btn-sm mr-1" title="Reset" tabindex="5">
+                                            <i class="fas fa-sync-alt">
+                                            </i>
+                                        </a>
                                     </div>
                                 </div>
 
@@ -105,7 +108,7 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-center" class="text-center">
+                            <tbody class="text-center">
                                 @if (Model != null)
                                 {
                                     int i = 0;

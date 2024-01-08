@@ -11,8 +11,7 @@ namespace YB_StaffingSupervisor.DataAccess.Contract
 	{
 		Task<ClaimRequestsCustom> GetClaimRequestsListing(int Page, int PageSize, ClaimRequestsCustom SearchRequest);
 		Task<ClaimRequestsCustom> GetUserRequestsListing(int Page, int PageSize, ClaimRequestsCustom SearchRequest1);
-        Task<DataTable> ExportClaimRequestsList(string SearchUserCode, string SearchAssociateName, string SearchEmail, string SearchMobileNumber);
-        Task<DataSet> ExportUserClaimrequestList(string ClaimType, string ClaimStatus, string Month, string Year);
+        Task<DataTable> ExportClaimRequestsList(string SearchUserCode, string SearchAssociateName, string SearchEmail, string SearchMobileNumber, string SearchStatus);
 
         Task<long> ClaimApproveReject(string ClaimRequestId, string ApproveRejectStatus, string ApproveRejectComment, string Token);
     }
