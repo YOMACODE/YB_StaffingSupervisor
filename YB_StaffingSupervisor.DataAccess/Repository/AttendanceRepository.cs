@@ -293,6 +293,31 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                 return 0;
             }
         }
+        public async Task<long> BulkAttendanceVerification(string attendanceIds, string approveRejectstatus, string approveRejectComment, string approveRejectBy)
+        {
+            try
+            {
+                long result = 0;
+                using (var dbConnect = connectionFactory.GetDAL)
+                {
+                    SqlParameter[] sqlparameters =
+                    {
+                    new SqlParameter("@chvnDailyAttendanceIds",SqlDbType.NVarChar){ Value = attendanceIds},
+                    new SqlParameter("@chvnApproveRejectStatus", SqlDbType.NVarChar) { Value = approveRejectstatus },
+                    new SqlParameter("@chvnApproveRejectComment", SqlDbType.NVarChar) { Value = approveRejectComment },
+                    new SqlParameter("@intbApproveRejectBy",SqlDbType.BigInt){ Value = approveRejectBy},
+                    new SqlParameter("@chvnOperationType",SqlDbType.NVarChar){ Value = "BulkApproveRejectAttendance"}
+                    };
+                    result = await Task.Run(() => dbConnect.SPExecuteScalarReturnValue("[WebApplication_SP].[usp_Supervisor_AttendanceRequest_ApproveReject_SelectAll_SelectById]", sqlparameters));
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _ = ex.Message;
+                return 0;
+            }
+        }
         public async Task<DataTable> GetAttendanceRequestExport(string userid, string YomaId, string AttendenceFrom, string AttendenceTo, string status)
         {
             using (var dbconnect = connectionFactory.GetDAL)

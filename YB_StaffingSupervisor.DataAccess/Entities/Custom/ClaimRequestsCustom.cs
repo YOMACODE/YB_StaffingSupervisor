@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using YB_StaffingSupervisor.DataAccess.Common;
@@ -22,6 +23,8 @@ namespace YB_StaffingSupervisor.DataAccess.Entities.Custom
 
         //public string SearchAppliedDate { get; set; }
         public string SearchStatus { get; set; }
+        public string SearchMonth { get; set; }
+        public string SearchYear { get; set; }
 
 		public string SortOrderBy { get; set; }
 		public string SortColumnName { get; set; }
@@ -36,6 +39,9 @@ namespace YB_StaffingSupervisor.DataAccess.Entities.Custom
 		public IEnumerable<ClaimRequestsModel> ClaimRequestListing { get; set; }
 		#region Pagination
 		public CustomPagination CustomPagination { get; set; }
-		#endregion
-	}
+        #endregion
+
+        public SelectList monthModelsListing { get; set; }
+        public SelectList yearModelsListing { get; set; }
+    }
 }

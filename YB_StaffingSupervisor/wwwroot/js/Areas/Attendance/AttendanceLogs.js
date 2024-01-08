@@ -63,7 +63,7 @@ function checkall() {
     var checkedValues = $('input:checkbox.trid:checked').map(function () {
         return this.value;
     }).get();
-    $('#MultipleAttendanceRequestId').val(checkedValues);
+    $('#MultipleAttendanceRequestIds').val(checkedValues);
 }
 function checkone() {
     var ischecked = true;
@@ -76,7 +76,7 @@ function checkone() {
     var checkedValues = $('input:checkbox.trid:checked').map(function () {
         return this.value;
     }).get();
-    $('#MultipleAttendanceRequestId').val(checkedValues);
+    $('#MultipleAttendanceRequestIds').val(checkedValues);
 }
 
 function viewComment(id) {
@@ -92,6 +92,18 @@ function viewVerifyAttendance(id) {
     $('#ApproveRejectStatus-Error').text("");
     $('#ApproveRejectComment').val("");
     $('#ApproveRejectComment-Error').text("");
+}
+function viewVerifyBulkAttendance() {
+    if ($('input:checkbox.trid').is(':checked')) {
+        var attendanceRequestIds = $('input:checkbox.trid:checked').map(function () {
+            return this.value;
+        }).get().join(",");
+        $('#MultipleAttendanceRequestIds').val(attendanceRequestIds);
+
+        $("#btn_Verify_BulkAttendanceModal").trigger('click');
+    } else { 
+        toastr.error("Please select atleast one row.", "Error !");
+    }
 }
 function ValidateApproveRejectStatus() {
     var isValid = true;
@@ -182,6 +194,43 @@ function ApproveRejectAttendance() {
         });
     }
 }
+function ValidateBulkApproveRejectStatus() {
+    var isValid = true;
+    var BulkApproveRejectStatus = $('#BulkApproveRejectStatus').val();
+
+    if (BulkApproveRejectStatus == "") {
+        $("#BulkApproveRejectStatus-Error").text("*Please select Approve/Reject Status.");
+        $("#BulkApproveRejectStatus-Error").attr("style", "display:Inline;");
+        isValid = false;
+    }
+    else {
+        $("#BulkApproveRejectStatus-Error").text("");
+        $("#BulkApproveRejectStatus-Error").attr("style", "display:Inline;");
+    }
+    return isValid;
+}
+function ValidateBulkApproveRejectComment() {
+    var isValid = true;
+    var BulkApproveRejectComment = $('#BulkApproveRejectComment').val();
+    if (BulkApproveRejectComment == "") {
+        $("#BulkApproveRejectComment-Error").text("*Please enter comment.");
+        $("#BulkApproveRejectComment-Error").attr("style", "display:Inline;");
+        isValid = false;
+    }
+    else {
+        var regX = /^[\W]+$/;
+        if ($.isNumeric(BulkApproveRejectComment) || regX.test(BulkApproveRejectComment)) {
+            $("#BulkApproveRejectComment-Error").text("*Please enter valid comment.");
+            $("#BulkApproveRejectComment-Error").attr("style", "display:Inline;");
+            isValid = false;
+        }
+        else {
+            $("#BulkApproveRejectComment-Error").text("");
+            $("#BulkApproveRejectComment-Error").attr("style", "display:Inline;");
+        }
+    }
+    return isValid;
+}
 function BulkApproveRejectAttendance() {
     var flag = 1;
 
@@ -189,21 +238,23 @@ function BulkApproveRejectAttendance() {
         flag = 0;
         toastr.error("Please select atleast one row.", "Error !");
     }
-    if (ValidateApproveRejectStatus() == false) {
+    if (ValidateBulkApproveRejectStatus() == false) {
         flag = 0;
     }
-    if (ValidateApproveRejectComment() == false) {
+    if (ValidateBulkApproveRejectComment() == false) {
         flag = 0;
     }
     if (flag == 1) {
-        var hdnUserId = $('#hdnUserId').val();
         var attendanceRequestIds = $('input:checkbox.trid:checked').map(function () {
             return this.value;
         }).get().join(",");
+        var BulkApproveRejectStatus = $('#BulkApproveRejectStatus').val();
+        var BulkApproveRejectComment = $('#BulkApproveRejectComment').val();
         var token = $('#hdn_TokenValue').val();
         var DTO = {
-            UserId: hdnUserId,
             AttendanceRequestIds: attendanceRequestIds,
+            ApproveRejectStatus: BulkApproveRejectStatus,
+            ApproveRejectComment: BulkApproveRejectComment,
             Token: token
         };
         $.ajax({
@@ -212,11 +263,12 @@ function BulkApproveRejectAttendance() {
             url: "/Supervisor/Attendance/BulkApproveRejectAttendance",
             beforeSend: function (x) {
                 $(".preloader").attr("style", "display:block;");
+                $('#btnBulkApproveRejectAttendance').attr("disabled", "disabled");
             },
             data: DTO,
             success: function (data) {
                 $(".preloader").attr("style", "display:none;");
-                $('#btnApproveRejectAttendance').removeAttr("disabled", "disabled");
+                $('#btnBulkApproveRejectAttendance').removeAttr("disabled", "disabled");
                 if (data.msg == "Approved successfully." || data.msg == "Rejected successfully.") {
                     toastr.success(data.msg, "Success !");
                     location.reload();
@@ -228,7 +280,7 @@ function BulkApproveRejectAttendance() {
             error: function (xhr, ajaxOptions, thrownError) {
                 $(".preloader").attr("style", "display:none;");
                 toastr.error("Server error.", "Error !");
-                $('#btnApproveRejectAttendance').removeAttr("disabled", "disabled");
+                $('#btnBulkApproveRejectAttendance').removeAttr("disabled", "disabled");
                 if (xhr.status == 403) {
                     var url = $.parseJSON(xhr.responseText);
                     window.location.href = url;
@@ -236,28 +288,6 @@ function BulkApproveRejectAttendance() {
             }
         });
     }
-}
-function ValidateApproveRejectComment() {
-    var isValid = true;
-    var ApproveRejectComment = $('#ApproveRejectComment').val();
-    if (ApproveRejectComment == "") {
-        $("#ApproveRejectComment-Error").text("*Please enter comment.");
-        $("#ApproveRejectComment-Error").attr("style", "display:Inline;");
-        isValid = false;
-    }
-    else {
-        var regX = /^[\W]+$/;
-        if ($.isNumeric(ApproveRejectComment) || regX.test(ApproveRejectComment)) {
-            $("#ApproveRejectComment-Error").text("*Please enter valid comment.");
-            $("#ApproveRejectComment-Error").attr("style", "display:Inline;");
-            isValid = false;
-        }
-        else {
-            $("#ApproveRejectComment-Error").text("");
-            $("#ApproveRejectComment-Error").attr("style", "display:Inline;");
-        }
-    }
-    return isValid;
 }
 function viewMap(id) {
     var viewbtnId = id;

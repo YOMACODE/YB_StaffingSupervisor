@@ -13,6 +13,7 @@ namespace YB_StaffingSupervisor.DataAccess.Contract
         Task<AttendanceRequestCustom> GetAttendanceRequestListing(int Page, int PageSize, AttendanceRequestCustom SearchRequest);
         Task<UserAttendanceCustom> GetUserAttendanceListing(UserAttendanceCustom SearchRequest);
         Task<long> AttendanceVerification(string attendanceId, string approveRejectstatus, string approveRejectComment, string approveRejectBy);
+        Task<long> BulkAttendanceVerification(string attendanceIds, string approveRejectstatus, string approveRejectComment, string approveRejectBy);
         Task<DataTable> GetAttendanceRequestExport(string userid, string YomaId, string AttendenceFrom, string AttendenceTo, string status);
     }
 }
