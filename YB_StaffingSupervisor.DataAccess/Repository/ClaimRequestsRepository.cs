@@ -90,6 +90,8 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                     new SqlParameter("@intUserid",SqlDbType.BigInt){Value = SearchRequest1.UserId},
                     new SqlParameter("@chvnsearchClaimType",SqlDbType.VarChar){Value = SearchRequest1.SearchClaimType},
                     new SqlParameter("@chvnSearchStatusType",SqlDbType.VarChar){Value = SearchRequest1.SearchStatus},
+                      new SqlParameter("@Month",SqlDbType.VarChar){Value = SearchRequest1.SearchMonth},
+                    new SqlParameter("@Year",SqlDbType.VarChar){Value = SearchRequest1.SearchYear},
                     new SqlParameter("@intOffsetValue",SqlDbType.Int){ Value=(Page-1) * PageSize },
                     new SqlParameter("@intPagingSize",SqlDbType.Int){ Value=PageSize },
                     new SqlParameter("@chvnSortOrderBy", SqlDbType.NVarChar,10) { Value = SearchRequest1.SortOrderBy},
@@ -163,5 +165,23 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
         }
 
 
+        public async Task<DataSet> ExportUserClaimrequestList(string ClaimType, string ClaimStatus, string Month, string Year)
+        {
+            using (var dbconnect = connectionFactory.GetDAL)
+            {
+                SqlParameter[] sqlparameters =
+                {
+                    new SqlParameter("@chvnsearchClaimType", SqlDbType.NVarChar) { Value =  ClaimType},
+                    new SqlParameter("@chvnSearchStatusType", SqlDbType.NVarChar) { Value = ClaimStatus},
+                    new SqlParameter("@Month", SqlDbType.NVarChar) { Value = Month},
+                    new SqlParameter("@Year", SqlDbType.BigInt) { Value = Year },
+                    //new SqlParameter("@chvnSearchMobileNumber", SqlDbType.NVarChar) { Value = SearchMobileNumber },
+                    //new SqlParameter("@chvnSearchEmail", SqlDbType.NVarChar) { Value = SearchEmail },
+                };
+                DataSet dataTable = await Task.Run(() => dbconnect.SPExecuteDataset("[WebApplication_SP].[usp_Download_User_ClaimRequest_Report]", sqlparameters, "dt"));
+
+                return dataTable;
+            }
+        }
     }
 }
