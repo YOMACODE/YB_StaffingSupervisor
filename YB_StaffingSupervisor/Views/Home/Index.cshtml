@@ -10,39 +10,47 @@
 
 
 <style>
-    .capcha-text{
+    .capcha-text {
         background: #2c62a2;
         color: white;
         padding: 1px 13px;
-            user-select: none;
-             border-radius: 14px;
+        user-select: none;
+        border-radius: 14px;
     }
 
-    #CaptchaText{
+    #CaptchaText {
         width: 53px;
         background: transparent;
         border: none;
         color: white;
-       
     }
 
-    [name="Captcha"]{
+    [name="Captcha"] {
         border-radius: 20px;
         border: none;
         padding: 5px;
         background: #e8f0fe;
     }
 
-    .capcha-reload{
+    .capcha-reload {
         color: #3264a0;
         cursor: pointer;
- 
     }
 
 
 
     .capcha-value:focus-visible {
         outline: none;
+    }
+
+    .eye-icon {
+        position: absolute;
+        right: 16px;
+        top: 40px;
+    }
+
+    .pwdMask {
+        position: relative;
     }
 </style>
 
@@ -100,7 +108,7 @@
 
                                         <div class="d-flex align-items-center my-3 justify-content-around">
                                             <div class="capcha-text">
-                                              @*  <input asp-for="CaptchaText" id="CaptchaText" />*@
+                                                @*  <input asp-for="CaptchaText" id="CaptchaText" />*@
                                                 <div id="CaptchaText"></div>
                                             </div>
                                             <div><input type="text" asp-for="Captcha" id="Captcha" maxlength="6" placeholder="Enter Captcha Here" class="capcha-value mb-0"></div>
@@ -113,27 +121,27 @@
                                                 <a role="button" class="forgetPassword"
                                                    style="text-decoration: none;">Forget Password ?</a>
                                             </div>
-                                        <div class="d-flex justify-content-end">
-                                            <button type="submit" id="sign" class="btn border-0 btn-primary">Login <i class="fa-solid fa-arrow-right-long"></i></button>
+                                            <div class="d-flex justify-content-end">
+                                                <button type="submit" id="sign" class="btn border-0 btn-primary">Login <i class="fa-solid fa-arrow-right-long"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div id="attempt-timer-window">
+                                        <div class="mt-0 warn-container container-fluid w-100">
+                                            <p class="mb-1 d-flex justify-content-center align-items-center">
+                                                <i class="fas triangle fa-exclamation-triangle me-2"></i>
+                                                <small>Too many Incorrect Login Attempts. Please wait for 60 seconds.</small>
+                                            </p>
+                                        </div>
+
+                                        <div class="time-left text-center mt-3 d-flex justify-content-center align-items-center">
+                                            <i class="fa fa-stopwatch me-2 "></i>
+                                            <h6 class="mb-0" id="countdown">60 seconds</h6>
                                         </div>
                                     </div>
                                 </div>
-
-                                
-                                <div id="attempt-timer-window">
-                                    <div class="mt-0 warn-container container-fluid w-100">
-                                        <p class="mb-1 d-flex justify-content-center align-items-center">
-                                            <i class="fas triangle fa-exclamation-triangle me-2"></i>
-                                            <small>Too many Incorrect Login Attempts. Please wait for 60 seconds.</small>
-                                        </p>
-                                    </div>
-
-                                    <div class="time-left text-center mt-3 d-flex justify-content-center align-items-center">
-                                        <i class="fa fa-stopwatch me-2 "></i>
-                                        <h6 class="mb-0" id="countdown">60 seconds</h6>
-                                    </div>
-                                </div>
-                            </div>
                             </div>
 
                             <div class="otp-login-screen-two" style="display: none;">
@@ -175,11 +183,11 @@
                                             </div>
                                         </div>
                                         @*<div class="resend-limit-over mt-2" style="display: none;">
-                                        <span class="text-danger">
-                                        Your OTP resend limit is over. Please try again after
-                                        15 minutes.
-                                        </span>
-                                        </div>*@
+                                            <span class="text-danger">
+                                            Your OTP resend limit is over. Please try again after
+                                            15 minutes.
+                                            </span>
+                                            </div>*@
                                     </div>
                                 </div>
                             </div>
@@ -191,15 +199,17 @@
                                            class="username-box form-control p-0 ps-3 rounded-pill border-0"
                                            data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
                                            data-bs-content="<div><ul class='mb-0'><li id='charcount'>Minimum 8 characters</li><li id='upperlower'>Atleast one uppercase & Lowercase</li><li id='findnumspcl'>Atleast one number & special character.</li></ul></div>" />
+                                    <span class="eye-icon"><i class="pwd-toggle fa fa-eye-slash checkSlash"></i></span>
                                     <!-- <i class="pwd-toggle fa fa-eye-slash checkSlash"></i> -->
                                 </div>
 
                                 <div class="pwdMask mb-2">
                                     <label class="mb-2">Confirm Password</label>
-                                    <input type="password" autocomplete="off" @*onclick="checkPassword(this);" onkeyup="checkPassword(this);" *@id="passwordAgain" placeholder="Enter Confirm Password"
+                                    <input type="password" autocomplete="off" @*onclick="checkPassword(this);" onkeyup="checkPassword(this);" *@="passwordAgain" placeholder="Enter Confirm Password"
                                            class="username-box form-control p-0 ps-3 rounded-pill border-0"
                                            data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
                                            data-bs-content="<div><ul class='mb-0'><li id='charcount'>Minimum 8 characters</li><li id='upperlower'>Atleast one uppercase & Lowercase</li><li id='findnumspcl'>Atleast one number & special character.</li></ul></div>" />
+                                    <span class="eye-icon"><i class="pwd-toggle fa fa-eye-slash checkSlash"></i></span>
                                     <!-- <i class="fa fa-eye-slash checkSlash pwd-toggle"></i> -->
                                 </div>
 
@@ -209,7 +219,7 @@
                                 </div>
                             </div>
                         </form>
-                       
+
                     </div>
 
 
@@ -242,7 +252,7 @@
         }
 
         .warn-container {
-            margin-top:20px !important;
+            margin-top: 20px !important;
             background-color: #FFD8D8;
             border-radius: 10px;
             padding: 5px 10px 10px 10px;
@@ -302,6 +312,19 @@
             }
             else {
                 $('#Password_error').text('** Please enter password.');
+            }
+        });
+        $('.eye-icon').click(function () {
+            var target = $(this).prev();
+            var $inputField = $(target);
+            var $eyeIcon = $(this).children();
+
+            if ($inputField.attr('type') === 'password') {
+                $inputField.attr("type", "text");
+                $eyeIcon.removeClass('fa-eye-slash').addClass('fa-eye');
+            } else {
+                $inputField.attr("type", "password");
+                $eyeIcon.removeClass('fa-eye').addClass('fa-eye-slash');
             }
         });
         //const startingMinutes = 1;
@@ -391,7 +414,68 @@
 
             function OTPInput() {
                 const inputs = document.querySelectorAll('#otp > *[id]');
-                for (let i = 0; i < inputs.length; i++) { inputs[i].addEventListener('keydown', function (event) { if (event.key === "Backspace") { inputs[i].value = ''; if (i !== 0) inputs[i - 1].focus(); } else { if (i === inputs.length - 1 && inputs[i].value !== '') { return true; } else if (event.keyCode > 47 && event.keyCode < 58) { inputs[i].value = event.key; if (i !== inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); } else if (event.keyCode > 64 && event.keyCode < 91) { inputs[i].value = String.fromCharCode(event.keyCode); if (i !== inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); } } }); }
+
+                for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].addEventListener('keydown', function (event) {
+                        if (event.key === "Backspace") {
+                            inputs[i].value = '';
+                            if (i !== 0) inputs[i - 1].focus();
+                        } else {
+                            const keyCode = event.keyCode;
+                            if ((keyCode >= 48 && keyCode <= 57 && !event.shiftKey) || (keyCode >= 96 && keyCode <= 105 && !event.shiftKey)) {
+                                inputs[i].value = event.key;
+                                if (i !== inputs.length - 1) inputs[i + 1].focus();
+                                event.preventDefault();
+                            } else {
+                                event.preventDefault(); // Prevent input for non-numeric keys
+                            }
+                        }
+                    });
+
+                    inputs[i].addEventListener('paste', function (event) {
+                        const pastedData = event.clipboardData.getData('text');
+                        if (/^\d{6}$/.test(pastedData)) {
+                            for (let j = 0; j < pastedData.length && i + j < inputs.length; j++) {
+                                inputs[i + j].value = pastedData[j];
+                            }
+                            if (i + 5 < inputs.length) inputs[i + 5].focus();
+                            event.preventDefault();
+                        }
+                    });
+
+                    inputs[i].addEventListener('keydown', function (event) {
+                        if (event.ctrlKey && event.key === 'v') {
+                            setTimeout(() => {
+                                const pastedData = inputs[i].value;
+                                if (/^\d{6}$/.test(pastedData)) {
+                                    for (let j = 0; j < pastedData.length && i + j < inputs.length; j++) {
+                                        inputs[i + j].value = pastedData[j];
+                                    }
+                                    if (i + 5 < inputs.length) inputs[i + 5].focus();
+                                } else {
+                                    inputs[i].value = ''; // Clear input if invalid paste
+                                }
+                            }, 0);
+                        }
+                    });
+
+                    inputs[i].addEventListener('click', function (event) {
+                        inputs[i].addEventListener('keydown', function (event) {
+                            if (event.ctrlKey && event.key === 'v') {
+                                inputs[i].addEventListener('paste', function (pasteEvent) {
+                                    const pastedData = pasteEvent.clipboardData.getData('text');
+                                    if (/^\d{6}$/.test(pastedData)) {
+                                        for (let j = 0; j < pastedData.length && i + j < inputs.length; j++) {
+                                            inputs[i + j].value = pastedData[j];
+                                        }
+                                        if (i + 5 < inputs.length) inputs[i + 5].focus();
+                                        pasteEvent.preventDefault();
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
             } OTPInput();
 
 
@@ -418,16 +502,16 @@
                             $('#fifth').val('');
                             $('#sixth').val('');
                             resetTimerForResetPwdOTPEmail();
-                            toastr.success(response.mgs,"Success");
+                            toastr.success(response.mgs, "Success");
                         }
                         else {
-                            toastr.error(response.mgs,"Error!");
+                            toastr.error(response.mgs, "Error!");
                         }
                     }
                 });
             }
             else {
-                toastr.error("Please Enter Your UserName!","Error!");
+                toastr.error("Please Enter Your UserName!", "Error!");
             }
         };
         function VerifyOTP() {
@@ -447,34 +531,7 @@
                             $(".otp-login-screen-one").show();
                             //$('#UserName').val('');
                             $('#password').val('');
-                            toastr.success(response.mgs,"Success");
-                        }
-                        else {
-                            toastr.error(response.mgs,"Error!");
-                        }
-                    }
-                });
-            }
-            else {
-                toastr.error("Please Enter OTP!","Error!");
-            }
-        };
-        function SaveNewPassword() {
-            debugger;
-            var userName = $('#UserName').val();
-            var password = $('#password').val();
-            var confirmPassword = $('#passwordAgain').val();
-            if (password == confirmPassword) {
-                $.ajax({
-                    type: "POST",
-                    url: "/Home/SaveNewPassword",
-                    data: { 'userName': userName, 'newPassword': password },
-                    dataType: "json",
-                    success: function (response) {
-                        debugger;
-                        if (response.mgs == 'Password Saved Successfully.') {
                             toastr.success(response.mgs, "Success");
-                            window.location.href = "/Home/Index";
                         }
                         else {
                             toastr.error(response.mgs, "Error!");
@@ -483,9 +540,54 @@
                 });
             }
             else {
+                toastr.error("Please Enter OTP!", "Error!");
+            }
+        };
+        function SaveNewPassword() {
+            var userName = $('#UserName').val();
+            var password = $('#password').val();
+            var confirmPassword = $('#passwordAgain').val();
+            if (password == confirmPassword) {
+                if (validatePassword() == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/SaveNewPassword",
+                        data: { 'userName': userName, 'newPassword': password },
+                        dataType: "json",
+                        success: function (response) {
+
+                            if (response.mgs == 'Password Saved Successfully.') {
+                                toastr.success(response.mgs, "Success");
+                                window.location.href = "/Home/Index";
+                            }
+                            else {
+                                toastr.error(response.mgs, "Error!");
+                            }
+                        }
+                    });
+                }
+                else {
+                    $('#password').val('');
+                    $('#passwordAgain').val('');
+                    toastr.warning('Please Enter Valid Password!');
+                }
+            }
+            else {
                 toastr.warning('Entered Password and Confirm Password Does Not Match!');
             }
         };
+        function validatePassword() {
+            debugger;
+            var confirmPassword = $('#passwordAgain').val();
+            //var regex = /^[0-9a-zA-Z]{8,16}$/;
+            //var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[@@])(?=.*\d)[0-9a-zA-Z@@]{8,16}$/;
+            var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@@#$%^&*(),.?":{}|<>])(?=.*\d)[0-9a-zA-Z!@@#$%^&*(),.?":{}|<>]{8,16}$/;
+            if (regex.test(confirmPassword)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         function FunResendOTP() {
 
             var userName = $('#UserName').val();

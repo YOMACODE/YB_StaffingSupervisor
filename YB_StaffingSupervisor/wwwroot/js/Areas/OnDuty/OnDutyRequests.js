@@ -108,7 +108,6 @@ function ApproveRejectOnDuty() {
     }
 }
 function ExportOnDutyReport() {
-    debugger;
     var flag = 1;
     if ($('#SearchStatusType').val() == '') {
         toastr.error("* Please select Status.", "Error !");

@@ -107,3 +107,11 @@ function ApproveRejectLeave() {
         });
     }
 }
+function ExportLeaveRequestReport() {
+    var SearchUserCode = $("#SearchUserCode").val();
+    var SearchLeaveFrom = $("#SearchLeaveFrom").val();
+    var SearchLeaveTo = $("#SearchLeaveTo").val();
+    var SearchStatusType = $("#SearchStatusType").val();
+
+    window.location = "/Supervisor/Leave/LeaveRequestReport?SearchUserCode=" + SearchUserCode + "&SearchLeaveFrom=" + SearchLeaveFrom + '&SearchLeaveTo=' + SearchLeaveTo + '&SearchStatusType=' + SearchStatusType;
+}

@@ -139,7 +139,6 @@ function viewMap(id) {
 }
 
 function ExportAttendanceReport() {
-    debugger;
     var flag = 1;
     if ($('#SearchStatusType').val() == '') {
         toastr.error("* Please select Status.", "Error !");
