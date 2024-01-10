@@ -91,14 +91,16 @@
                                     </div>
 
                                     <div class="col-12 col-xs-12 col-sm-12 col-md-4 col-xl-4 col-lg-4">
-                                        <label for="exampleFormControlSelect1"><b>Approval Status</b></label>
+                                        <label for="exampleFormControlSelect1" ><b>Approval Status</b></label>
                                         <div class="form-group">
-                                            <select asp-for="SearchStatusType" class="form-control form-control-sm border-bottom remove-select2">
+                                            <select asp-for="SearchStatusType" id="ApprovalStatus" class="form-control form-control-sm border-bottom remove-select2">
                                                 <option value="">Select Status</option>
                                                 <option value="P">Pending</option>
                                                 <option value="R">Rejected</option>
                                                 <option value="A">Approved</option>
                                             </select>
+                                            <span id="ApprovalStatus-Error" asp-validation-for="SearchStatusType" class="text-danger ApprovalStatus-Error"></span>
+
                                         </div>
                                     </div>
 
@@ -113,6 +115,8 @@
                                     @* <a asp-controller="Leave" asp-action="ExportLeaveRequests" asp-route-page="@ViewBag.page" asp-route-sortOrder="@ViewData["sortOrder"]" asp-route-sortColumn="@ViewData["sortColumnName"]" asp-route-pagesize="@ViewBag.PageSize" asp-route-SearchUserCode="@ViewBag.SearchUserCode" asp-route-SearchLeaveFrom="@ViewBag.SearchLeaveFrom" asp-route-SearchLeaveTo="@ViewBag.SearchLeaveTo" asp-route-SearchStatusType="@ViewBag.SearchStatusType" class="btn btn-sm mr-1" title="Export">
                                     Export
                                     </a> *@
+                                    <button type="button" class="btn btn-sm mr-1" onclick="return ExportLeaveReports()">Export</button>
+
                                 </div>
                             </form>
                         </div>

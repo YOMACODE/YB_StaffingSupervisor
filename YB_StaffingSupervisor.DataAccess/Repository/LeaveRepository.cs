@@ -104,5 +104,24 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                 return 0;
             }
         }
+
+
+        public async Task<DataSet> ExportLeaveRequests(string SearchStatusType, string SupervisorId)
+        {
+            using (var dbconnect = connectionFactory.GetDAL)
+            {
+                SqlParameter[] sqlparameters =
+                {
+                    new SqlParameter("@chvnSearchStatusType", SqlDbType.NVarChar) { Value =  SearchStatusType},
+                    new SqlParameter("@intbSupervisorId", SqlDbType.NVarChar) { Value =  SupervisorId},
+                    new SqlParameter("@chvnOperationType", SqlDbType.VarChar) { Value = "Export" },
+
+
+                };
+                DataSet dataTable = await Task.Run(() => dbconnect.SPExecuteDataset("[WebApplication_SP].[usp_Supervisor_LeaveRequest_ApproveReject_SelectAll_SelectById]", sqlparameters, "dt"));
+
+                return dataTable;
+            }
+        }
     }
 }

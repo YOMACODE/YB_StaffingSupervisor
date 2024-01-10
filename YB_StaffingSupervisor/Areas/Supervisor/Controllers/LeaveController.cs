@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.DataProtection;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using YB_StaffingSupervisor.Common;
@@ -149,5 +152,56 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             return Json(new { msg });
 
         }
+
+
+        #region Export User ClaimRrequest Report
+
+        [HttpGet]
+        public async Task<IActionResult> ExportLeaveRequestReport(string SearchStatusType, string SupervisorId)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                DataSet ds = new DataSet();
+                //var clientId = !string.IsNullOrEmpty(ClientId) ? _dataProtector.Unprotect(ClientId) : null;
+                   SupervisorId = _dataProtector.Unprotect(baseModel.UserId);
+
+                ds = await _service.LeaveRepository.ExportLeaveRequests(SearchStatusType, SupervisorId);
+                //Do Export for 
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    //var totalrowcount = dt.Rows.Count;
+                    //var totalcolcount = dt.Columns.Count;
+                    //dt.Columns.Remove("DisplayOrder");
+                    ds.Tables.Add(dt.Copy());
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        var sheetPFFormat = wb.Worksheets.Add("Leave Request");
+                   
+                        sheetPFFormat.FirstRow().FirstCell().InsertTable(ds.Tables[0]);
+                        sheetPFFormat.Columns().AdjustToContents();
+                        sheetPFFormat.FirstRow().Style.Font.Bold = true;
+
+                        Response.Clear();
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        using (MemoryStream MyMemoryStream = new MemoryStream())
+                        {
+                            wb.SaveAs(MyMemoryStream);
+                            return File(MyMemoryStream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "LeaveRequest.xlsx");
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("LeaveRequests", "Leave").WithInfo("Info !", "No data found!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("UserClaimrequest", "Claim").WithDanger("Error !", "Something went wrong.please try again.");
+            }
+        }
+        #endregion
     }
 }

@@ -107,3 +107,59 @@ function ApproveRejectLeave() {
         });
     }
 }
+
+
+function ExportLeaveReports() {
+    debugger;
+    var flag = 1;
+    if (Validate() == false) {
+        flag = 0;
+    }
+    if (flag == 1) {
+        var SearchStatusType = $("#ApprovalStatus").val();
+        
+
+
+        window.location = "/Supervisor/Leave/ExportLeaveRequestReport?SearchStatusType=" + SearchStatusType ;
+    }
+}
+
+function ValidateApprovalStatus() {
+    var isValid = true;
+    var ApprovalStatus = $('#ApprovalStatus').val();
+
+    if (ApprovalStatus == "") {
+        $("#ApprovalStatus-Error").text("*Please select Approval Status.");
+        $("#ApprovalStatus-Error").attr("style", "display:Inline;");
+        isValid = false;
+    }
+    else {
+        $("#ApprovalStatus-Error").text("");
+        $("#ApprovalStatus-Error").attr("style", "display:Inline;");
+    }
+    return isValid;
+}
+
+
+function Validate() {
+    var IsFormValid = true;
+
+    //if (ValidateClient() == false) {
+    //    IsFormValid = false;
+    //}
+    //if (ValidateBusieness() == false) {
+    //    IsFormValid = false;
+    //}
+
+    //if (ValidateSearchAttendanceType() == false) {
+    //    IsFormValid = false;
+    //}
+
+
+    if (ValidateApprovalStatus() == false) {
+        IsFormValid = false;
+    }
+
+
+    return IsFormValid;
+}
