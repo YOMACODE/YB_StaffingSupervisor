@@ -237,6 +237,68 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
 
         }
         [HttpPost]
+        public async Task<IActionResult> BulkApproveRejectAttendance(string AttendanceRequestIds, string ApproveRejectStatus, string ApproveRejectComment, string Token)
+        {
+            string msg = "";
+            try
+            {
+                var routeValues = ControllerContext.HttpContext.Request.RouteValues;
+                var url = $"/{routeValues["area"]}/{routeValues["controller"]}/{routeValues["action"]}";
+                bool checkToken = _loginUserRepo.ValidateCurrentToken(Token, url);
+                if (checkToken == false)
+                {
+                    return RedirectToAction("Logout", "Home").WithWarning("Warning !", "Unauthorized Access.");
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(AttendanceRequestIds) && !string.IsNullOrEmpty(ApproveRejectStatus))
+                    {
+                        var MultipleAttendanceRequestIds = "";
+                        if (!string.IsNullOrEmpty(AttendanceRequestIds))
+                        {
+                            var arrList = AttendanceRequestIds.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(x => x = _dataProtector.Unprotect(x));
+                            MultipleAttendanceRequestIds = String.Join(",", arrList);
+                            //AttendanceRequestIds = MultipleAttendanceRequestIds;
+                        }
+                        long result = await _service.AttendanceRepository.BulkAttendanceVerification(MultipleAttendanceRequestIds, ApproveRejectStatus, ApproveRejectComment, _dataProtector.Unprotect(baseModel.UserId));
+                        if (result == 1)
+                        {
+                            if (ApproveRejectStatus == "Approve")
+                            {
+                                msg = "Approved successfully.";
+                            }
+                            else if (ApproveRejectStatus == "Reject")
+                            {
+                                msg = "Rejected successfully.";
+                            }
+                        }
+                        else if (result == -2)
+                        {
+                            msg = "Invalid Status";
+                        }
+                        else if (result == -1)
+                        {
+                            msg = "attendance not found";
+                        }
+                        else
+                        {
+                            msg = "Something went wrong,Please try again.";
+                        }
+                    }
+                    else
+                    {
+                        msg = "Invalid Attendance";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+            }
+            return Json(new { msg });
+
+        }
+        [HttpPost]
         public IActionResult GetAttendanceMeetingMapViewComponent(string AttendanceDate, string UserId, string Token)
         {
             var routeValues = ControllerContext.HttpContext.Request.RouteValues;

@@ -14,5 +14,7 @@ namespace YB_StaffingSupervisor.DataAccess.Contract
         Task<DataTable> ExportClaimRequestsList(string SearchUserCode, string SearchAssociateName, string SearchEmail, string SearchMobileNumber, string SearchStatus);
 
         Task<long> ClaimApproveReject(string ClaimRequestId, string ApproveRejectStatus, string ApproveRejectComment, string Token);
+        Task<DataSet> ExportUserClaimrequestList(string ClaimType, string ClaimStatus, string Month, string Year);
+
     }
 }

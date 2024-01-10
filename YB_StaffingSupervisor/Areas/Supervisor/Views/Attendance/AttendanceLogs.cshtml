@@ -467,14 +467,11 @@
                                     <br><small>(Daywise Attendance)</small>
                                 </h4>
                             </div>
-                            @* <div>
-                            <button class="btn btn-sm" data-target="#verifyModal"
-                            data-toggle="modal">
-                            Verify Attendane
-                            </button>
-                            <button class="btn btn-sm"><i class="fa fa-download"></i> Export</button>
-                            <!-- <button class="btn btn-sm"><i class="fa fa-filter"></i></button> -->
-                            </div> *@
+                            <div>
+                            <button class="btn btn-sm" id="btn_Verify_BulkAttendance" onclick="viewVerifyBulkAttendance()">Verify Attendance</button>
+                            <a class="btn btn-sm" style="display:none;" id="btn_Verify_BulkAttendanceModal" data-toggle="modal" data-target="#viewVerifyBulkAttendance"></a>
+                            @* <button class="btn btn-sm"><i class="fa fa-download"></i> Export</button> *@
+                            </div>
                         </div>
 
                         <div class="card-body">
@@ -482,7 +479,7 @@
                                 <table class="table table-sm no-wrap table-bordered">
                                     <thead id="sumit" class="text-center">
                                         <tr>
-                                            @* <th><input type="checkbox" id="all" onclick="checkall();"></th> *@
+                                            <th><input type="checkbox" id="all" onclick="checkall();"></th>
                                             <th>Attendance Date</th>
                                             <th>Yoma ID</th>
                                             <th>Associate Name</th>
@@ -509,9 +506,23 @@
                                                 foreach (var item in Model.attendanceListing)
                                                 {
                                                     <tr>
-                                                        @* <td>
-                                            <input type="checkbox" class="trid" onclick="checkone();" value='@item.DailyAttendanceId'>
-                                            </td> *@
+                                                        <td>
+                                                            @if (item.ApproveRejectStatus == "Rejected" || item.ApproveRejectStatus == "Approved")
+                                                            {
+                                                                <input type="checkbox" class="trid" disabled/>
+                                                            }
+                                                            else
+                                                            {
+                                                                if (!string.IsNullOrEmpty(item.CheckInTime) && !string.IsNullOrEmpty(item.CheckOutTime))
+                                                                {
+                                                                    <input type="checkbox" class="trid" onclick="checkone();" value='@item.DailyAttendanceId'>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="checkbox" class="trid" disabled/>
+                                                                }
+                                                            }
+                                                        </td>
                                                         <td style="text-align:center">@item.AttendanceDate</td>
                                                         <td>@item.UserCode</td>
                                                         <th>@item.FullName</th>
@@ -671,7 +682,46 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="viewVerifyBulkAttendance" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle"> Bulk Attendance Approval</h5>
+                <h5 class="modal-cut" data-dismiss="modal" aria-label="Close" aria-hidden="true">✖</h5>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="MultipleAttendanceRequestIds" />
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                        <label class="active"><b>Status</b><sup class="red">*</sup></label>
+                        <div class="form-group">
+                            <select class="form-control form-control-sm remove-select2" id="BulkApproveRejectStatus" onchange="ValidateBulkApproveRejectStatus()">
+                                <option value="">Select</option>
+                                <option value="Approve">Approve</option>
+                                <option value="Reject">Reject</option>
+                            </select>
+                            <span id="BulkApproveRejectStatus-Error" class="text-danger BulkApproveRejectStatus-Error"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                        <label class="active"><b>Write Comment</b><sup class="red">*</sup></label>
+                        <div class="form-group">
+                            <textarea class="form-control" id="BulkApproveRejectComment" rows="3" onkeyup="ValidateBulkApproveRejectComment()"></textarea>
+                            <span id="BulkApproveRejectComment-Error" class="text-danger BulkApproveRejectComment-Error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer py-2">
+                <button class="btn1 btn-sm reject-btn" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-sm btn-primary approval-btn" id="btnBulkApproveRejectAttendance" onclick="BulkApproveRejectAttendance()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="divViewMap"></div>
 
 @section Scripts{
