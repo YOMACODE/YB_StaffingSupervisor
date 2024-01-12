@@ -205,7 +205,7 @@
 
                                 <div class="pwdMask mb-2">
                                     <label class="mb-2">Confirm Password</label>
-                                    <input type="password" autocomplete="off" @*onclick="checkPassword(this);" onkeyup="checkPassword(this);" *@="passwordAgain" placeholder="Enter Confirm Password"
+                                    <input type="password" autocomplete="off" @*onclick="checkPassword(this);" onkeyup="checkPassword(this);"*@ id="passwordAgain" placeholder="Enter Confirm Password"
                                            class="username-box form-control p-0 ps-3 rounded-pill border-0"
                                            data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true"
                                            data-bs-content="<div><ul class='mb-0'><li id='charcount'>Minimum 8 characters</li><li id='upperlower'>Atleast one uppercase & Lowercase</li><li id='findnumspcl'>Atleast one number & special character.</li></ul></div>" />
