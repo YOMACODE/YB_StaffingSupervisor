@@ -161,8 +161,9 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             ViewBag.page = page;
             ViewBag.PageSize = PageSize;
 
+            ViewBag.UserId = SearchRequest.UserId;
             ClaimRequestsCustom claimRequestsCustom1 = new ClaimRequestsCustom();
-            if(SearchRequest.UserId != null)
+            if (SearchRequest.UserId != null)
             {
                 SearchRequest.UserId = _dataProtector.Unprotect(SearchRequest.UserId);
 
@@ -230,20 +231,17 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
         #region Export User ClaimRrequest Report
 
         [HttpGet]
-        public async Task<IActionResult> ExportUserClaimrequestReport(string ClaimType, string ClaimStatus, string Month, string Year)
+        public async Task<IActionResult> ExportUserClaimrequestReport(string Userid, string Month, string Year)
         {
             try
             {
                 DataTable dt = new DataTable();
                 DataSet ds = new DataSet();
-                //var clientId = !string.IsNullOrEmpty(ClientId) ? _dataProtector.Unprotect(ClientId) : null;
-                ds = await _service.ClaimRequestsRepository.ExportUserClaimrequestList(ClaimType, ClaimStatus, Month, Year);
+                ds = await _service.ClaimRequestsRepository.ExportUserClaimrequestList(_dataProtector.Unprotect(Userid), Month, Year);
                 //Do Export for 
                 if (ds != null && ds.Tables.Count > 0)
                 {
-                    //var totalrowcount = dt.Rows.Count;
-                    //var totalcolcount = dt.Columns.Count;
-                    //dt.Columns.Remove("DisplayOrder");
+
                     ds.Tables.Add(dt.Copy());
 
                     using (XLWorkbook wb = new XLWorkbook())
@@ -251,7 +249,7 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
                         var sheetPFFormat = wb.Worksheets.Add("Total Claim");
                         var sheetPFFormat2 = wb.Worksheets.Add("Travel");
                         var sheetPFFormat3 = wb.Worksheets.Add("Hotel");
-                        // var sheetPFFormat4 = wb.Worksheets.Add("Courier/ Stationary");
+                        var sheetPFFormat4 = wb.Worksheets.Add("CourierStationary");
                         var sheetPFFormat5 = wb.Worksheets.Add("Mobile Bills");
 
 
@@ -269,9 +267,9 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
                         sheetPFFormat3.FirstRow().Style.Font.Bold = true;
 
 
-                        //sheetPFFormat4.FirstRow().FirstCell().InsertTable(ds.Tables[3]);
-                        //sheetPFFormat4.Columns().AdjustToContents();
-                        //sheetPFFormat4.FirstRow().Style.Font.Bold = true;
+                        sheetPFFormat4.FirstRow().FirstCell().InsertTable(ds.Tables[3]);
+                        sheetPFFormat4.Columns().AdjustToContents();
+                        sheetPFFormat4.FirstRow().Style.Font.Bold = true;
 
 
                         sheetPFFormat5.FirstRow().FirstCell().InsertTable(ds.Tables[4]);

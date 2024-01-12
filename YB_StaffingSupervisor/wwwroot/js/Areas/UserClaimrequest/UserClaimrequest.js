@@ -42,13 +42,11 @@ function ExportUserClaimrequestReports() {
         flag = 0;
     }
     if (flag == 1) {
-        var claimType = $("#claimType").val();
-        var claimStatus = $("#claimStatus").val();
+
         var Year = $("#SearchYear").val();
         var Month = $("#SearchMonth").val();
-
-
-        window.location = "/Supervisor/Claim/ExportUserClaimrequestReport?claimType=" + claimType + '&claimStatus=' + claimStatus + '&Year=' + Year + '&Month=' + Month;
+        var Userid = $("#hddnuserid").val();
+        window.location = "/Supervisor/Claim/ExportUserClaimrequestReport?Userid=" + Userid + "&Year=" + Year + "&Month=" + Month;
     }
 }
 

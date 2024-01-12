@@ -55,6 +55,7 @@
 
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <div class="font-weight-medium">Filters</div>
+
                             <div>@* <i class="fa fa-filter"></i> *@</div>
                         </div>
                         <div class="card-body">
@@ -127,6 +128,8 @@
 
 
             <div class="table-responsive">
+                <input type="hidden" value="@ViewBag.userid" id="hddnuserid"/>
+
                 <table class="table table-bordered table-sm text-center v-middle"
                        style="font-size: 12px;">
                     <thead id="sumit">
@@ -732,6 +735,6 @@
 
 
 </script>
-    <script src="~/js/Areas/UserClaimrequest/UserClaimrequest.js" asp - append - version="true"></script>
+    <script src="~/js/Areas/UserClaimrequest/UserClaimrequest.js" asp-append-version="true"></script>
 
 }
