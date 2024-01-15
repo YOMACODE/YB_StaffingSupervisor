@@ -11,8 +11,6 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        overflow: hidden;
     }
     .mobile-display-none {
         display: none;
@@ -29,6 +27,11 @@
         box-shadow: unset !important;
         border-end-start-radius: unset !important;
         border-start-end-radius: unset !important;
+        width: 100%;
+    }
+
+    .shape .card{
+        width: 100%;
     }
     .row>* {
         padding-right: unset !important;
