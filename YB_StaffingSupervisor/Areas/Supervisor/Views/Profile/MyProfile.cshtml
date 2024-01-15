@@ -80,14 +80,16 @@
     .p-image {
         color: #ffffff;
         transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+        text-align: center;
         cursor: pointer;
         background: #2a69b2;
-        padding: 12px 12px 11px 12px;
+        padding: 5px;
         font-size: 11px;
         outline: 3px solid #195fae4f;
         line-height: normal;
-        border-radius: 41px;
+        border-radius: 12px !important;
         width: 100%;
+        
     }
 
         .p-image:hover {
@@ -179,25 +181,26 @@
                         </div>
                         <div class="card-footer border-0" style="background-color: aliceblue;">
                             <!-- <h6 style="color: #2a69b2;"><b>Change Profie Picture</b></h6> -->
-                            <div class="user-icons row mt-2 mb-1">
-                                <div class="col col-sm-2 col-md-2 col-lg-2 ">
+                            <div class="user-icons row">
+                                <div class="col-2 col-sm-2 col-md-2 col-lg-2 m-2">
                                     <img class="avatar-pic" src="/Proantov2assets/images/user-icons/man.png" imgpath="Proantov2assets/images/user-icons/man.png" width="35px" onclick="ChangeProfileImage('Proantov2assets/images/user-icons/man.png')" alt="">
                                 </div>
-                                <div class="col col-sm-2 col-md-2 col-lg-2">
+                                <div class="col-2 col-sm-2 col-md-2 col-lg-2 m-2">
                                     <img class="avatar-pic" src="/Proantov2assets/images/user-icons/woman.png" imgpath="Proantov2assets/images/user-icons/woman.png" width="35px" onclick="ChangeProfileImage('Proantov2assets/images/user-icons/woman.png')" alt="">
                                 </div>
-                                <div class="col col-sm-2 col-md-2 col-lg-2">
+                                <div class="col-2 col-sm-2 col-md-2 col-lg-2 m-2">
                                     <img class="avatar-pic" src="/Proantov2assets/images/user-icons/boy.png" imgpath="Proantov2assets/images/user-icons/boy.png" width="35px" onclick="ChangeProfileImage('Proantov2assets/images/user-icons/boy.png')" alt="">
                                 </div>
-                                <div class="col col-sm-2 col-md-2 col-lg-2">
+                                <div class="col-2 col-sm-2 col-md-2 col-lg-2 m-2">
                                     <img class="avatar-pic" src="/Proantov2assets/images/user-icons/girl.png" imgpath="Proantov2assets/images/user-icons/girl.png" width="35px" onclick="ChangeProfileImage('Proantov2assets/images/user-icons/girl.png')" alt="">
                                 </div>
-                                <div class="col col-sm-2 col-md-2 col-lg-2">
+                                <div class="col-2 col-sm-2 col-md-2 col-lg-2 m-2">
                                     <img class="avatar-pic" src="/Proantov2assets/images/user-icons/older.png" imgpath="Proantov2assets/images/user-icons/older.png" width="35px" onclick="ChangeProfileImage('Proantov2assets/images/user-icons/older.png')" alt="">
                                 </div>
-                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 mt-3">
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6 mt-3">
                                     <div class="p-image" title="Change Profile Picture">
-                                        <input id="uploadProfileImageFile" class="uploadProfileImageFile" type="file" accept=".jpg, .jpeg, .png" />
+                                        
+                                        <input id="uploadProfileImageFile" class="uploadProfileImageFile" type="file" accept=".jpg, .jpeg, .png"/>
                                     </div>
                                 </div>
                             </div>
@@ -358,6 +361,8 @@
         $(document).ready(function () {
 
             toastr.success('My Profile');
+
+           
 
         });
 
