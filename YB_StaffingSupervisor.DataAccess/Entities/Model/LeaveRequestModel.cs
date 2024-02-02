@@ -24,5 +24,6 @@ namespace YB_StaffingSupervisor.DataAccess.Entities.Model
         public string RequestedOnDate { get; set; }
         public string ApproveRejectStatus { get; set; }
         public string ApproveRejectComment { get; set; }
+        public string LeaveDays { get; set; }
     }
 }

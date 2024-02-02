@@ -33,64 +33,64 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             _loginUserRepo = loginUserRepo;
         }
         [HttpGet]
-		public async Task<IActionResult> ClaimRequests([FromQuery] ClaimRequestsCustom SearchRequest, string sortOrder, string sortColumn, string pagesize, int page = 1)
-		{
-			if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("UserId")))
-			{
-				return RedirectToAction("Logout", "Home", new { area = "" }).WithWarning("Warning !", "Unauthorized Access.");
-			}
+        public async Task<IActionResult> ClaimRequests([FromQuery] ClaimRequestsCustom SearchRequest, string sortOrder, string sortColumn, string pagesize, int page = 1)
+        {
+            if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("UserId")))
+            {
+                return RedirectToAction("Logout", "Home", new { area = "" }).WithWarning("Warning !", "Unauthorized Access.");
+            }
 
-			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchUserCode))
-			{
-				ViewBag.SearchUserCode = SearchRequest.SearchUserCode;
-			}
-			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchEmail))
-			{
-				ViewBag.SearchAttendanceFrom = SearchRequest.SearchEmail;
-			}
-			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchAssociateName))
-			{
-				ViewBag.SearchAttendanceTo = SearchRequest.SearchAssociateName;
-			}
-			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchMobileNumber))
-			{
-				ViewBag.SearchStatusType = SearchRequest.SearchMobileNumber;
-			}
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchUserCode))
+            {
+                ViewBag.SearchUserCode = SearchRequest.SearchUserCode;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchEmail))
+            {
+                ViewBag.SearchAttendanceFrom = SearchRequest.SearchEmail;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchAssociateName))
+            {
+                ViewBag.SearchAttendanceTo = SearchRequest.SearchAssociateName;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchMobileNumber))
+            {
+                ViewBag.SearchStatusType = SearchRequest.SearchMobileNumber;
+            }
 
-			if (sortOrder == "desc")
-			{
-				ViewData["sortOrder"] = "asce";
-			}
-			else
-			{
-				ViewData["sortOrder"] = "desc";
-			}
-			ViewData["sortOrderForPagination"] = sortOrder;
-			SearchRequest.SortColumnName = sortColumn ?? String.Empty;
-			SearchRequest.SortOrderBy = (sortOrder == null || sortOrder == "desc") ? "desc" : "asce";
-			if (!string.IsNullOrWhiteSpace(SearchRequest.SortColumnName))
-			{
-				ViewData["sortColumnName"] = SearchRequest.SortColumnName;
-			}
-			int PageSize;
-			if (pagesize == null)
-			{
-				PageSize = 10;
-			}
-			else if (sortColumn != string.Empty)
-			{
-				PageSize = Convert.ToInt32(pagesize);
-			}
-			else
-			{
-				PageSize = Convert.ToInt32(pagesize);
-			}
-			ViewBag.page = page;
-			ViewBag.PageSize = PageSize;
+            if (sortOrder == "desc")
+            {
+                ViewData["sortOrder"] = "asce";
+            }
+            else
+            {
+                ViewData["sortOrder"] = "desc";
+            }
+            ViewData["sortOrderForPagination"] = sortOrder;
+            SearchRequest.SortColumnName = sortColumn ?? String.Empty;
+            SearchRequest.SortOrderBy = (sortOrder == null || sortOrder == "desc") ? "desc" : "asce";
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SortColumnName))
+            {
+                ViewData["sortColumnName"] = SearchRequest.SortColumnName;
+            }
+            int PageSize;
+            if (pagesize == null)
+            {
+                PageSize = 10;
+            }
+            else if (sortColumn != string.Empty)
+            {
+                PageSize = Convert.ToInt32(pagesize);
+            }
+            else
+            {
+                PageSize = Convert.ToInt32(pagesize);
+            }
+            ViewBag.page = page;
+            ViewBag.PageSize = PageSize;
 
-			ClaimRequestsCustom claimRequestsCustom = new ClaimRequestsCustom();
-			SearchRequest.SupervisorId = _dataProtector.Unprotect(baseModel.UserId);
-			claimRequestsCustom = await _service.ClaimRequestsRepository.GetClaimRequestsListing(page, PageSize, SearchRequest);
+            ClaimRequestsCustom claimRequestsCustom = new ClaimRequestsCustom();
+            SearchRequest.SupervisorId = _dataProtector.Unprotect(baseModel.UserId);
+            claimRequestsCustom = await _service.ClaimRequestsRepository.GetClaimRequestsListing(page, PageSize, SearchRequest);
             if (claimRequestsCustom != null && claimRequestsCustom.ClaimRequestListing != null)
             {
                 claimRequestsCustom.ClaimRequestListing.ToList().ForEach(c =>
@@ -99,16 +99,19 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
                 });
             }
             return View(claimRequestsCustom);
-		}
+        }
 
-		[HttpGet]
+        [HttpGet]
         public async Task<IActionResult> UserClaimRequest([FromQuery] ClaimRequestsCustom SearchRequest, string sortOrder, string sortColumn, string pagesize, int page = 1)
         {
             if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("UserId")))
             {
                 return RedirectToAction("Logout", "Home", new { area = "" }).WithWarning("Warning !", "Unauthorized Access.");
             }
-
+            if (string.IsNullOrEmpty(SearchRequest.UserId) || string.IsNullOrWhiteSpace(SearchRequest.UserId))
+            {
+                return RedirectToAction("ClaimRequests", "Claim").WithDanger("Error !", "Something went wrong.please try again.");
+            }
             if (!string.IsNullOrWhiteSpace(SearchRequest.searchDOJ))
             {
                 ViewBag.searchDOJ = SearchRequest.searchDOJ;
@@ -160,7 +163,8 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             }
             ViewBag.page = page;
             ViewBag.PageSize = PageSize;
-
+            
+            var userId= SearchRequest.UserId;
             ViewBag.UserId = SearchRequest.UserId;
             ClaimRequestsCustom claimRequestsCustom1 = new ClaimRequestsCustom();
             if (SearchRequest.UserId != null)
@@ -176,7 +180,7 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
                     c.UserId = _dataProtector.Protect(c.UserId);
                 });
             }
-            claimRequestsCustom1.UserId = baseModel.UserId;
+            claimRequestsCustom1.UserId = userId;
             claimRequestsCustom1.monthModelsListing = new SelectList(DateTimeFormatInfo.InvariantInfo.MonthNames.Where(m => !String.IsNullOrEmpty(m)).Select((monthName, index) => new SelectListItem { Value = (index + 1).ToString(), Text = monthName }), "Value", "Text");
             claimRequestsCustom1.yearModelsListing = new SelectList(Enumerable.Range(DateTime.Today.Year - 10, 20).Select(x => new SelectListItem() { Text = x.ToString(), Value = x.ToString() }), "Value", "Text");
             return View(claimRequestsCustom1);
@@ -289,12 +293,12 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("UserClaimrequest", "Claim").WithInfo("Info !", "No data found!");
+                    return RedirectToAction("UserClaimrequest", "Claim", new { UserId = Userid }).WithInfo("Info !", "No data found!");
                 }
             }
             catch (Exception ex)
             {
-                return RedirectToAction("UserClaimrequest", "Claim").WithDanger("Error !", "Something went wrong.please try again.");
+                return RedirectToAction("UserClaimrequest", "Claim", new { UserId = Userid }).WithDanger("Error !", "Something went wrong.please try again.");
             }
         }
         #endregion

@@ -31,8 +31,9 @@
         text-align: center;
         line-height: 2.3;
     }
-    .select2-container{
-        width: 100% !important; 
+
+    .select2-container {
+        width: 100% !important;
     }
 </style>
 <div class="col-md-12">
@@ -54,6 +55,7 @@
 
             <div class="collapse" id="filter" style="">
                 <form asp-controller="Claim" asp-action="UserClaimrequest" method="get">
+                    <input type="hidden" id="hdnUserId" asp-for="UserId" value="@Model.UserId" />
                     <div class="card mb-3">
 
                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -131,7 +133,7 @@
 
 
             <div class="table-responsive">
-                <input type="hidden" value="@ViewBag.userid" id="hddnuserid"/>
+                <input type="hidden" value="@ViewBag.UserId" id="hddnuserid"/>
 
                 <table class="table table-bordered table-sm text-center v-middle"
                        style="font-size: 12px;">
@@ -283,11 +285,11 @@
                     {
                         <div class="one_str">
                             <select class="form-control form-control-sm remove-select2" style="width:auto" asp-for="PageSize" onchange="showListForPageSize()">
-                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=100000&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">ALL</option>
-                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=10&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">10</option>
-                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=25&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">25</option>
-                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=50&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">50</option>
-                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=100&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">100</option>
+                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=100000&UserId=@ViewBag.UserId&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">ALL</option>
+                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=10&UserId=@ViewBag.UserId&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">10</option>
+                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=25&UserId=@ViewBag.UserId&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">25</option>
+                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=50&UserId=@ViewBag.UserId&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">50</option>
+                                <option value="/Supervisor/Claim/UserClaimRequest/?pagesize=100&UserId=@ViewBag.UserId&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]">100</option>
                             </select>
                         </div>
                     }
@@ -299,25 +301,25 @@
                                     @if (Model.CustomPagination.CurrentPage > 1)
                                     {
                                         <li>
-                                            <a href="~/Supervisor/Claim/UserClaimRequest/?SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&pagesize=@ViewBag.PageSize">First</a>
+                                            <a href="~/Supervisor/Claim/UserClaimRequest/?UserId=@ViewBag.UserId&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&pagesize=@ViewBag.PageSize">First</a>
                                         </li>
                                         <li>
-                                            <a href="~/Supervisor/Claim/UserClaimRequest/?SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.CurrentPage - 1)&pagesize=@ViewBag.PageSize">Previous</a>
+                                            <a href="~/Supervisor/Claim/UserClaimRequest/?UserId=@ViewBag.UserId&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.CurrentPage - 1)&pagesize=@ViewBag.PageSize">Previous</a>
                                         </li>
                                     }
                                     @for (var Page = Model.CustomPagination.StartPage; Page <= Model.CustomPagination.EndPage; Page++)
                                     {
                                         <li>
-                                            <a class="@(Page == Model.CustomPagination.CurrentPage ? "active" : "")" href="~/Supervisor/Claim/UserClaimRequest/?SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@Page&pagesize=@ViewBag.PageSize">@Page</a>
+                                            <a class="@(Page == Model.CustomPagination.CurrentPage ? "active" : "")" href="~/Supervisor/Claim/UserClaimRequest/?UserId=@ViewBag.UserId&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@Page&pagesize=@ViewBag.PageSize">@Page</a>
                                         </li>
                                     }
                                     @if (Model.CustomPagination.CurrentPage < Model.CustomPagination.TotalPages)
                                     {
                                         <li>
-                                            <a href="~/Supervisor/Claim/UserClaimRequest/?SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.CurrentPage + 1)&pagesize=@ViewBag.PageSize">Next</a>
+                                            <a href="~/Supervisor/Claim/UserClaimRequest/?UserId=@ViewBag.UserId&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.CurrentPage + 1)&pagesize=@ViewBag.PageSize">Next</a>
                                         </li>
                                         <li>
-                                            <a href="~/Supervisor/Claim/UserClaimRequest/?SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.TotalPages)&pagesize=@ViewBag.PageSize">Last</a>
+                                            <a href="~/Supervisor/Claim/UserClaimRequest/?UserId=@ViewBag.UserId&SearchClaimType=@ViewBag.SearchClaimType&SearchStatus=@ViewBag.SearchStatus&SearchMonth=@ViewBag.SearchMonth&SearchYear=@ViewBag.SearchYear&sortOrder=@ViewBag.sortOrderForPagination&sortColumn=@ViewData["sortColumnName"]&page=@(Model.CustomPagination.TotalPages)&pagesize=@ViewBag.PageSize">Last</a>
                                         </li>
                                     }
                                 </ul>

@@ -63,6 +63,7 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
                                 leaveRequestModel.ApproveRejectStatus = dataSet.Tables[0].Rows[i]["ApproveRejectStatus"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["ApproveRejectStatus"]);
                                 leaveRequestModel.ApproveRejectComment = dataSet.Tables[0].Rows[i]["ApproveRejectComment"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["ApproveRejectComment"]);
                                 leaveRequestModel.RequestedOnDate = dataSet.Tables[0].Rows[i]["CreateDate"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["CreateDate"]);
+                                leaveRequestModel.LeaveDays = dataSet.Tables[0].Rows[i]["LeaveDays"] == DBNull.Value ? string.Empty : Convert.ToString(dataSet.Tables[0].Rows[i]["LeaveDays"]);
                                 leaveRequestModels.Add(leaveRequestModel);
                             }
                         }
