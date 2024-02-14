@@ -9,7 +9,8 @@ namespace YB_StaffingSupervisor.DataAccess.Entities.Custom
 	public class TeamMemberCustom
 	{
 		#region Search and Sorting Parameter
-		public string SearchUserCode { get; set; }
+		public string SupervisorUserId { get; set; }
+        public string SearchUserCode { get; set; }
 		public string SearchFullName { get; set; }
 		public string SearchMobileNumber { get; set; }
 		public string SearchEmailId { get; set; }

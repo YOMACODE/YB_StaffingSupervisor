@@ -37,51 +37,52 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             {
                 return RedirectToAction("Logout", "Home", new { area = "" }).WithWarning("Warning !", "Unauthorized Access.");
             }
-			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchUserCode))
-			{
-				ViewBag.SearchUserCode = SearchRequest.SearchUserCode;
-			}
-			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchFullName))
-			{
-				ViewBag.SearchFullName = SearchRequest.SearchFullName;
-			}
-			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchMobileNumber))
-			{
-				ViewBag.SearchMobileNumber = SearchRequest.SearchMobileNumber;
-			}
-			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchEmailId))
-			{
-				ViewBag.SearchEmailId = SearchRequest.SearchEmailId;
-			}
-			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchDesignation))
-			{
-				ViewBag.SearchDesignation = SearchRequest.SearchDesignation;
-			}
-			if (!string.IsNullOrWhiteSpace(SearchRequest.SearchJoiningDate))
-			{
-				ViewBag.SearchJoiningDate = SearchRequest.SearchJoiningDate;
-			}
-			int PageSize;
-			if (pagesize == null)
-			{
-				PageSize = 10;
-			}
-			else if (sortColumn != string.Empty)
-			{
-				PageSize = Convert.ToInt32(pagesize);
-			}
-			else
-			{
-				PageSize = Convert.ToInt32(pagesize);
-			}
-			ViewBag.page = page;
-			ViewBag.PageSize = PageSize;
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchUserCode))
+            {
+                ViewBag.SearchUserCode = SearchRequest.SearchUserCode;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchFullName))
+            {
+                ViewBag.SearchFullName = SearchRequest.SearchFullName;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchMobileNumber))
+            {
+                ViewBag.SearchMobileNumber = SearchRequest.SearchMobileNumber;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchEmailId))
+            {
+                ViewBag.SearchEmailId = SearchRequest.SearchEmailId;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchDesignation))
+            {
+                ViewBag.SearchDesignation = SearchRequest.SearchDesignation;
+            }
+            if (!string.IsNullOrWhiteSpace(SearchRequest.SearchJoiningDate))
+            {
+                ViewBag.SearchJoiningDate = SearchRequest.SearchJoiningDate;
+            }
+            int PageSize;
+            if (pagesize == null)
+            {
+                PageSize = 10;
+            }
+            else if (sortColumn != string.Empty)
+            {
+                PageSize = Convert.ToInt32(pagesize);
+            }
+            else
+            {
+                PageSize = Convert.ToInt32(pagesize);
+            }
+            ViewBag.page = page;
+            ViewBag.PageSize = PageSize;
 
-			TeamMemberCustom teamMemberCustom = new TeamMemberCustom();
-			teamMemberCustom = await _service.MyTeamRepository.GetTeamMembersListing(page, PageSize, SearchRequest);
-			teamMemberCustom.DesignationModels = await _service.DesignationRepository.DropdownDesignationList();
-			return View(teamMemberCustom);
-		}
+            SearchRequest.SupervisorUserId = _dataProtector.Unprotect(baseModel.UserId);
+            TeamMemberCustom teamMemberCustom = new TeamMemberCustom();
+            teamMemberCustom = await _service.MyTeamRepository.GetTeamMembersListing(page, PageSize, SearchRequest);
+            teamMemberCustom.DesignationModels = await _service.DesignationRepository.DropdownDesignationList();
+            return View(teamMemberCustom);
+        }
 
         #region Export TeamMember Report
 
@@ -92,8 +93,8 @@ namespace YB_StaffingSupervisor.Areas.Supervisor.Controllers
             {
                 DataTable dt = new DataTable();
                 DataSet ds = new DataSet();
-                //var clientId = !string.IsNullOrEmpty(ClientId) ? _dataProtector.Unprotect(ClientId) : null;
-                dt = await _service.MyTeamRepository.ExportTeamMemberList(SearchUserCode, SearchFullName, SearchMobileNumber, SearchEmailId, SearchDesignation, SearchJoiningDate);
+                var supervisorUserId = _dataProtector.Unprotect(baseModel.UserId);
+                dt = await _service.MyTeamRepository.ExportTeamMemberList(supervisorUserId, SearchUserCode, SearchFullName, SearchMobileNumber, SearchEmailId, SearchDesignation, SearchJoiningDate);
                 //Do Export for 
                 if (dt != null && dt.Rows.Count > 0)
                 {

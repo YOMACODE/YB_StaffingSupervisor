@@ -29,7 +29,8 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
 					new SqlParameter("@intPagingSize",SqlDbType.Int){ Value=PageSize },
 					new SqlParameter("@chvnSortOrderBy", SqlDbType.NVarChar,512) { Value = SearchRequest.SortOrderBy},
 					new SqlParameter("@chvnSortColumnName", SqlDbType.NVarChar) { Value = SearchRequest.SortColumnName},
-					new SqlParameter("@chvnSearchUserCode", SqlDbType.NVarChar) { Value = SearchRequest.SearchUserCode},
+					new SqlParameter("@intbSupervisorId", SqlDbType.BigInt) { Value = SearchRequest.SupervisorUserId},
+                    new SqlParameter("@chvnSearchUserCode", SqlDbType.NVarChar) { Value = SearchRequest.SearchUserCode},
 					new SqlParameter("@chvnSearchFullName", SqlDbType.NVarChar, 16) { Value = SearchRequest.SearchFullName },
 					new SqlParameter("@chvnSearchMobileNumber", SqlDbType.NVarChar, 16) { Value = SearchRequest.SearchMobileNumber },
 					new SqlParameter("@dtmSearchJoiningDate", SqlDbType.VarChar) { Value = SearchRequest.SearchJoiningDate },
@@ -63,12 +64,13 @@ namespace YB_StaffingSupervisor.DataAccess.Repository
 			return teamMemberCustom;
 		}
 
-        public async Task<DataTable> ExportTeamMemberList(string SearchUserCode, string SearchFullName, string SearchMobileNumber, string SearchEmailId, string SearchDesignation, string SearchJoiningDate)
+        public async Task<DataTable> ExportTeamMemberList(string SupervisorUserId, string SearchUserCode, string SearchFullName, string SearchMobileNumber, string SearchEmailId, string SearchDesignation, string SearchJoiningDate)
         {
             using (var dbconnect = connectionFactory.GetDAL)
             {
                 SqlParameter[] sqlparameters =
                 {
+                    new SqlParameter("@intbSupervisorId", SqlDbType.BigInt) { Value =  SearchUserCode},
                     new SqlParameter("@chvnSearchUserCode", SqlDbType.NVarChar) { Value =  SearchUserCode},
                     new SqlParameter("@chvnSearchFullName", SqlDbType.NVarChar) { Value = SearchFullName},
                     new SqlParameter("@chvnSearchMobileNumber", SqlDbType.NVarChar) { Value = SearchMobileNumber },
